@@ -19,7 +19,7 @@ const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   const { register: loginRegister, handleSubmit: handleLoginSubmit, formState: { errors: loginErrors } } = useForm<LoginFormValues>();
-  const { register: registerRegister, handleSubmit: handleRegisterSubmit, formState: { errors: registerErrors } } = useForm<RegisterFormValues>();
+  const { register: registerRegister, handleSubmit: handleRegisterSubmit } = useForm<RegisterFormValues>();
 
   const onLoginSubmit = (data: LoginFormValues) => console.log("Login:", data);
   const onRegisterSubmit = (data: RegisterFormValues) => console.log("Register:", data);
