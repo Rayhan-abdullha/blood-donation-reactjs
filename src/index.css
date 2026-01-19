@@ -1,0 +1,9 @@
+/* src/index.css */
+@import "tailwindcss";
+
+/* Optional: Add your custom theme/variables here (CSS-first way) */
+@theme {
+  --color-primary: #e54b4b;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+}
