@@ -22,6 +22,7 @@ export default function DonorDashboard() {
           <Card>
             <h2 className="font-semibold mb-3">New Blood Request</h2>
             <p>Blood Group: <b>A+</b></p>
+            <p>Bags: <b>2</b></p>
             <p>Hospital: City Hospital</p>
             <p>Urgency: <Badge text="Emergency" color="red" /></p>
 

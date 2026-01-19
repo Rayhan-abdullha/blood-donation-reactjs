@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom"
 import PublicHome from "./pages/public/Home"
 import DonorLayout from "./pages/donor/DonorLayout"
-import Requests from "./pages/donor/CreateRequest"
+import Requests from "./pages/patient/CreateRequest"
 import History from "./pages/donor/History"
 import Profile from "./pages/donor/Profile"
 
@@ -12,6 +12,7 @@ import PatientDashboard from "./pages/patient/PatientDashboard"
 import PublicLayout from "./pages/public/PublicLayout"
 import DonorDashboard from "./pages/donor/DonorDashboard"
 import AuthPage from "./pages/auth/Auth"
+import './App.css';
 
 export default function App() {
   return (

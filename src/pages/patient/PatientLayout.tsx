@@ -8,7 +8,7 @@ const menus = [
   ]
 export default function PatientLayout() {
   return (
-    <div className="max-w-6xl mx-auto mt-6 bg-gray-50 rounded shadow">
+    <div className="max-w-6xl mx-auto mt-6 rounded shadow">
         <Navbar
           title="Patient Dashboard"
           menus={menus}
