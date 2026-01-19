@@ -17,7 +17,6 @@ export default function Profile() {
       <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-bold text-gray-800">আমার প্রোফাইল (My Profile)</h2>
-          <p className="text-gray-500">আপনার তথ্য এবং একাউন্ট সেটিংস পরিচালনা করুন</p>
         </div>
         <div className="flex gap-2">
            <span className={`px-4 py-1.5 rounded-full text-sm font-semibold shadow-sm ${

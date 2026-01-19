@@ -5,6 +5,7 @@ const menus = [
     { link: "patient/requests", name: "Blood-Request" },
     { link: "donor", name: "Be a Donor" },
     { link: "patient", name: "Be a Patient" },
+    { link: "admin", name: "Admin" },
     { link: "auth/login", name: "Login" }
   ]
 export default function PublicLayout() {
