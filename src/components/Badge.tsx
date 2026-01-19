@@ -1,9 +1,11 @@
 export default function Badge({
   text,
   color,
+  className
 }: {
   text: string
-  color: "red" | "green" | "gray"
+    color: "red" | "green" | "gray"
+  className: string
 }) {
   const styles = {
     red: "text-red-600",
@@ -11,5 +13,5 @@ export default function Badge({
     gray: "text-gray-600",
   }
 
-  return <span className={`font-semibold ${styles[color]}`}>{text}</span>
+  return <span className={`font-semibold ${styles[color]} ${className}`}>{text}</span>
 }
