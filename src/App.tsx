@@ -13,6 +13,7 @@ import PublicLayout from "./pages/public/PublicLayout"
 import DonorDashboard from "./pages/donor/DonorDashboard"
 import AuthPage from "./pages/auth/Auth"
 import './App.css';
+import DonorRegistration from "./pages/donor/DonorRegisterForm"
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="requests" element={<Requests />} />
         <Route path="history" element={<History/>} />
         <Route path="profile" element={<Profile />} />
+        <Route path="form" element={<DonorRegistration />} />
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="home" replace />} />

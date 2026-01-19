@@ -3,8 +3,9 @@ import Navbar from "../../components/Navbar"
 const menus = [
     { link: "home", name: "Home" },
     { link: "patient/requests", name: "Blood-Request" },
-    { link: "donor", name: "Be a Donor" },
-    { link: "patient", name: "Be a Patient" },
+    { link: "donor/form", name: "Be a Donor" },
+    { link: "donor", name: "Donor" },
+    { link: "patient", name: "Patient" },
     { link: "admin", name: "Admin" },
     { link: "auth/login", name: "Login" }
   ]

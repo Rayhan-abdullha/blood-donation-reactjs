@@ -12,7 +12,7 @@ export default function AdminLayout() {
     <div className="max-w-6xl mx-auto mt-6 bg-gray-50 rounded shadow">
       <BackHome className="mb-3"/>
       <Navbar
-        title="Patient Dashboard"
+        title="Admin Dashboard"
         menus={menus}
         user="Rayhan"
       />
