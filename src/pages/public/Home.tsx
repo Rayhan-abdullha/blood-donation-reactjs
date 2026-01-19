@@ -23,7 +23,7 @@ export default function PublicHome() {
             রক্তদাতা এবং রোগীদের মধ্যে তাৎক্ষণিক সংযোগ স্থাপন করাই আমাদের লক্ষ্য। আপনার একটি ছোট উদ্যোগ কারো জীবনে বড় হাসি ফোটাতে পারে।
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/register">
+            <Link to="/donor/home">
               <button className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold text-lg shadow-xl shadow-red-600/20 transition-all active:scale-95">
                 রক্তদাতা হন (Become a Donor)
               </button>

@@ -22,9 +22,9 @@ export default function Navbar({ title, menus, user }: Props) {
     <nav className="sticky top-0 z-50 shadow-sm font-sans">
       {/* --- UPPER BAR (Brand & User) --- */}
       <div className="bg-white border-b border-slate-100 px-6 py-3 flex justify-between items-center">
-        <h1 className="font-black text-2xl flex items-center gap-2 text-slate-800 italic">
+        <h1 className="font-black text-2xl flex items-center gap-2 text-slate-800">
           <Link to="/" className="flex items-center gap-2">
-            <span className="bg-red-600 text-white w-8 h-8 flex items-center justify-center rounded-lg not-italic text-base">🩸</span>
+            <span className="bg-red-300 text-white w-8 h-8 flex items-center justify-center rounded-lg not-italic text-base">🩸</span>
             {title}
           </Link>
         </h1>
