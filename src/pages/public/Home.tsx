@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom"
 
 export default function PublicHome() {
-  // const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-
   return (
     <div className="space-y-16 pb-20">
       

@@ -45,6 +45,7 @@ export default function App() {
         <Route path="history" element={<History/>} />
         <Route path="profile" element={<Profile />} />
       </Route>
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

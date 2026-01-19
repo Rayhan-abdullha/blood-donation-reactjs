@@ -17,7 +17,7 @@ export default function PublicLayout() {
         menus={menus}
         user="Rayhan"
       />
-      <div className="p-6">
+      <div className="">
         <Outlet />
       </div>
     </div>
