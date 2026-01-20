@@ -16,6 +16,7 @@ import './App.css';
 import DonorRegistration from "./pages/donor/DonorRegisterForm"
 import AboutLayout from "./pages/about/AboutLayout"
 import AboutPage from "./pages/about/About"
+import NotFound from "./components/Notfound"
 
 export default function App() {
   return (
@@ -51,7 +52,7 @@ export default function App() {
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<AboutPage/>} />
       </Route>
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFound/>} />
     </Routes>
   )
 }
