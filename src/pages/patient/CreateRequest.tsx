@@ -47,8 +47,7 @@ export default function Requests() {
             <span className="text-3xl">🩸</span>
           </div>
           <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-snug">
-            রক্তের আবেদন <br />
-            <span className="text-red-600 text-xl font-bold uppercase tracking-widest">Blood Request</span>
+            রক্তের আবেদন
           </h2>
           <p className="text-slate-500 mt-2 font-medium max-w-md mx-auto leading-relaxed text-sm">
             আপনার সঠিক তথ্য দ্রুত রক্তদাতার কাছে পৌঁছাতে সাহায্য করবে।

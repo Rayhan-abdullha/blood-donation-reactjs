@@ -3,12 +3,8 @@ import { Link } from "react-router-dom"
 export default function PublicHome() {
   return (
     <div className="space-y-16 pb-20">
-      
-      {/* 1. HERO SECTION */}
       <section className="relative bg-slate-900 pt-20 pb-32 px-6 overflow-hidden">
-        {/* Abstract Background Decoration */}
         <div className="absolute top-0 right-0 w-1/3 h-full bg-red-600/10 skew-x-12 translate-x-20"></div>
-        
         <div className="max-w-6xl mx-auto text-center relative z-10">
           <span className="inline-block bg-red-500/20 text-red-400 px-4 py-1.5 rounded-full text-sm font-bold tracking-widest uppercase mb-6 border border-red-500/30">
             🩸 রক্তদান মহৎ দান (Blood Donation is Noble)

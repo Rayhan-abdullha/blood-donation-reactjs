@@ -10,7 +10,7 @@ export default function AdminDashboard() {
       {/* --- SIDEBAR --- */}
       <aside className="w-64 bg-slate-900 text-white hidden lg:flex flex-col p-6 sticky top-0 h-screen">
         <h2 className="text-xl font-black flex items-center gap-2 mb-10 italic">
-          <span className="bg-red-600 p-1.5 rounded-lg not-italic">🩸</span> ADMIN PANEL
+          <span className="bg-red-400 p-1.5 rounded-lg not-italic">🩸</span> ADMIN PANEL
         </h2>
         <nav className="space-y-2 flex-1">
           <button onClick={() => setActiveTab("verify")} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'verify' ? 'bg-red-600 text-white' : 'text-slate-400 hover:bg-white/5'}`}>

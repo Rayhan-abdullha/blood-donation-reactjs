@@ -16,6 +16,7 @@ export default function PublicLayout() {
         title="রক্ত বীর"
         menus={menus}
         user="Rayhan"
+        isMainMenu={true}
       />
       <div className="">
         <Outlet />
