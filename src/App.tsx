@@ -14,6 +14,8 @@ import DonorDashboard from "./pages/donor/DonorDashboard"
 import AuthPage from "./pages/auth/Auth"
 import './App.css';
 import DonorRegistration from "./pages/donor/DonorRegisterForm"
+import AboutLayout from "./pages/about/AboutLayout"
+import AboutPage from "./pages/about/About"
 
 export default function App() {
   return (
@@ -44,6 +46,10 @@ export default function App() {
         <Route path="requests" element={<Requests />} />
         <Route path="history" element={<History/>} />
         <Route path="profile" element={<Profile />} />
+      </Route>
+      <Route path="/about" element={<AboutLayout />}>
+        <Route index element={<Navigate to="home" replace />} />
+        <Route path="home" element={<AboutPage/>} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

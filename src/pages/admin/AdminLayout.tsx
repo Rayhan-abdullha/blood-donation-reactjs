@@ -1,3 +1,4 @@
+import Footer from "../../components/Footer"
 import Navbar from "../../components/Navbar"
 import { Outlet } from "react-router-dom"
 const menus = [
@@ -15,6 +16,7 @@ export default function AdminLayout() {
       <div className="p-6">
         <Outlet />
       </div>
+      <Footer/>
     </div>
   )
 }
