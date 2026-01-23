@@ -2,8 +2,7 @@ import Badge from "../../components/Badge"; // Assuming these support the new st
 
 export default function PatientDashboard() {
   return (
-    <div className="max-w-6xl mx-auto mt-8 px-4 pb-12 font-sans">
-      
+    <div className="max-w-6xl mx-auto mt-8 px-4 sm:px-2 pb-12 font-sans mt-[100px] bg-red-500">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
         <div>

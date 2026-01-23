@@ -8,13 +8,13 @@ const menus = [
   ]
 export default function DonorLayout() {
   return (
-    <div className="max-w-6xl mx-auto mt-6 rounded shadow">
+    <div className="mx-auto rounded shadow">
        <Navbar
           title="রক্ত বীর"
           menus={menus}
           user="Rayhan"
         />
-      <div className="p-6">
+      <div className="mt-5">
         <Outlet />
       </div>
       <Footer/>

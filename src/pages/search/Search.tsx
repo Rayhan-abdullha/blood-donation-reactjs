@@ -80,7 +80,7 @@ const DonorSearch = () => {
   setFilteredDonors(result);
 }, [searchQuery, userLocation, maxDistance, allDonors]);
   return (
-  <div className="min-h-screen bg-slate-50 py-12 px-4 font-sans">
+  <div className="min-h-screen bg-slate-50 py-12 px-4 font-sans mt-18">
     <div className="max-w-6xl mx-auto">
       
       {/* ১. হেডার সেকশন */}
@@ -156,20 +156,44 @@ const DonorSearch = () => {
             <p className="text-slate-400 font-bold text-sm uppercase tracking-widest px-4">
               {filteredDonors.length} জন রক্তদাতা পাওয়া গেছে
             </p>
-            
             {loading ? (
-              <p className="text-center py-10">লোডিং...</p>
-            ) : (
-              filteredDonors.map((donor) => (
-                <div key={donor.id} className="bg-white p-6 rounded-[2.5rem] shadow-sm border border-slate-100 flex justify-between items-center">
-                  <div>
-                    <h4 className="text-xl font-black text-slate-800">{donor.name}</h4>
-                    <p className="text-red-600 font-bold">{donor.bloodGroup} | {donor.distance} km away</p>
+              <div className="flex flex-col items-center py-20 animate-pulse">
+                <div className="w-16 h-16 border-4 border-red-200 border-t-red-600 rounded-full animate-spin mb-4"></div>
+                <p className="text-slate-400 font-bold">লোকেশন খোঁজা হচ্ছে...</p>
+              </div>
+              ) : 
+                filteredDonors.length === 0 ? (
+                  <div className="text-center py-20 bg-white rounded-[2.5rem] border border-dashed border-slate-200">
+                    <span className="text-6xl block mb-4">🔭</span>
+                    <p className="text-slate-400 font-bold">এই এলাকায় কোনো রক্তদাতা পাওয়া যায়নি।</p>
                   </div>
-                  <a href={`tel:${donor.phone}`} className="px-6 py-3 bg-slate-900 text-white rounded-2xl font-bold">কল</a>
-                </div>
-              ))
-            )}
+                ) : (
+                  filteredDonors.map((donor) => (
+                    <div key={donor.id} className="bg-white p-6 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all border border-transparent hover:border-red-100 flex flex-col md:flex-row justify-between items-center group">
+                      <div className="flex items-center gap-6 w-full md:w-auto">
+                        <div className="w-20 h-20 bg-red-50 text-red-600 rounded-3xl flex items-center justify-center text-2xl font-black shadow-inner group-hover:scale-110 transition-transform">
+                          {donor.bloodGroup}
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-black text-slate-800">{donor.name}</h4>
+                          <div className="flex items-center gap-3 mt-1">
+                            <span className="text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span> সক্রিয়
+                            </span>
+                            <span className="text-slate-400 text-xs font-bold">📍 {donor.distance} কিমি দূরে</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-3 mt-6 md:mt-0 w-full md:w-auto">
+                        <a href={`tel:${donor.phone}`} className="flex-1 md:flex-none px-6 py-3 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-black transition-all text-center">
+                          কল করুন
+                        </a>
+                      </div>
+                    </div>
+                  ))
+                )
+              }
           </div>
         </div>
       </div>

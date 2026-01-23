@@ -3,22 +3,16 @@ import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const menus = [
     { link: "home", name: "Home" },
-    { link: "patient/requests", name: "Blood-Request" },
-    { link: "donor/form", name: "Be a Donor" },
-    { link: "donor", name: "Donor" },
-    { link: "patient", name: "Patient" },
-    { link: "admin", name: "Admin" },
-    { link: "auth/login", name: "Login" },
+    { link: "patient/requests", name: "Blood-Request" }
   ]
-export default function PublicLayout() {
+export default function SearchLayout() {
   return (
-    <div className="max-w-auto mx-auto bg-gray-50 rounded shadow">
+    <div className="mx-auto shadow bg-gray-50 rounded shadow">
       <Navbar
         title="রক্ত বীর"
         menus={menus}
         user="Rayhan"
         isMainMenu={true}
-        searchBar={true}
       />
       <div className="">
         <Outlet />

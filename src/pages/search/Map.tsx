@@ -43,7 +43,7 @@ const MapSection = ({ userLocation, donors }: any) => {
         // কি (key) পরিবর্তন হলে ম্যাপ ফ্রেশ হয়ে রেন্ডার হবে
         key={`${userLocation.latitude}-${userLocation.longitude}-${donors.length}`} 
         center={[userLocation.latitude, userLocation.longitude]} 
-        zoom={11} 
+        zoom={6} 
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

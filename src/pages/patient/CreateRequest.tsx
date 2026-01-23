@@ -39,7 +39,7 @@ export default function Requests() {
   `;
 
   return (
-    <div className="flex items-center justify-center bg-[radial-gradient(at_top_right,_var(--tw-gradient-stops))] from-slate-50 via-white to-slate-100 px-4 py-12">
+    <div className="flex items-center justify-center bg-[radial-gradient(at_top_right,_var(--tw-gradient-stops))] from-slate-50 via-white to-slate-100 px-4 py-12 mt-10">
       <div className="rounded-[2.5rem] p-6 relative overflow-hidden">    
         <div className="absolute top-0 right-0 -mr-16 -mt-16 w-60 h-60 bg-red-50 rounded-full blur-3xl opacity-50" />
         <div className="text-center mb-10 relative z-10">

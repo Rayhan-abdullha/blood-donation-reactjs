@@ -6,7 +6,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("verify");
 
   return (
-    <div className="flex min-h-screen bg-slate-50 font-sans">
+    <div className="flex max-w-6xl mx-auto min-h-screen bg-slate-50 font-sans mt-[70px]">
       {/* --- SIDEBAR --- */}
       <aside className="w-64 bg-slate-900 text-white hidden lg:flex flex-col p-6 sticky top-0 h-screen">
         <h2 className="text-xl font-black flex items-center gap-2 mb-10 italic">

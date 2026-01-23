@@ -5,7 +5,7 @@ export default function DonorDashboard() {
   const donorName = "John";
   
   return (
-    <div className="max-w-6xl mx-auto mt-8 px-4 pb-12 font-sans">
+    <div className="max-w-6xl mx-auto mt-[100px] px-4 pb-12 font-sans">
       
       {/* Hero Welcome Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-orange-500 to-rose-500 rounded-3xl p-8 mb-8 text-white shadow-lg shadow-orange-100">

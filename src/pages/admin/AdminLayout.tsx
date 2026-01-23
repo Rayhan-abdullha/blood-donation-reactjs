@@ -7,7 +7,7 @@ const menus = [
   ]
 export default function AdminLayout() {
   return (
-    <div className="max-w-6xl mx-auto mt-6 bg-gray-50 rounded shadow">
+    <div className="mx-auto bg-gray-50 rounded shadow">
       <Navbar
         title="রক্ত বীর"
         menus={menus}
