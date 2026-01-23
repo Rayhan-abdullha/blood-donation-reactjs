@@ -8,7 +8,8 @@ const menus = [
     { link: "donor", name: "Donor" },
     { link: "patient", name: "Patient" },
     { link: "admin", name: "Admin" },
-    { link: "auth/login", name: "Login" }
+    { link: "auth/login", name: "Login" },
+    { link: "home/search", name: "Search Donor" }
   ]
 export default function PublicLayout() {
   return (
