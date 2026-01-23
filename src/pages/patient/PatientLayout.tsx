@@ -3,8 +3,7 @@ import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const menus = [
     { link: "patient/home", name: "Home" },
-    { link: "patient/requests", name: "Requests" },
-    { link: "patient/profile", name: "Profile" },
+  { link: "patient/requests", name: "Requests" }
   ]
 export default function PatientLayout() {
   return (

@@ -4,7 +4,7 @@ const AboutPage = () => {
       {/* 1. Hero Section: Mission Statement */}
       <section className="relative py-20 bg-slate-900 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-red-600/10 blur-[120px] rounded-full transform translate-x-1/2"></div>
-        <div className="container mx-auto px-6 relative z-10 text-center">
+        <div className="container mx-auto px-6 relative z-10 text-center mt-12">
           <span className="text-red-500 font-black tracking-[0.3em] uppercase text-sm">আমাদের লক্ষ্য (Our Mission)</span>
           <h1 className="text-4xl md:text-6xl font-black text-white mt-4 mb-8 leading-tight">
             প্রযুক্তির মাধ্যমে <span className="text-red-500">জীবন বাঁচানোই</span> <br /> আমাদের মূল উদ্দেশ্য।
