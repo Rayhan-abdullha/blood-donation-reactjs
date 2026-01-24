@@ -7,12 +7,11 @@ const menus = [
   ]
 export default function SearchLayout() {
   return (
-    <div className="mx-auto shadow bg-gray-50 rounded shadow">
+    <div className="mx-auto shadow rounded">
       <Navbar
         title="রক্ত বীর"
         menus={menus}
         user="Rayhan"
-        isMainMenu={true}
       />
       <div className="">
         <Outlet />

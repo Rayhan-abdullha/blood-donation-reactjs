@@ -80,7 +80,7 @@ const DonorSearch = () => {
   setFilteredDonors(result);
 }, [searchQuery, userLocation, maxDistance, allDonors]);
   return (
-  <div className="min-h-screen bg-slate-50 py-12 px-4 font-sans mt-18">
+  <div className="min-h-screen py-12 px-4 font-sans mt-18">
     <div className="max-w-6xl mx-auto">
       
       {/* ১. হেডার সেকশন */}

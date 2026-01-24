@@ -21,6 +21,8 @@ import DonorSearch from "./pages/search/Search"
 // import OneSignal from 'react-onesignal';
 // import { useEffect } from "react"
 import SearchLayout from "./pages/search/SearchLayout"
+import DonorDetails from "./pages/donor/DonorDetails"
+import SupportPage from "./components/Support"
 export interface IOneSignalOneSignal {
   // ...other properties...
   isInitialized: boolean;
@@ -99,6 +101,7 @@ export default function App() {
         <Route path="profile" element={<Profile />} />
         <Route path="form" element={<DonorRegistration />} />
       </Route>
+      <Route path="/donor/details/:id" element={<DonorDetails />} />
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<AdminDashboard/>} />
@@ -117,6 +120,8 @@ export default function App() {
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<AboutPage/>} />
       </Route>
+      {/* support */}
+      <Route path="/support" element={<SupportPage />} />
       <Route path="*" element={<NotFound/>} />
     </Routes>
   )

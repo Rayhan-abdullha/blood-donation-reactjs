@@ -1,15 +1,15 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
+import CoffeeModal from "../../components/CoffeeModal"
 const menus = [
-    { link: "home", name: "Home" },
-    { link: "patient/requests", name: "Blood-Request" },
-    { link: "donor/form", name: "Be a Donor" },
-    { link: "donor", name: "Donor" },
-    { link: "patient", name: "Patient" },
-    { link: "admin", name: "Admin" },
-    { link: "auth/login", name: "Login" },
-  ]
+    { link: "home", name: "হোম" },
+    { link: "donor", name: "দানকারী" },
+    { link: "patient", name: "রোগী" },
+    { link: "admin", name: "অ্যাডমিন" },
+    { link: "auth/login", name: "লগইন" },
+];
+
 export default function PublicLayout() {
   return (
     <div className="max-w-auto mx-auto bg-gray-50 rounded shadow">
@@ -23,6 +23,7 @@ export default function PublicLayout() {
       <div className="">
         <Outlet />
       </div>
+      <CoffeeModal/>
       <Footer/>
     </div>
   )

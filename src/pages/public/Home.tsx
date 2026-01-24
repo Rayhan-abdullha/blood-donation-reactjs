@@ -17,13 +17,13 @@ export default function PublicHome() {
             রক্তদাতা এবং রোগীদের মধ্যে তাৎক্ষণিক সংযোগ স্থাপন করাই আমাদের লক্ষ্য। আপনার একটি ছোট উদ্যোগ কারো জীবনে বড় হাসি ফোটাতে পারে।
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/donor/home">
-              <button className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold text-lg shadow-xl shadow-red-600/20 transition-all active:scale-95">
+            <Link to="/donor/form">
+              <button className="cursor-pointer px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold text-lg shadow-xl shadow-red-600/20 transition-all active:scale-95">
                 রক্তদাতা হন (Become a Donor)
               </button>
             </Link>
-            <Link to="/requests">
-              <button className="px-8 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-2xl font-bold text-lg backdrop-blur-md transition-all">
+            <Link to="/donor/requests">
+              <button className="cursor-pointer px-8 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-2xl font-bold text-lg backdrop-blur-md transition-all">
                 রক্তের জন্য আবেদন (Request Blood)
               </button>
             </Link>
@@ -80,7 +80,7 @@ export default function PublicHome() {
               <h2 className="text-3xl font-bold text-slate-800">উপলব্ধ রক্তদাতা (Available Donors)</h2>
               <p className="text-slate-500 mt-2 font-medium italic">আপনার প্রয়োজনীয় গ্রুপের দাতা খুঁজে নিন</p>
             </div>
-            <Link to="/donors" className="text-red-600 font-bold hover:underline hidden md:block">
+            <Link to="/donor/search" className="text-red-600 font-bold hover:underline hidden md:block">
               সবাইকে দেখুন (View All) →
             </Link>
           </div>
@@ -100,15 +100,16 @@ export default function PublicHome() {
                 <div className="flex items-center gap-2 text-slate-400 text-sm mt-1">
                   <span>📍</span> Dhaka, Bangladesh
                 </div>
-                <button className="w-full mt-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-all">
-                  বিবরণ দেখুন (View Details)
-                </button>
+                <Link to={`/donor/details/${i}`} className="block w-full"> 
+                  <button className="w-full mt-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-all">
+                    বিবরণ দেখুন (View Details)
+                  </button>
+                </Link>
               </div>
             ))}
           </div>
         </div>
       </section>
-
     </div>
   )
 }

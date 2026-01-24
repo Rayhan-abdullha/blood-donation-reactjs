@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
+import BuyMeCoffee from "./BuyMeCoffee";
 interface Props {
   title: string;
   menus: Array<{ link: string; name: string }>;
@@ -32,14 +33,12 @@ export default function Navbar({ title, menus, user, isMainMenu = false, searchB
   }, []);
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-      scrolled ? "py-2" : "py-4"
-    }`}>
+    <nav className={`${(!isMainMenu && !scrolled) && 'bg-slate-100'} py-2 fixed top-0 w-full z-50 transition-all duration-500`}>
       <div className={`mx-auto px-4 sm:px-3 max-w-6xl`}>
         <div className={`
           relative flex items-center justify-between transition-all duration-500
           ${scrolled 
-            ? "bg-white/80 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.05)] rounded-2xl border border-white/20 py-2 px-5" 
+            ? "bg-white/80 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.05)] rounded-2xl py-2 px-5" 
             : "bg-transparent py-2 px-0"}
         `}>
           
@@ -51,10 +50,10 @@ export default function Navbar({ title, menus, user, isMainMenu = false, searchB
                 <div className="absolute inset-0 bg-white/20 group-hover:translate-y-full transition-transform duration-500"></div>
               </div>
               <div className="flex flex-col">
-                <span className={`font-black text-lg leading-tight tracking-tighter ${isMainMenu ? "text-white" : "text-red-600"} group-hover:text-red-600 transition-colors uppercase italic`}>
+                <span className={`font-black text-lg leading-tight tracking-tighter ${isMainMenu && !scrolled ? "text-white" : "text-red-600"} group-hover:text-red-600 transition-colors uppercase italic`}>
                   {title}
                 </span>
-                <span className="text-[10px] font-bold text-slate-400 tracking-[0.2em] uppercase leading-none">Save Lives</span>
+                <span className={`${scrolled ? 'text-red-500' : 'text-slate-400'} text-[10px] font-bold  tracking-[0.2em] uppercase leading-none`}>Save Lives</span>
               </div>
             </Link>
           </div>
@@ -76,6 +75,12 @@ export default function Navbar({ title, menus, user, isMainMenu = false, searchB
               </NavLink>
             ))}
           </div>
+          {/* <Link to="/support">
+          <button className="flex items-center gap-2 bg-[#FFDD00] text-black px-5 py-2.5 rounded-2xl font-black text-sm hover:scale-105 transition-all shadow-lg shadow-yellow-100 group">
+            <span className="text-lg group-hover:rotate-12 transition-transform">☕</span>
+            Buy me a coffee
+          </button>
+        </Link> */}
 
           {/* --- RIGHT: SEARCH & PROFILE --- */}
           <div className="flex items-center gap-3">
@@ -136,6 +141,7 @@ export default function Navbar({ title, menus, user, isMainMenu = false, searchB
           </div>
         </div>
       </div>
+      <BuyMeCoffee/>
     </nav>
   );
 }
