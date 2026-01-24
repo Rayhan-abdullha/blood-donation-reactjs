@@ -50,7 +50,7 @@ export default function Navbar({ title, menus, user, isMainMenu = false, searchB
                 <div className="absolute inset-0 bg-white/20 group-hover:translate-y-full transition-transform duration-500"></div>
               </div>
               <div className="flex flex-col">
-                <span className={`font-black text-lg leading-tight tracking-tighter ${isMainMenu && !scrolled ? "text-white" : "text-red-600"} group-hover:text-red-600 transition-colors uppercase italic`}>
+                <span className={`font-black text-lg leading-tight tracking-tighter text-red-600 group-hover:text-red-600 transition-colors uppercase italic`}>
                   {title}
                 </span>
                 <span className={`${scrolled ? 'text-red-500' : 'text-slate-400'} text-[10px] font-bold  tracking-[0.2em] uppercase leading-none`}>Save Lives</span>
@@ -95,7 +95,7 @@ export default function Navbar({ title, menus, user, isMainMenu = false, searchB
               </NavLink>
             )}
 
-            <Link to="/admin/profile" className="flex items-center gap-3 pl-3 border-l border-slate-200">
+            <Link to="/home/profile" className="flex items-center gap-3 pl-3 border-l border-slate-200">
               <div className="hidden lg:block text-right">
                 <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{user}</p>
                 <div className="flex items-center justify-end gap-1">

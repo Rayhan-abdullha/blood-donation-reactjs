@@ -33,10 +33,10 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-sm">প্রয়োজনীয় লিঙ্ক (Links)</h4>
             <ul className="space-y-4 font-medium text-sm">
-              <li><Link to="/search" className="hover:text-red-500 transition-colors">রক্তদাতা খুঁজুন</Link></li>
-              <li><Link to="/requests" className="hover:text-red-500 transition-colors">রক্তের আবেদন</Link></li>
-              <li><Link to="/register-donor" className="hover:text-red-500 transition-colors">রক্তদাতা হিসেবে যোগ দিন</Link></li>
-              <li><Link to="/about" className="hover:text-red-500 transition-colors">আমাদের সম্পর্কে</Link></li>
+              <li><Link to="donor/search" className="hover:text-red-500 transition-colors">রক্তদাতা খুঁজুন</Link></li>
+              <li><Link to="donor/requests" className="hover:text-red-500 transition-colors">রক্তের আবেদন</Link></li>
+              <li><Link to="donor/form" className="hover:text-red-500 transition-colors">রক্তদাতা হিসেবে যোগ দিন</Link></li>
+              <li><Link to="about/home" className="hover:text-red-500 transition-colors">আমাদের সম্পর্কে</Link></li>
             </ul>
           </div>
 
@@ -46,11 +46,11 @@ const Footer = () => {
             <ul className="space-y-4 text-sm">
               <li className="flex items-center gap-3">
                 <span className="text-red-500">📞</span> 
-                <span>+৮৮০ ১২৩৪-৫৬৭৮৯০</span>
+                <span>+8801798716196</span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-red-500">✉️</span> 
-                <span>help@bloodnetwork.com</span>
+                <span>roktobeer@gmail.com</span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="text-red-500">📍</span> 
@@ -75,7 +75,7 @@ const Footer = () => {
         {/* Divider & Copyright */}
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-slate-500 font-medium">
-            © {currentYear} Blood Network. All Rights Reserved.
+            © {currentYear} রক্ত বীর. All Rights Reserved.
           </p>
           <div className="flex gap-6 text-xs text-slate-500 font-bold uppercase tracking-widest">
             <a href="#" className="hover:text-white transition-colors">Privacy</a>

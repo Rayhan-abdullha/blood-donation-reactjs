@@ -16,8 +16,8 @@ function PaymentMethod({ name, number, color }: { name: string, number: string, 
         <p className="font-bold text-lg tracking-tight">{number}</p>
       </div>
       <button 
-              onClick={handleCopy}
-              className={`bg-white/50 px-3 py-1.5 ${copied && 'text-black'} rounded-xl text-xs font-bold hover:bg-white transition-all shadow-sm cursor-pointer`}
+        onClick={handleCopy}
+        className={`bg-white/50 px-3 py-1.5 ${copied && 'text-black'} rounded-xl text-xs font-bold hover:bg-white transition-all shadow-sm cursor-pointer`}
       >
         {copied ? "Copied" : "Copy"}
       </button>

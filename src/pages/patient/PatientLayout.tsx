@@ -2,9 +2,9 @@ import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const menus = [
-    { link: "patient/home", name: "Home" },
-  { link: "patient/requests", name: "Requests" }
-  ]
+    { link: "patient/home", name: "হোম" },
+  { link: "patient/requests", name: "রক্তের আবেদন" }
+]
 export default function PatientLayout() {
   return (
     <div className="mx-auto rounded shadow">

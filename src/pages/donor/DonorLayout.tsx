@@ -2,10 +2,10 @@ import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const menus = [
-    { link: "donor/home", name: "Home" },
-    { link: "donor/requests", name: "Requests" },
-    { link: "donor/profile", name: "Profile" },
-  ]
+    { link: "donor/home", name: "হোম" },
+    { link: "donor/requests", name: "রক্তের আবেদন" }
+]
+
 export default function DonorLayout() {
   return (
     <div className="mx-auto rounded shadow">

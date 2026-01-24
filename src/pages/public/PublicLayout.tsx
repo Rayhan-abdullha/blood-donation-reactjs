@@ -7,6 +7,7 @@ const menus = [
     { link: "donor", name: "দানকারী" },
     { link: "patient", name: "রোগী" },
     { link: "admin", name: "অ্যাডমিন" },
+    { link: "about", name: "আমাদের সম্পর্কে" },
     { link: "auth/login", name: "লগইন" },
 ];
 

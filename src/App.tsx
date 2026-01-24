@@ -1,9 +1,7 @@
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate, useLocation } from "react-router-dom"
 import PublicHome from "./pages/public/Home"
 import DonorLayout from "./pages/donor/DonorLayout"
 import Requests from "./pages/patient/CreateRequest"
-import History from "./pages/donor/History"
-import Profile from "./pages/donor/Profile"
 
 import AdminLayout from "./pages/admin/AdminLayout"
 import PatientLayout from "./pages/patient/PatientLayout"
@@ -25,6 +23,8 @@ import DonorDetails from "./pages/donor/DonorDetails"
 
 import ImageUpload from "./components/ImgUpload"
 import SupportPage from "./pages/support/Support"
+import { useEffect } from "react"
+import Profile from "./pages/donor/Profile"
 export interface IOneSignalOneSignal {
   // ...other properties...
   isInitialized: boolean;
@@ -80,12 +80,22 @@ export default function App() {
   //   });
 
   // }, []);
+
+    const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth', // smooth scrolling
+    });
+  }, [pathname]); // runs every time the path changes
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<PublicHome />} />
+        <Route path="home/profile" element={ <Profile/>}/>
       </Route>
 
       {/* donor search */}
@@ -93,14 +103,15 @@ export default function App() {
         <Route index path="" element={<DonorSearch />} />
       </Route>
 
+      {/* profile */}
+      <Route />
+
       {/* authentication */}
       <Route path="/auth/login" element={<AuthPage />}></Route>
       <Route path="/donor" element={<DonorLayout />}>
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<DonorDashboard />} />
         <Route path="requests" element={<Requests />} />
-        <Route path="history" element={<History/>} />
-        <Route path="profile" element={<Profile />} />
         <Route path="form" element={<DonorRegistration />} />
       </Route>
       <Route path="/donor/details/:id" element={<DonorDetails />} />
@@ -108,15 +119,11 @@ export default function App() {
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<AdminDashboard/>} />
         <Route path="requests" element={<Requests />} />
-        <Route path="history" element={<History/>} />
-        <Route path="profile" element={<Profile />} />
       </Route>
       <Route path="/patient" element={<PatientLayout />}>
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<PatientDashboard />} />
         <Route path="requests" element={<Requests />} />
-        <Route path="history" element={<History/>} />
-        <Route path="profile" element={<Profile />} />
       </Route>
       <Route path="/about" element={<AboutLayout />}>
         <Route index element={<Navigate to="home" replace />} />

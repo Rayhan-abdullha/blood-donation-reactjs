@@ -2,8 +2,8 @@ import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const menus = [
-    { link: "patient/home", name: "Home" },
-    { link: "patient/requests", name: "Blood-Requests" }
+    { link: "about/home", name: "হোম" },
+    { link: "patient/requests", name: "আমাদের সম্পর্কে" }
   ]
 export default function AboutLayout() {
   return (
