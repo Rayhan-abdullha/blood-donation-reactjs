@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const menus = [
-    { link: "home", name: "হোম" },
+    { link: "donor/search", name: "হোম" },
     { link: "patient/requests", name: "রক্তের আবেদন" }
 ]
 

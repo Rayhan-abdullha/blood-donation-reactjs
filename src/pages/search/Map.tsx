@@ -47,47 +47,40 @@ const MapSection = ({ userLocation, donors }: any) => {
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        
-        {/* ইউজারের নিজের অবস্থান */}
-        {
-
-        }
         <Marker position={[userLocation.latitude, userLocation.longitude]} icon={blueIcon}>
         <Popup>আপনি এখানে</Popup>
         </Marker>
 
         {/* ডোনারদের মার্কার লুপ */}
 
-{donors.map((donor: any) => {
-  const lat = parseFloat(donor.latitude);
-  const lng = parseFloat(donor.longitude);
+      {donors.map((donor: any) => {
+      const lat = parseFloat(donor.latitude);
+      const lng = parseFloat(donor.longitude);
 
-  return (
-    <React.Fragment key={donor.id}>
-      <Marker position={[lat, lng]} icon={redIcon}>
-        <Popup>
-           <strong>{donor.name}</strong> <br/> 
-           দূরত্ব: {donor.distance} কিমি
-        </Popup>
-      </Marker>
+      return (
+        <React.Fragment key={donor.id}>
+          <Marker position={[lat, lng]} icon={redIcon}>
+            <Popup>
+              <strong>{donor.name}</strong> <br/> 
+              দূরত্ব: {donor.distance} কিমি
+            </Popup>
+          </Marker>
 
-      {/* ইউজার থেকে ডোনার পর্যন্ত রেখা */}
-      <Polyline 
-        positions={[
-          [userLocation.latitude, userLocation.longitude], // শুরু: ইউজারের লোকেশন
-          [lat, lng] // শেষ: ডোনারের লোকেশন
-        ]}
-        pathOptions={{ 
-          color: '#ef4444', // লাল রঙ
-          weight: 2, 
-          dashArray: '5, 10', // ড্যাশ লাইন (ডট ডট)
-          opacity: 0.6 
-        }} 
-      />
-    </React.Fragment>
-  );
-})}
-
+          {/* ইউজার থেকে ডোনার পর্যন্ত রেখা */}
+          <Polyline 
+            positions={[
+              [userLocation.latitude, userLocation.longitude], // শুরু: ইউজারের লোকেশন
+              [lat, lng] // শেষ: ডোনারের লোকেশন
+            ]}
+            pathOptions={{ 
+              color: '#ef4444', // লাল রঙ
+              weight: 2, 
+              dashArray: '5, 10', // ড্যাশ লাইন (ডট ডট)
+              opacity: 0.6 
+            }} 
+          />
+        </React.Fragment>);
+      })}
       <SetViewOnClick coords={[userLocation.latitude, userLocation.longitude]} />
       </MapContainer>
     </div>
