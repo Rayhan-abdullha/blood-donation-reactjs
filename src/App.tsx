@@ -22,7 +22,9 @@ import DonorSearch from "./pages/search/Search"
 // import { useEffect } from "react"
 import SearchLayout from "./pages/search/SearchLayout"
 import DonorDetails from "./pages/donor/DonorDetails"
-import SupportPage from "./components/Support"
+
+import ImageUpload from "./components/ImgUpload"
+import SupportPage from "./pages/support/Support"
 export interface IOneSignalOneSignal {
   // ...other properties...
   isInitialized: boolean;
@@ -122,6 +124,9 @@ export default function App() {
       </Route>
       {/* support */}
       <Route path="/support" element={<SupportPage />} />
+
+      {/* upload images */}
+      <Route path="/api/images" element={<ImageUpload/>} />
       <Route path="*" element={<NotFound/>} />
     </Routes>
   )

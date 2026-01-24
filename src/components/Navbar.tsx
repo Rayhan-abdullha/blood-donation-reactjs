@@ -75,12 +75,14 @@ export default function Navbar({ title, menus, user, isMainMenu = false, searchB
               </NavLink>
             ))}
           </div>
-          {/* <Link to="/support">
-          <button className="flex items-center gap-2 bg-[#FFDD00] text-black px-5 py-2.5 rounded-2xl font-black text-sm hover:scale-105 transition-all shadow-lg shadow-yellow-100 group">
+          {
+            (isMainMenu && !scrolled) && <Link to="/support">
+          <button className="flex hidden sm:block items-center cursor-pointer gap-2 bg-[#FFDD00] text-black px-5 py-2 rounded-2xl font-black text-sm hover:scale-105 transition-all shadow-lg shadow-yellow-100 group">
             <span className="text-lg group-hover:rotate-12 transition-transform">☕</span>
             Buy me a coffee
           </button>
-        </Link> */}
+        </Link>
+          }
 
           {/* --- RIGHT: SEARCH & PROFILE --- */}
           <div className="flex items-center gap-3">
