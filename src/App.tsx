@@ -24,7 +24,8 @@ import DonorDetails from "./pages/donor/DonorDetails"
 import ImageUpload from "./components/ImgUpload"
 import SupportPage from "./pages/support/Support"
 import { useEffect } from "react"
-import Profile from "./pages/donor/Profile"
+import Profile from "./components/Profile"
+import { ProtectedRoute } from "./components/ProtectedRoute"
 export interface IOneSignalOneSignal {
   // ...other properties...
   isInitialized: boolean;
@@ -95,7 +96,7 @@ export default function App() {
       <Route path="/" element={<PublicLayout />}>
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<PublicHome />} />
-        <Route path="home/profile" element={ <Profile/>}/>
+        <Route path="home/profile" element={ <ProtectedRoute><Profile/></ProtectedRoute>}/>
       </Route>
 
       {/* donor search */}
@@ -115,14 +116,24 @@ export default function App() {
         <Route path="form" element={<DonorRegistration />} />
       </Route>
       <Route path="/donor/details/:id" element={<DonorDetails />} />
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<Navigate to="home" replace />} />
-        <Route path="home" element={<AdminDashboard/>} />
+
+      {/* admin route */}
+      <Route path="/admin" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminLayout />
+          </ProtectedRoute>}>
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="requests" element={<Requests />} />
       </Route>
-      <Route path="/patient" element={<PatientLayout />}>
-        <Route index element={<Navigate to="home" replace />} />
-        <Route path="home" element={<PatientDashboard />} />
+      {/* patient route */}
+      <Route path="/user" element={
+        <ProtectedRoute>
+          <PatientLayout />
+        </ProtectedRoute>
+      }>
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<PatientDashboard />} />
         <Route path="requests" element={<Requests />} />
       </Route>
       <Route path="/about" element={<AboutLayout />}>

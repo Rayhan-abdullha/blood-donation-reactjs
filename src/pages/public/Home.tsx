@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom"
 
+import { Link } from "react-router-dom"
 export default function PublicHome() {
   return (
     <div className="space-y-16 pb-20">

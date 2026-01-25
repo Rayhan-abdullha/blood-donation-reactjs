@@ -2,8 +2,8 @@ import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const menus = [
-    { link: "donor/search", name: "হোম" },
-    { link: "patient/requests", name: "রক্তের আবেদন" }
+    { link: "donor/search", name: "রক্ত খুঁজুন" },
+    { link: "user/requests", name: "রক্তের আবেদন" }
 ]
 
 export default function SearchLayout() {
@@ -11,8 +11,7 @@ export default function SearchLayout() {
     <div className="mx-auto shadow rounded">
       <Navbar
         title="রক্ত বীর"
-        menus={menus}
-        user="Rayhan"
+        othersMenu={menus}
       />
       <div className="">
         <Outlet />
