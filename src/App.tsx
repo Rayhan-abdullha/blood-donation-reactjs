@@ -1,12 +1,10 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom"
 import PublicHome from "./pages/public/Home"
 import DonorLayout from "./pages/donor/DonorLayout"
-import Requests from "./pages/patient/CreateRequest"
+import Requests from "./pages/user/CreateRequest"
 
 import AdminLayout from "./pages/admin/AdminLayout"
-import PatientLayout from "./pages/patient/PatientLayout"
 import AdminDashboard from "./pages/admin/AdminDashboard"
-import PatientDashboard from "./pages/patient/PatientDashboard"
 import PublicLayout from "./pages/public/PublicLayout"
 import DonorDashboard from "./pages/donor/DonorDashboard"
 import AuthPage from "./pages/auth/Auth"
@@ -26,6 +24,11 @@ import SupportPage from "./pages/support/Support"
 import { useEffect } from "react"
 import Profile from "./components/Profile"
 import { ProtectedRoute } from "./components/ProtectedRoute"
+import UserLayout from "./pages/user/UserLayout"
+import UserDashboard from "./pages/user/UserDashboard"
+import BloodLayout from "./pages/blood-requests/AvailableDonor"
+import AllRequests from "./pages/blood-requests/BloodLayout"
+import PublicRequests from "./pages/blood-requests/AllBloodRequest"
 export interface IOneSignalOneSignal {
   // ...other properties...
   isInitialized: boolean;
@@ -109,7 +112,11 @@ export default function App() {
 
       {/* authentication */}
       <Route path="/auth/login" element={<AuthPage />}></Route>
-      <Route path="/donor" element={<DonorLayout />}>
+      <Route path="/donor" element={
+        <ProtectedRoute>
+          <DonorLayout />
+        </ProtectedRoute>
+      }>
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<DonorDashboard />} />
         <Route path="requests" element={<Requests />} />
@@ -126,14 +133,23 @@ export default function App() {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="requests" element={<Requests />} />
       </Route>
+      {/* all blood request */}
+      <Route path="/blood-requests" element={
+        <BloodLayout/>
+      }
+      >
+        <Route index element={<Navigate to="results" replace />} />
+        <Route path="public" element={<PublicRequests/>} />
+        <Route path="results" element={<AllRequests />} />
+      </Route>
       {/* patient route */}
       <Route path="/user" element={
         <ProtectedRoute>
-          <PatientLayout />
+          <UserLayout />
         </ProtectedRoute>
       }>
         <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<PatientDashboard />} />
+        <Route path="dashboard" element={<UserDashboard />} />
         <Route path="requests" element={<Requests />} />
       </Route>
       <Route path="/about" element={<AboutLayout />}>

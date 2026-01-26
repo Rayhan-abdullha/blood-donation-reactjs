@@ -1,33 +1,47 @@
 import { useForm } from "react-hook-form";
+import LoadingSvg from "../../components/LoadingSvg";
+import { useBloodActions } from "../../hooks/useBlood";
+import { useState } from "react";
 
 // ================= TYPES =================
 type BloodGroup = "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
-type Urgency = "Normal" | "Emergency";
+type Urgency = "urgent" | "non-urgent";
 
 type BloodRequestForm = {
-  bloodGroup: BloodGroup;
+  blood_type: BloodGroup;
   hospital: string;
   location: string;
   urgency: Urgency;
   description?: string;
-  bags: number;
+  quantity: number;
 };
 const bloodGroup: BloodGroup[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 export default function Requests() {
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<BloodRequestForm>({
-    defaultValues: { urgency: "Normal" } // Set a default
+    defaultValues: { urgency: "non-urgent" } // Set a default
   });
+  const { createBloodRequest } = useBloodActions()
 
   const urgencyValue = watch("urgency");
 
-  const onSubmit = (data: BloodRequestForm) => {
-    console.log("Blood Request:", data);
+  const onSubmit = async (data: BloodRequestForm) => {
+    data.quantity = Number(data.quantity);
+    setLoading(true);
+    createBloodRequest.mutate(data, {
+      onSuccess: () => {
+        setLoading(false);
+      },
+      onError: () => {
+        setLoading(false);
+      }
+    });
   };
 
   const inputClasses = `
@@ -39,8 +53,8 @@ export default function Requests() {
   `;
 
   return (
-    <div className="flex items-center justify-center bg-[radial-gradient(at_top_right,_var(--tw-gradient-stops))] from-slate-50 via-white to-slate-100 px-4 py-12 mt-10">
-      <div className="rounded-[2.5rem] p-6 relative overflow-hidden">    
+    <div className="max-w-4xl mx-auto bg-[radial-gradient(at_top_right,_var(--tw-gradient-stops))] from-slate-50 via-white to-slate-100 px-5 py-12 mt-12">
+      <div className="rounded-[2.5rem] relative overflow-hidden">    
         <div className="absolute top-0 right-0 -mr-16 -mt-16 w-60 h-60 bg-red-50 rounded-full blur-3xl opacity-50" />
         <div className="text-center mb-10 relative z-10">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-red-50 text-red-600 rounded-3xl mb-4 shadow-inner transform -rotate-3 transition-transform hover:rotate-0">
@@ -61,30 +75,30 @@ export default function Requests() {
           <div className="space-y-1">
             <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">রক্তের গ্রুপ (Group)</label>
             <select
-              {...register("bloodGroup", { required: "রক্তের গ্রুপ প্রয়োজন" })}
+              {...register("blood_type", { required: "রক্তের গ্রুপ প্রয়োজন" })}
               className={`${inputClasses} appearance-none cursor-pointer mt-2`}
             >
-              <option value="">নির্বাচন করুন</option>
+              <option value="">রক্তের গ্রুপ</option>
               {bloodGroup.map(bg => (
                 <option key={bg} value={bg}>{bg}</option>
               ))}
             </select>
-            {errors.bloodGroup && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.bloodGroup.message}</p>}
+            {errors.blood_type && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.blood_type.message}</p>}
           </div>
 
-          {/* Bags */}
+          {/* quantity */}
           <div className="space-y-1">
             <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">ব্যাগের সংখ্যা (Bags)</label>
-            <input
-              type="number"
-              {...register("bags", {
-                required: "প্রয়োজন",
-                min: { value: 1, message: "অন্তত ১ ব্যাগ" },
-              })}
-              placeholder="উদা: ২"
-              className={`${inputClasses} mt-2`}
-            />
-            {errors.bags && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.bags.message}</p>}
+            <select
+              {...register("quantity", { required: "ব্যাগের সংখ্যা প্রয়োজন" })}
+              className={`${inputClasses} appearance-none cursor-pointer mt-2`}
+            >
+              <option value="">ব্যাগের সংখ্যা</option>
+              {[1, 2, 3, 4, 5, 6, 7, 8].map(bg => (
+                <option key={bg} value={bg}>{bg}</option>
+              ))}
+            </select>
+            {errors.quantity && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.quantity.message}</p>}
           </div>
 
           {/* Hospital */}
@@ -117,16 +131,16 @@ export default function Requests() {
             <div className="grid grid-cols-2 gap-2 mt-2">
               <label className={`
                 flex items-center justify-center py-3 rounded-2xl cursor-pointer transition-all border-2 font-bold text-sm
-                ${urgencyValue === 'Normal' ? 'bg-slate-900 text-white border-slate-900 shadow-md' : 'bg-slate-50 text-slate-400 border-transparent hover:bg-slate-100'}
+                ${urgencyValue === 'non-urgent' ? 'bg-slate-900 text-white border-slate-900 shadow-md' : 'bg-slate-50 text-slate-400 border-transparent hover:bg-slate-100'}
               `}>
                 <input type="radio" value="Normal" {...register("urgency")} className="hidden" />
                 সাধারণ (Normal)
               </label>
               <label className={`
                 flex items-center justify-center py-3 rounded-2xl cursor-pointer transition-all border-2 font-bold text-sm
-                ${urgencyValue === 'Emergency' ? 'bg-red-600 text-white border-red-600 shadow-md shadow-red-200' : 'bg-red-50 text-red-400 border-transparent hover:bg-red-100'}
+                ${urgencyValue === 'urgent' ? 'bg-red-600 text-white border-red-600 shadow-md shadow-red-200' : 'bg-red-50 text-red-400 border-transparent hover:bg-red-100'}
               `}>
-                <input type="radio" value="Emergency" {...register("urgency")} className="hidden" />
+                <input type="radio" value="urgent" {...register("urgency")} className="hidden" />
                 জরুরি (Emergency)
               </label>
             </div>
@@ -147,9 +161,11 @@ export default function Requests() {
           <div className="md:col-span-2 pt-2">
             <button
               type="submit"
-              className="w-full bg-red-600 text-white py-3 rounded-[2rem] font-black text-md hover:bg-red-700 active:scale-[0.98] transition-all shadow-[0_20px_40px_-10px_rgba(220,38,38,0.3)]"
+              className="cursor-pointer w-full bg-red-600 text-white py-3 rounded-[2rem] font-black text-md hover:bg-red-700 active:scale-[0.98] transition-all shadow-[0_20px_40px_-10px_rgba(220,38,38,0.3)]"
             >
-              আবেদন জমা দিন (Submit)
+              <div className="flex justify-center">
+                {loading ? <span className="flex gap-3 item-center"><LoadingSvg/>অনুরোধ করা হচ্ছে...</span> : <span>অনুরোধ করুন</span>}
+              </div>
             </button>
             <div className="flex items-center justify-center gap-2 mt-6 opacity-40">
               <div className="h-px w-8 bg-slate-300"></div>

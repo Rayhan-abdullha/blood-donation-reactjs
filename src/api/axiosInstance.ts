@@ -8,7 +8,6 @@ const api = axios.create({
 // রিকোয়েস্ট পাঠানোর আগে অটোমেটিক টোকেন যোগ করবে
 api.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token;
-  console.log(token)
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

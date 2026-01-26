@@ -83,7 +83,7 @@ export default function SupportPage() {
                 <button key={val} onClick={() => setAmount(val)} className={`py-4 rounded-2xl font-black transition-all ${amount === val ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-400"}`}>৳{val}</button>
               ))}
             </div>
-            <PaymentMethod name="nagad" number="01798716196" color="bg-pink-50 text-pink-600" />
+            <PaymentMethod name="bkash" number="01798716196" color="bg-pink-50 text-pink-600" />
             
             <div className="space-y-4 text-left border-t border-slate-100 pt-8">
                <input type="text" placeholder="আপনার ফোন নম্বর" className="w-full px-5 py-3 rounded-2xl bg-slate-50 border border-slate-100 outline-none" value={senderNumber} onChange={(e) => setSenderNumber(e.target.value)}/>

@@ -4,14 +4,14 @@ import Footer from "../../components/Footer"
 const othersMenu = [
   { link: "user/requests", name: "রক্তের আবেদন" }
 ]
-export default function PatientLayout() {
+export default function UserLayout() {
   return (
     <div className="mx-auto rounded shadow">
         <Navbar
         title="রক্ত বীর"
         othersMenu={othersMenu}
         />
-      <div className="p-6">
+      <div className="">
         <Outlet />
       </div>
       <Footer/>

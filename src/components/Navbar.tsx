@@ -50,29 +50,28 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
           {/* --- LEFT: BRAND --- */}
           <Link to="/" className="group flex items-center gap-3">
             {/* --- BRAND LOGO --- */}
-<div className="relative group flex items-center justify-center">
-  {/* Hover outer glow ring */}
-  <div className="absolute inset-0 bg-red-200 rounded-2xl scale-0 group-hover:scale-125 transition-transform duration-500 opacity-40 blur-sm"></div>
+            <div className="relative group flex items-center justify-center">
+              {/* Hover outer glow ring */}
+              <div className="absolute inset-0 bg-red-200 rounded-2xl scale-0 group-hover:scale-125 transition-transform duration-500 opacity-40 blur-sm"></div>
 
-  <div className="relative w-11 h-11 bg-white rounded-2xl shadow-[0_10px_25px_-5px_rgba(220,38,38,0.18)] flex items-center justify-center border border-slate-100 group-hover:border-red-200 transition-all duration-300">
-    
-    {/* Inner gradient box */}
-    <div className="w-8 h-8 bg-gradient-to-tr from-red-600 to-rose-500 rounded-xl flex items-center justify-center shadow-inner group-hover:rotate-6 transition-transform duration-500">
-      
-      {/* Heart SVG */}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        className="w-4 h-4 text-white drop-shadow"
-        fill="currentColor"
-      >
-        <path d="M12 21s-6.7-4.35-9.33-7.4C.87 11.3 1.4 7.9 4.2 6.4c2-1.1 4.3-.5 5.8 1.1 1.5-1.6 3.8-2.2 5.8-1.1 2.8 1.5 3.3 4.9 1.53 7.2C18.7 16.65 12 21 12 21z" />
-      </svg>
+              <div className="relative w-11 h-11 bg-white rounded-2xl shadow-[0_10px_25px_-5px_rgba(220,38,38,0.18)] flex items-center justify-center border border-slate-100 group-hover:border-red-200 transition-all duration-300">
+                
+                {/* Inner gradient box */}
+                <div className="w-8 h-8 bg-gradient-to-tr from-red-600 to-rose-500 rounded-xl flex items-center justify-center shadow-inner group-hover:rotate-6 transition-transform duration-500">
+                  
+                  {/* Heart SVG */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="w-4 h-4 text-white drop-shadow"
+                    fill="currentColor"
+                  >
+                    <path d="M12 21s-6.7-4.35-9.33-7.4C.87 11.3 1.4 7.9 4.2 6.4c2-1.1 4.3-.5 5.8 1.1 1.5-1.6 3.8-2.2 5.8-1.1 2.8 1.5 3.3 4.9 1.53 7.2C18.7 16.65 12 21 12 21z" />
+                  </svg>
 
-    </div>
-  </div>
-</div>
-
+                </div>
+              </div>
+            </div>
             <div className="flex flex-col mt-1">
               <span className="font-black text-lg text-red-600 uppercase italic leading-none">{title}</span>
               <span className={`${scrolled ? "text-red-500" : "text-slate-400"} text-[10px] font-bold tracking-[0.2em] uppercase`}>Save Lives</span>
@@ -80,7 +79,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
           </Link>
 
           {/* --- CENTER: DESKTOP MENU --- */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-3">
             {allMenus.map((item, id) => (
               <NavLinkMenu key={id} item={item} />
             ))}
@@ -100,12 +99,15 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
             )}
 
             {token && (
-              <Link to="/home/profile" className="hidden sm:flex items-center gap-3 pl-3 border-l border-slate-200">
+              <Link to="/home/profile" className="hidden sm:flex items-center gap-3 pl-3 border-l border-slate-200 ">
                 <div className="text-right">
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">{user?.name}</p>
                   <p className="text-[9px] text-green-500 font-bold uppercase">Online</p>
                 </div>
-                <img src="https://i.pravatar.cc/150" className="w-9 h-9 rounded-xl border-2 border-white object-cover" alt="user" />
+                  <div className="relative group flex items-center justify-center">
+                <div className="absolute inset-0 bg-red-200 rounded-2xl scale-0 group-hover:scale-125 transition-transform duration-500 opacity-40 blur-sm"></div>
+                    <img src="https://i.pravatar.cc/150" className="w-9 h-9 rounded-xl border-2 border-white object-cover" alt="user" />
+                  </div>
               </Link>
             )}
 
@@ -178,7 +180,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
                 <NavLink 
                   key={id} to={`/${item.link.toLowerCase()}`} 
                   onClick={() => setIsOpen(false)}
-                  className={({isActive}) => `flex items-center px-6 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] transition-all ${isActive ? 'bg-red-600 text-white shadow-lg shadow-red-100' : 'text-slate-500 hover:bg-slate-50'}`}
+                  className={({isActive}) => `flex items-center px-6 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] transition-all ${isActive ? 'bg-red-600 text-white shadow-lg shadow-red-100' : 'text-slate-500 hover:bg-slate-200'}`}
                 >
                   {item.name}
                 </NavLink>
@@ -186,7 +188,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
               
               {token && dashboardMenu.map((item, id) => (
                 user?.role === item.link && (
-                  <NavLink key={id} to={`/${item.link}`} onClick={() => setIsOpen(false)} className="flex items-center px-6 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 hover:bg-slate-50">
+                  <NavLink key={id} to={`/${item.link}`} onClick={() => setIsOpen(false)} className="flex items-center px-6 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 hover:bg-slate-200">
                     {item.name}
                   </NavLink>
                 )

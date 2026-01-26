@@ -1,6 +1,6 @@
 import Badge from "../../components/Badge"; // Assuming these support the new styles
 
-export default function PatientDashboard() {
+export default function UserDashboard() {
   return (
     <div className="max-w-6xl mx-auto mt-8 px-4 sm:px-2 pb-12 font-sans mt-[100px]">
       {/* Header Section */}

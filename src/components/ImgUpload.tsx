@@ -1,95 +1,93 @@
+import axios from "axios";
 import { useState, type ChangeEvent } from "react";
-// TODO
-interface UploadResponse {
-  data?: {
-    url: string;
-    delete_url: string;
-  };
-}
+import { apiKey } from "../config/config";
 
 export default function ImageUpload() {
   const [file, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [deleteUrl, setDeleteUrl] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) setFile(e.target.files[0]);
+    if (e.target.files?.[0]) {
+      setFile(e.target.files[0]);
+      setError("");
+    }
   };
 
   const upload = async () => {
-    if (!file) return alert("Select an image");
+    if (!file) {
+      setError("Please select an image first");
+      return;
+    }
+
     setLoading(true);
+    setError("");
 
     const formData = new FormData();
     formData.append("image", file);
 
+
+
     try {
-      const res = await fetch("http://localhost:4000/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${apiKey}`,
+        formData
+      );
 
-      if (!res.ok) {
-        const text = await res.text();
-        console.error("Server error:", text);
-        throw new Error("Upload failed");
-      }
-
-        const data: UploadResponse = await res.json();
-        console.log(data)
-
-      if (!data.data?.url || !data.data?.delete_url)
-        throw new Error("Invalid response");
-
-      setImageUrl(data.data.url);
-      setDeleteUrl(data.data.delete_url);
-
-    //   // Optionally save to backend DB
-    //   await fetch("http://localhost:4000/api/images", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       imageUrl: data.data.url,
-    //       deleteUrl: data.data.delete_url,
-    //     }),
-    //   });
+      setImageUrl(res.data.data.url);
     } catch (err) {
-      console.log(err)
-      alert("Upload failed");
+      console.error(err);
+      setError("Image upload failed");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async () => {
-    if (!deleteUrl) return;
-    try {
-      await fetch("http://localhost:4000/api/images/delete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deleteUrl }),
-      });
-      alert("Image deleted");
-      setImageUrl("");
-      setDeleteUrl("");
-    } catch (err) {
-      console.error(err);
-      alert("Delete failed");
-    }
-  };
-
   return (
-    <div style={{ maxWidth: 400 }}>
-      <input type="file" accept="image/*" onChange={handleChange} />
-      <button onClick={upload} disabled={loading}>
-        {loading ? "Uploading..." : "Upload"}
+    <div className="max-w-sm mx-auto p-6 rounded-2xl bg-white shadow-lg border border-slate-200">
+      <h3 className="text-lg font-black text-slate-800 mb-4">
+        Upload Profile Image
+      </h3>
+
+      {/* File Input */}
+      <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-slate-300 rounded-xl cursor-pointer hover:bg-slate-50 transition">
+        <span className="text-sm font-semibold text-slate-500">
+          Click to select image
+        </span>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleChange}
+          className="hidden"
+        />
+      </label>
+
+      {/* Error */}
+      {error && (
+        <p className="text-red-500 text-xs font-bold mt-2">{error}</p>
+      )}
+
+      {/* Upload Button */}
+      <button
+        onClick={upload}
+        disabled={loading}
+        className="mt-4 w-full py-2.5 rounded-xl font-bold text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 transition"
+      >
+        {loading ? "Uploading..." : "Upload Image"}
       </button>
 
+      {/* Preview */}
       {imageUrl && (
-        <div>
-          <img src={imageUrl} alt="uploaded" width="100%" />
-          <button onClick={handleDelete}>Delete</button>
+        <div className="mt-6">
+          <img
+            src={imageUrl}
+            alt="uploaded"
+            className="rounded-xl shadow-md w-full object-cover"
+          />
+          <p className="text-xs text-slate-500 mt-2 break-all">
+            {imageUrl}
+          </p>
         </div>
       )}
     </div>

@@ -2,8 +2,10 @@ import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const menus = [
-    { link: "donor/requests", name: "রক্তের আবেদন" }
+  // be donro wirte bangla
+    { link: "donor/form", name: "রক্তদাতা ফর্ম" }
 ]
+
 
 export default function DonorLayout() {
   return (
