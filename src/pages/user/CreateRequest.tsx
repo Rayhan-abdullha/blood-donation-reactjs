@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import LoadingSvg from "../../components/LoadingSvg";
-import { useBloodActions } from "../../hooks/useBlood";
-import { use, useState } from "react";
+// import { useBloodActions } from "../../hooks/useBlood";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // ================= TYPES =================
@@ -19,7 +19,7 @@ type BloodRequestForm = {
 const bloodGroup: BloodGroup[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 export default function Requests() {
-  const [loading, setLoading] = useState(false);
+  const [loading, _setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -28,14 +28,16 @@ export default function Requests() {
   } = useForm<BloodRequestForm>({
     defaultValues: { urgency: "non-urgent" } // Set a default
   });
-  const { createBloodRequest } = useBloodActions()
+  // const { createBloodRequest } = useBloodActions()
 
   const urgencyValue = watch("urgency");
   const navigate = useNavigate();
 
   const onSubmit = async (data: BloodRequestForm) => {
     console.log(data)
-        navigate("/blood/request/results");
+
+    navigate("/blood/request/results");
+
 
     // data.quantity = Number(data.quantity);
     // setLoading(true);
