@@ -1,102 +1,128 @@
-import { useParams, Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Phone, MapPin, X, ShieldCheck, Mail, Calendar, Droplets, Clock, CheckCircle2, AlertCircle } from "lucide-react";
 
-export default function DonorDetails() {
-  const { id } = useParams();
-  console.log(id)
+export default function DonorDetailsModal({ donor, isOpen, onClose }: any) {
+  if (!donor) return null;
+
+  // Calculate days since last donation
+  // const lastDonatedDate = donor.last_donation_date ? new Date(donor.last_donation_date) : null;
+  // const diffDays = lastDonatedDate
+  //   ? Math.ceil(Math.abs(new Date().getTime() - lastDonatedDate.getTime()) / (1000 * 60 * 60 * 24))
+  //   : "N/A";
+  const diffDays = 120
+
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-6">
-      <div className="max-w-3xl mx-auto">
-        {/* Back Button */}
-        <Link to="/" className="inline-flex items-center text-slate-500 hover:text-red-600 font-bold mb-8 transition-colors">
-          ← ফিরে যান (Back)
-        </Link>
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* Backdrop Animation */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+          />
 
-        <div className="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-100">
-          
-          {/* ১. কভার এবং প্রোফাইল সেকশন */}
-          <div className="relative h-44 bg-gradient-to-r from-red-600 to-rose-600">
-            {/* প্রোফাইল পিকচার - কভারের ওপর ভাসমান */}
-            <div className="absolute -bottom-12 left-8 p-1 bg-white rounded-[2rem] shadow-lg">
-              <img 
-                src="https://i.pravatar.cc/300" 
-                alt="Donor" 
-                className="w-28 h-28 rounded-[1.8rem] object-cover"
-              />
-              {/* অনলাইন ইন্ডিকেটর */}
-              <div className="absolute bottom-1 right-1 w-6 h-6 bg-green-500 border-4 border-white rounded-full"></div>
-            </div>
-          </div>
-
-          <div className="px-8 pb-10 relative">
-            {/* ব্লাড গ্রুপ ব্যাজ - ডান পাশে সরিয়ে আনা হয়েছে */}
-            <div className="absolute -top-12 right-8 w-24 h-24 bg-white rounded-3xl shadow-lg flex items-center justify-center border-4 border-slate-50">
-               <span className="text-3xl font-black text-red-600">A+</span>
-            </div>
-
-            {/* নাম এবং স্ট্যাটাস */}
-            <div className="pt-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div>
-                <h1 className="text-3xl font-black text-slate-800">John Doe</h1>
-                <p className="text-slate-400 flex items-center gap-1 font-medium">
-                   <span className="text-red-500">📍</span> Dhaka, Bangladesh
-                </p>
-              </div>
-              <div className="flex items-center gap-2 bg-green-50 text-green-600 px-4 py-2 rounded-2xl border border-green-100">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-ping"></span>
-                <span className="text-sm font-bold uppercase tracking-wider">রক্তদানের জন্য প্রস্তুত</span>
-              </div>
+          {/* Modal Content Animation */}
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            transition={{ type: "spring", duration: 0.5, bounce: 0.3 }}
+            className="relative bg-white w-full max-w-lg rounded-[3rem] shadow-2xl overflow-hidden border border-white/20"
+          >
+            {/* Header Banner */}
+            <div className="relative h-36 bg-gradient-to-br from-red-600 to-rose-500">
+              <button 
+                onClick={onClose}
+                className="cursor-pointer absolute top-6 right-6 p-2.5 bg-white/20 hover:bg-white/40 backdrop-blur-lg rounded-full text-white transition-all z-20"
+              >
+                <X size={20} />
+              </button>
             </div>
 
-            <hr className="my-8 border-slate-100" />
-
-            {/* ৩. আগের সেই বিস্তারিত তথ্য (যা আপনি রাখতে চেয়েছেন) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <h3 className="text-lg font-bold text-slate-800 border-l-4 border-red-500 pl-3">যোগাযোগের তথ্য</h3>
-                <div className="space-y-4">
-                  <InfoItem icon="📞" label="ফোন নম্বর" value="+880 17XX XXXXXX" />
-                  <InfoItem icon="✉️" label="ইমেইল" value="donor@email.com" />
-                  <InfoItem icon="🎂" label="বয়স" value="26 বছর" />
+            {/* Profile Info */}
+            <div className="relative px-8 pb-10">
+              <div className="absolute -top-16 left-8 flex items-end gap-4">
+                <div className="relative">
+                  <img 
+                    src={donor.pic || `https://ui-avatars.com/api/?name=${donor.name}&background=random`} 
+                    className="w-32 h-32 rounded-[2.5rem] border-[6px] border-white object-cover shadow-2xl"
+                    alt=""
+                  />
+                  {donor.is_verified && (
+                    <div className="absolute -bottom-1 -right-1 bg-blue-600 text-white p-2 rounded-2xl border-4 border-white shadow-lg">
+                      <ShieldCheck size={20} fill="currentColor" />
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <h3 className="text-lg font-bold text-slate-800 border-l-4 border-blue-500 pl-3">রক্তদানের ইতিহাস</h3>
-                <div className="space-y-4">
-                  <InfoItem icon="🗓️" label="শেষ রক্তদান" value="১২ ডিসেম্বর, ২০২৫" />
-                  <InfoItem icon="💉" label="মোট দান" value="০৫ বার" />
-                  <InfoItem icon="🏥" label="পেশা" value="ছাত্র" />
+              <div className="pt-20 flex justify-between items-start">
+                <div>
+                  <h2 className="text-3xl font-black text-slate-800 tracking-tight">{donor.name}</h2>
+                  <p className="flex items-center gap-1.5 text-slate-500 font-semibold mt-1">
+                    <MapPin size={16} className="text-red-500" /> {donor.address}
+                  </p>
+                </div>
+                <div className="bg-red-600 px-5 py-3 rounded-3xl text-center shadow-lg shadow-red-200">
+                  <p className="text-[10px] font-black text-red-100 uppercase tracking-widest">Group</p>
+                  <p className="text-2xl font-black text-white">{donor.blood_group}</p>
                 </div>
               </div>
-            </div>
 
-            {/* Call to Action */}
-            <div className="mt-12 flex gap-4">
-              <button className="flex-1 bg-red-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-red-700 shadow-lg shadow-red-200 transition-all">
-                সরাসরি কল করুন
-              </button>
-              <button className="w-14 h-14 bg-slate-100 flex items-center justify-center rounded-2xl hover:bg-slate-200 transition-all text-2xl">
-                💬
-              </button>
+              {/* Health & Status Badges */}
+              <div className="flex gap-3 mt-6">
+                <div className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-2xl border font-bold text-xs uppercase tracking-wider ${donor.is_available ? 'bg-green-50 border-green-100 text-green-600' : 'bg-slate-50 border-slate-100 text-slate-400'}`}>
+                  <div className={`w-2 h-2 rounded-full ${donor.is_available ? 'bg-green-500 animate-pulse' : 'bg-slate-300'}`} />
+                  {donor.is_available ? "Available" : "Away"}
+                </div>
+                <div className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-2xl border font-bold text-xs uppercase tracking-wider ${donor.is_verified ? 'bg-blue-50 border-blue-100 text-blue-600' : 'bg-orange-50 border-orange-100 text-orange-600'}`}>
+                  {donor.is_verified ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
+                  {donor.is_verified ? "Verified" : "Pending"}
+                </div>
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-3 gap-3 my-6">
+                 <div className="bg-slate-50 rounded-2xl p-3 text-center">
+                    <Droplets size={18} className="text-red-500 mx-auto mb-1" />
+                    <p className="text-lg font-black text-slate-800">{donor.donate_count || 0}</p>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase">Donations</p>
+                 </div>
+                 <div className="bg-slate-50 rounded-2xl p-3 text-center">
+                    <Clock size={18} className="text-blue-500 mx-auto mb-1" />
+                    <p className="text-lg font-black text-slate-800">{diffDays}</p>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase">Days Ago</p>
+                 </div>
+                 <div className="bg-slate-50 rounded-2xl p-3 text-center">
+                    <Calendar size={18} className="text-purple-500 mx-auto mb-1" />
+                    <p className="text-lg font-black text-slate-800">{donor.age || 24}</p>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase">Age</p>
+                 </div>
+              </div>
+
+              {/* Contact Info */}
+              <div className="p-4 bg-slate-50 rounded-3xl border border-slate-100 mb-8 space-y-3">
+                <div className="flex items-center gap-3">
+                  <Mail size={16} className="text-slate-400" />
+                  <span className="text-sm font-bold text-slate-600">{donor.email}</span>
+                </div>
+              </div>
+
+              {/* Call Action */}
+              <a 
+                href={`tel:${donor.phone}`}
+                className="w-full flex items-center justify-center gap-3 py-5 bg-slate-900 hover:bg-black text-white rounded-[2rem] font-bold transition-all shadow-xl shadow-slate-200 active:scale-[0.98]"
+              >
+                <Phone size={20} />
+                Call Now ({donor.phone})
+              </a>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-// Helper Component (আগের ডিজাইন অনুযায়ী)
-function InfoItem({ icon, label, value }: { icon: string, label: string, value: string }) {
-  return (
-    <div className="flex items-center gap-4 group">
-      <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-xl group-hover:bg-red-50 transition-colors">
-        {icon}
-      </div>
-      <div>
-        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{label}</p>
-        <p className="text-slate-700 font-bold">{value}</p>
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   );
 }

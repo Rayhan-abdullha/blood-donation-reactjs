@@ -17,7 +17,6 @@ import DonorSearch from "./pages/search/Search"
 // import OneSignal from 'react-onesignal';
 // import { useEffect } from "react"
 import SearchLayout from "./pages/search/SearchLayout"
-import DonorDetails from "./pages/donor/DonorDetails"
 
 import ImageUpload from "./components/ImgUpload"
 import SupportPage from "./pages/support/Support"
@@ -28,7 +27,6 @@ import UserLayout from "./pages/user/UserLayout"
 import UserDashboard from "./pages/user/UserDashboard"
 import BloodLayout from "./pages/blood-requests/BloodLayout"
 import PublicRequests from "./pages/blood-requests/AllBloodRequest"
-import AllAvailableDonors from "./pages/blood-requests/AllDonors"
 export interface IOneSignalOneSignal {
   // ...other properties...
   isInitialized: boolean;
@@ -121,7 +119,6 @@ export default function App() {
         <Route path="home" element={<DonorDashboard />} />
         <Route path="become-donor" element={<DonorRegistration />} />
       </Route>
-      <Route path="/donor/details/:id" element={<DonorDetails />} />
 
       {/* admin route */}
       <Route path="/admin" element={
@@ -139,7 +136,6 @@ export default function App() {
         <Route index element={<Navigate to="request" replace />} />
         {/* private */}
           <Route path="request" element={<ProtectedRoute><Requests /></ProtectedRoute>}/>
-            <Route path="request/results" element={<ProtectedRoute><AllAvailableDonors /></ProtectedRoute>} />
         <Route path="public-requests" element={<PublicRequests/>} />
       </Route>
 

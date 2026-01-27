@@ -1,190 +1,176 @@
 import { useForm } from "react-hook-form";
 import LoadingSvg from "../../components/LoadingSvg";
-// import { useBloodActions } from "../../hooks/useBlood";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { Droplets, Hospital, MapPin, MessageSquare, ChevronDown, Sparkles, Phone } from "lucide-react";
+import { useBloodActions } from "../../hooks/useBlood";
+import RequestResultsModal from "../blood-requests/AllDonors";
 
-// ================= TYPES =================
+// ... Types and Constants remain the same ...
 type BloodGroup = "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
 type Urgency = "urgent" | "non-urgent";
-
 type BloodRequestForm = {
   blood_type: BloodGroup;
   hospital: string;
   location: string;
+  phone: string;
   urgency: Urgency;
   description?: string;
   quantity: number;
 };
-const bloodGroup: BloodGroup[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+const bloodGroups: BloodGroup[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+const quantities = [1, 2, 3, 4, 5, 6];
 
 export default function Requests() {
-  const [loading, _setLoading] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<BloodRequestForm>({
-    defaultValues: { urgency: "non-urgent" } // Set a default
-  });
-  // const { createBloodRequest } = useBloodActions()
+  const [activePicker, setActivePicker] = useState<"blood" | "quantity" | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [foundDonors, setFoundDonors] = useState<any[]>([]); // To store mock or real donors
 
-  const urgencyValue = watch("urgency");
+  const { createBloodRequest } = useBloodActions();
   const navigate = useNavigate();
 
-  const onSubmit = async (data: BloodRequestForm) => {
-    console.log(data)
+  const { register, handleSubmit, watch, setValue, trigger, formState: { errors } } = useForm<BloodRequestForm>({
+    defaultValues: { urgency: "non-urgent" }
+  });
 
-    navigate("/blood/request/results");
+  const loading = createBloodRequest.isPending;
+  const urgencyValue = watch("urgency");
+  const selectedBloodType = watch("blood_type");
+  const selectedQuantity = watch("quantity");
 
+  const onSubmit = async (data: BloodRequestForm ) => {
+    createBloodRequest.mutate(data, {
+      onSuccess: () => {
+        const mockDonors: any = [
+          { name: "Rayhan Hossain", location: "Dhaka" },
+          { name: "Arif Ahmed", location: "Mirpur" }
+        ];
+        
+        setFoundDonors(mockDonors);
+        setShowModal(true);
 
-    // data.quantity = Number(data.quantity);
-    // setLoading(true);
-    // createBloodRequest.mutate(data, {
-    //   onSuccess: () => {
-    //     setLoading(false);
-    //     navigate("/blood/request/results");
-    //   },
-    //   onError: () => {
-    //     setLoading(false);
-    //   }
-    // });
+        // Auto close and navigate after 5 seconds
+        setTimeout(() => {
+          setShowModal(false);
+          navigate("/blood/public-requests"); // or wherever appropriate
+        }, 10000);
+      },
+    });
   };
 
+  // Tightened input classes
   const inputClasses = `
-    w-full px-4 py-2 
-    bg-white border border-slate-200 
-    rounded-2xl outline-none transition-all duration-300
-    placeholder:text-slate-400 text-slate-700
-    focus:border-red-500 focus:ring-2 focus:ring-red-500/20 
+    w-full px-4 py-3 bg-white border border-slate-200 rounded-xl outline-none 
+    transition-all duration-300 placeholder:text-slate-300 text-slate-700 text-sm
+    focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/5
   `;
 
+  const FieldLabel = ({ children }: { children: React.ReactNode }) => (
+    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1 mb-1 block">
+      {children}
+    </label>
+  );
+
   return (
-    <div className="max-w-4xl mx-auto bg-[radial-gradient(at_top_right,_var(--tw-gradient-stops))] from-slate-50 via-white to-slate-100 px-5 py-12 mt-12">
-      <div className="rounded-[2.5rem] relative overflow-hidden">    
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-60 h-60 bg-red-50 rounded-full blur-3xl opacity-50" />
-        <div className="text-center mb-10 relative z-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-red-50 text-red-600 rounded-3xl mb-4 shadow-inner transform -rotate-3 transition-transform hover:rotate-0">
-            <span className="text-3xl">🩸</span>
-          </div>
-          <h2 className="text-3xl font-black text-slate-800 tracking-tight leading-snug">
-            রক্তের আবেদন
-          </h2>
-          <p className="text-slate-500 mt-2 font-medium max-w-md mx-auto leading-relaxed text-sm">
-            আপনার সঠিক তথ্য দ্রুত রক্তদাতার কাছে পৌঁছাতে সাহায্য করবে।
-          </p>
+    <div className="min-h-screen bg-[#FDFDFD] flex flex-col items-center justify-center px-4">
+      
+      {/* Header */}
+      <div className="text-center mb-6">
+        <div className="inline-flex items-center justify-center w-14 h-14 bg-white rounded-2xl shadow-lg shadow-red-100 mb-3 border border-red-50">
+          <Droplets className="text-red-500" size={24} />
         </div>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 relative z-10"
-        >
-          {/* Blood Group */}
-          <div className="space-y-1">
-            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">রক্তের গ্রুপ (Group)</label>
-            <select
-              {...register("blood_type", { required: "রক্তের গ্রুপ প্রয়োজন" })}
-              className={`${inputClasses} appearance-none cursor-pointer mt-2`}
-            >
-              <option value="">রক্তের গ্রুপ</option>
-              {bloodGroup.map(bg => (
-                <option key={bg} value={bg}>{bg}</option>
-              ))}
-            </select>
-            {errors.blood_type && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.blood_type.message}</p>}
-          </div>
-
-          {/* quantity */}
-          <div className="space-y-1">
-            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">ব্যাগের সংখ্যা (Bags)</label>
-            <select
-              {...register("quantity", { required: "ব্যাগের সংখ্যা প্রয়োজন" })}
-              className={`${inputClasses} appearance-none cursor-pointer mt-2`}
-            >
-              <option value="">ব্যাগের সংখ্যা</option>
-              {[1, 2, 3, 4, 5, 6, 7, 8].map(bg => (
-                <option key={bg} value={bg}>{bg}</option>
-              ))}
-            </select>
-            {errors.quantity && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.quantity.message}</p>}
-          </div>
-
-          {/* Hospital */}
-          <div className="space-y-1">
-            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">হাসপাতাল (Hospital)</label>
-            <input
-              type="text"
-              {...register("hospital", { required: "নাম প্রয়োজন" })}
-              placeholder="উদা: ঢাকা মেডিকেল"
-              className={`${inputClasses} mt-2`}
-            />
-            {errors.hospital && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.hospital.message}</p>}
-          </div>
-
-          {/* Location */}
-          <div className="space-y-1">
-            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">লোকেশন (Location)</label>
-            <input
-              type="text"
-              {...register("location", { required: "লোকেশন প্রয়োজন" })}
-              placeholder="উদা: বকশীবাজার, ঢাকা"
-              className={`${inputClasses} mt-2`}
-            />
-            {errors.location && <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.location.message}</p>}
-          </div>
-
-          {/* Urgency Selector */}
-          <div className="md:col-span-2 space-y-2">
-            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">জরুরি অবস্থা (Urgency)</label>
-            <div className="grid grid-cols-2 gap-2 mt-2">
-              <label className={`
-                flex items-center justify-center py-3 rounded-2xl cursor-pointer transition-all border-2 font-bold text-sm
-                ${urgencyValue === 'non-urgent' ? 'bg-slate-900 text-white border-slate-900 shadow-md' : 'bg-slate-50 text-slate-400 border-transparent hover:bg-slate-100'}
-              `}>
-                <input type="radio" value="Normal" {...register("urgency")} className="hidden" />
-                সাধারণ (Normal)
-              </label>
-              <label className={`
-                flex items-center justify-center py-3 rounded-2xl cursor-pointer transition-all border-2 font-bold text-sm
-                ${urgencyValue === 'urgent' ? 'bg-red-600 text-white border-red-600 shadow-md shadow-red-200' : 'bg-red-50 text-red-400 border-transparent hover:bg-red-100'}
-              `}>
-                <input type="radio" value="urgent" {...register("urgency")} className="hidden" />
-                জরুরি (Emergency)
-              </label>
-            </div>
-          </div>
-
-          {/* Description */}
-          <div className="md:col-span-2 space-y-1">
-            <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">বিস্তারিত (Optional)</label>
-            <textarea
-              {...register("description")}
-              rows={4}
-              placeholder="রোগীর অবস্থা বা বিশেষ কোনো তথ্য..."
-              className={`${inputClasses} mt-2 resize-none`}
-            />
-          </div>
-
-          {/* Submit Button */}
-          <div className="md:col-span-2 pt-2">
-            <button
-              type="submit"
-              className="cursor-pointer w-full bg-red-600 text-white py-3 rounded-[2rem] font-black text-md hover:bg-red-700 active:scale-[0.98] transition-all shadow-[0_20px_40px_-10px_rgba(220,38,38,0.3)]"
-            >
-              <div className="flex justify-center">
-                {loading ? <span className="flex gap-3 item-center"><LoadingSvg/>অনুরোধ করা হচ্ছে...</span> : <span>অনুরোধ করুন</span>}
-              </div>
-            </button>
-            <div className="flex items-center justify-center gap-2 mt-6 opacity-40">
-              <div className="h-px w-8 bg-slate-300"></div>
-              <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">
-                Life Line Network
-              </p>
-              <div className="h-px w-8 bg-slate-300"></div>
-            </div>
-          </div>
-        </form>
+        <h2 className="text-xl font-black text-slate-800 tracking-tight">রক্তের আবেদন করুন</h2>
+        <p className="text-slate-400 font-medium text-[10px] mt-1">সঠিক তথ্য দ্রুত রক্তদাতার কাছে পৌঁছাতে সাহায্য করে</p>
       </div>
+
+      <div className="w-full max-w-xl bg-white rounded-[2.5rem] shadow-[0_15px_50px_-15px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden relative">
+        <div className="p-6 md:p-10">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* ... Group & Quantity selectors remain same ... */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1 relative">
+                <FieldLabel>রক্তের গ্রুপ*</FieldLabel>
+                <div onClick={() => setActivePicker(activePicker === "blood" ? null : "blood")} className={`${inputClasses} flex justify-between items-center cursor-pointer ${errors.blood_type ? 'border-red-400 bg-red-50/30' : ''}`}>
+                  <span className={`font-bold ${selectedBloodType ? 'text-slate-800' : 'text-slate-400'}`}>{selectedBloodType || "নির্বাচন করুন"}</span>
+                  <ChevronDown size={16} className={`text-slate-400 transition-transform ${activePicker === "blood" ? "rotate-180" : ""}`} />
+                </div>
+                <AnimatePresence>
+                  {activePicker === "blood" && (
+                    <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 5 }} exit={{ opacity: 0, y: 5 }} className="absolute z-50 w-full bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 grid grid-cols-4 gap-1.5">
+                      {bloodGroups.map((bg) => (
+                        <div key={bg} onClick={() => { setValue("blood_type", bg); setActivePicker(null); trigger("blood_type"); }} className={`h-9 flex items-center justify-center rounded-lg text-xs font-black cursor-pointer border ${selectedBloodType === bg ? 'bg-red-600 border-red-600 text-white' : 'bg-slate-50 border-transparent text-slate-500 hover:bg-red-50'}`}>{bg}</div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <input type="hidden" {...register("blood_type", { required: true })} />
+              </div>
+
+              <div className="space-y-1 relative">
+                <FieldLabel>রক্তের পরিমাণ*</FieldLabel>
+                <div onClick={() => setActivePicker(activePicker === "quantity" ? null : "quantity")} className={`${inputClasses} flex justify-between items-center cursor-pointer ${errors.quantity ? 'border-red-400 bg-red-50/30' : ''}`}>
+                  <span className={`font-bold ${selectedQuantity ? 'text-slate-800' : 'text-slate-400'}`}>{selectedQuantity ? `${selectedQuantity} Bag` : "নির্বাচন করুন"}</span>
+                  <ChevronDown size={16} className={`text-slate-400 transition-transform ${activePicker === "quantity" ? "rotate-180" : ""}`} />
+                </div>
+                <AnimatePresence>
+                  {activePicker === "quantity" && (
+                    <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 5 }} exit={{ opacity: 0, y: 5 }} className="absolute z-50 w-full bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 grid grid-cols-3 gap-1.5">
+                      {quantities.map((q) => (
+                        <div key={q} onClick={() => { setValue("quantity", q); setActivePicker(null); trigger("quantity"); }} className={`h-9 flex items-center justify-center rounded-lg text-xs font-black cursor-pointer border ${selectedQuantity === q ? 'bg-slate-800 border-slate-800 text-white' : 'bg-slate-50 border-transparent text-slate-500 hover:bg-slate-100'}`}>{q} Bag</div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <input type="hidden" {...register("quantity", { required: true })} />
+              </div>
+            </div>
+
+            {/* Inputs */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <FieldLabel>হাসপাতাল*</FieldLabel>
+                <div className="relative"><Hospital className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300" size={15} /><input {...register("hospital", { required: "হাসপাতালের নাম প্রয়োজন" })} placeholder="ঢাকা মেডিকেল" className={`${inputClasses} pl-10`} /></div>
+              </div>
+              <div className="space-y-1">
+                <FieldLabel>লোকেশন*</FieldLabel>
+                <div className="relative"><MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300" size={15} /><input {...register("location", { required: "লোকেশন প্রয়োজন" })} placeholder="শাহবাগ, ঢাকা" className={`${inputClasses} pl-10`} /></div>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <FieldLabel>ফোন নম্বর*</FieldLabel>
+              <div className="relative"><Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300" size={15} /><input {...register("phone", { required: "নম্বর প্রয়োজন", pattern: { value: /^[0-9]{11}$/, message: "১১ ডিজিটের নম্বর দিন" } })} placeholder="01XXXXXXXXX" className={`${inputClasses} pl-10`} /></div>
+              {errors.phone && <p className="text-red-500 text-[9px] font-bold mt-1 ml-1">{errors.phone.message}</p>}
+            </div>
+
+            <div className="space-y-1">
+              <FieldLabel>রোগীর অবস্থা (ঐচ্ছিক)</FieldLabel>
+              <div className="relative"><MessageSquare className="absolute left-3.5 top-3 text-slate-300" size={15} /><textarea {...register("description")} placeholder="বিস্তারিত তথ্য..." rows={2} className={`${inputClasses} pl-10 resize-none py-2.5`} /></div>
+            </div>
+
+            {/* Submit Section */}
+            <div className="pt-2">
+              <div className="flex bg-slate-100/80 p-1 rounded-xl gap-1.5 mb-5 shadow-inner">
+                <button type="button" onClick={() => setValue("urgency", "non-urgent")} className={`flex-1 py-3 rounded-lg font-black text-[9px] uppercase tracking-wider transition-all ${urgencyValue === 'non-urgent' ? 'bg-white shadow-sm text-slate-800' : 'text-slate-400'}`}>Normal</button>
+                <button type="button" onClick={() => setValue("urgency", "urgent")} className={`flex-1 py-3 rounded-lg font-black text-[9px] uppercase tracking-wider transition-all ${urgencyValue === 'urgent' ? 'bg-red-600 text-white shadow-md' : 'text-slate-400'}`}>Emergency</button>
+              </div>
+
+              <button 
+                type="submit" 
+                disabled={loading}
+                className="w-full bg-red-600 hover:bg-red-500 text-white py-4 rounded-2xl font-black text-sm shadow-lg shadow-red-100 transition-all flex justify-center items-center gap-2 group disabled:opacity-70"
+              >
+                {loading ? <><LoadingSvg /> <span>প্রসেসিং...</span></> : <><Sparkles size={16} /> <span>আবেদন নিশ্চিত করুন</span></>}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      {/* RESULT MODAL */}
+      {
+        showModal && <RequestResultsModal isOpen={showModal} onClose={() => setShowModal(false)} requests={foundDonors} />
+      }
     </div>
   );
 }

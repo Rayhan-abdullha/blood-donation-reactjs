@@ -1,6 +1,15 @@
 
 import { Link } from "react-router-dom"
+import DonorDetailsModal from "../donor/DonorDetails";
+import { useState } from "react";
 export default function PublicHome() {
+  const [selectedDonor, setSelectedDonor] = useState(null);
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+const handleViewDetails = (donorData: any) => {
+  setSelectedDonor(donorData);
+  setIsModalOpen(true);
+};
   return (
     <div className="space-y-16 pb-20">
       <section className="relative bg-slate-900 pt-20 pb-32 px-6 overflow-hidden">
@@ -63,7 +72,16 @@ export default function PublicHome() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {["A+", "O+", "B+", "AB+"].map((bg, i) => (
-              <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:ring-2 hover:ring-red-500 transition-all cursor-pointer group">
+              <div onClick={() => handleViewDetails({ 
+                        name: "John Doe", 
+                        blood_group: bg, 
+                        address: "Dhaka, Bangladesh",
+                        phone: "017XXXXXXXX",
+                        is_verified: true,
+                        is_available: true,
+                        pic: "https://i.pravatar.cc/150?u=fake",
+                        created_at: "2023-01-01"
+                      })} key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:ring-2 hover:ring-red-500 transition-all cursor-pointer group">
                 <div className="flex justify-between items-start mb-4">
                   <div className="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center text-xl font-black">
                     {bg}
@@ -76,14 +94,23 @@ export default function PublicHome() {
                 <div className="flex items-center gap-2 text-slate-400 text-sm mt-1">
                   <span>📍</span> Dhaka, Bangladesh
                 </div>
-                <Link to={`/donor/details/${i}`} className="block w-full"> 
-                  <button className="w-full mt-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-all">
-                    বিবরণ দেখুন (View Details)
-                  </button>
-                </Link>
+                <div className="block w-full"> 
+                    <button
+                      className="cursor-pointer w-full mt-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-all"
+                    >
+                      বিবরণ দেখুন (View Details)
+                    </button>
+                </div>
               </div>
             ))}
           </div>
+
+        {/* Place Modal at the bottom */}
+        <DonorDetailsModal
+          isOpen={isModalOpen} 
+          donor={selectedDonor} 
+          onClose={() => setIsModalOpen(false)} 
+        />
         </div>
       </section>
       {/* 3. FEATURES SECTION */}

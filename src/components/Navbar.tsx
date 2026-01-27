@@ -26,6 +26,7 @@ const dashboardMenu = [
 
 const mainMenu = [
   { link: "home", name: "হোম" },
+  { link: "blood/public-requests", name: "রক্তের পোস্ট" },
   { link: "about", name: "আমাদের সম্পর্কে" },
 ];
 
