@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const ProtectedRoute = ({ children, adminOnly = false }: Props) => {
-    const { token, user } = useAuthStore();
+  const { token, user } = useAuthStore();
   // ১. লগইন না থাকলে অথ পেজে পাঠান
   if (!token) {
     return <Navigate to="/auth/login" replace />;

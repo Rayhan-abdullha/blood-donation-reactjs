@@ -26,9 +26,9 @@ import Profile from "./components/Profile"
 import { ProtectedRoute } from "./components/ProtectedRoute"
 import UserLayout from "./pages/user/UserLayout"
 import UserDashboard from "./pages/user/UserDashboard"
-import BloodLayout from "./pages/blood-requests/AvailableDonor"
-import AllRequests from "./pages/blood-requests/BloodLayout"
+import BloodLayout from "./pages/blood-requests/BloodLayout"
 import PublicRequests from "./pages/blood-requests/AllBloodRequest"
+import AllAvailableDonors from "./pages/blood-requests/AllDonors"
 export interface IOneSignalOneSignal {
   // ...other properties...
   isInitialized: boolean;
@@ -119,8 +119,7 @@ export default function App() {
       }>
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<DonorDashboard />} />
-        <Route path="requests" element={<Requests />} />
-        <Route path="form" element={<DonorRegistration />} />
+        <Route path="become-donor" element={<DonorRegistration />} />
       </Route>
       <Route path="/donor/details/:id" element={<DonorDetails />} />
 
@@ -133,16 +132,18 @@ export default function App() {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="requests" element={<Requests />} />
       </Route>
-      {/* all blood request */}
-      <Route path="/blood-requests" element={
-        <BloodLayout/>
-      }
+
+      {/* blood request */}
+      <Route path="/blood" element={<BloodLayout/>}
       >
-        <Route index element={<Navigate to="results" replace />} />
-        <Route path="public" element={<PublicRequests/>} />
-        <Route path="results" element={<AllRequests />} />
+        <Route index element={<Navigate to="request" replace />} />
+        {/* private */}
+          <Route path="request" element={<ProtectedRoute><Requests /></ProtectedRoute>}/>
+            <Route path="request/results" element={<ProtectedRoute><AllAvailableDonors /></ProtectedRoute>} />
+        <Route path="public-requests" element={<PublicRequests/>} />
       </Route>
-      {/* patient route */}
+
+      {/* user route */}
       <Route path="/user" element={
         <ProtectedRoute>
           <UserLayout />
@@ -150,8 +151,9 @@ export default function App() {
       }>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<UserDashboard />} />
-        <Route path="requests" element={<Requests />} />
       </Route>
+
+      {/* about */}
       <Route path="/about" element={<AboutLayout />}>
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<AboutPage/>} />

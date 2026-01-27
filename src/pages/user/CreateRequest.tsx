@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import LoadingSvg from "../../components/LoadingSvg";
 import { useBloodActions } from "../../hooks/useBlood";
-import { useState } from "react";
+import { use, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // ================= TYPES =================
 type BloodGroup = "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
@@ -30,18 +31,23 @@ export default function Requests() {
   const { createBloodRequest } = useBloodActions()
 
   const urgencyValue = watch("urgency");
+  const navigate = useNavigate();
 
   const onSubmit = async (data: BloodRequestForm) => {
-    data.quantity = Number(data.quantity);
-    setLoading(true);
-    createBloodRequest.mutate(data, {
-      onSuccess: () => {
-        setLoading(false);
-      },
-      onError: () => {
-        setLoading(false);
-      }
-    });
+    console.log(data)
+        navigate("/blood/request/results");
+
+    // data.quantity = Number(data.quantity);
+    // setLoading(true);
+    // createBloodRequest.mutate(data, {
+    //   onSuccess: () => {
+    //     setLoading(false);
+    //     navigate("/blood/request/results");
+    //   },
+    //   onError: () => {
+    //     setLoading(false);
+    //   }
+    // });
   };
 
   const inputClasses = `
