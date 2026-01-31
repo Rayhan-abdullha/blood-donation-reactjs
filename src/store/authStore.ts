@@ -19,6 +19,9 @@ export const useAuthStore = create<AuthState>()(
       logout: () => {
         set({ user: null, token: null });
         localStorage.removeItem('auth-storage'); // ক্লিনআপ
+        // reload and replace to "/auth/login"
+        window.location.replace("/auth/login");
+        window.location.reload();
       },
     }),
     { name: 'auth-storage' } // এটি ডাটা লোকাল স্টোরেজে সেভ রাখবে

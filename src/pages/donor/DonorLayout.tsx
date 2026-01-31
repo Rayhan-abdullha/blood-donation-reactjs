@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const menus = [
   // be donro wirte bangla
-    { link: "donor/form", name: "রক্তদাতা ফর্ম" }
+    { link: "donor/be-donor", name: "রক্তদাতা ফর্ম" }
 ]
 
 

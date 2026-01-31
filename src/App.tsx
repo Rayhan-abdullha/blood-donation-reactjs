@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom"
 import PublicHome from "./pages/public/Home"
 import DonorLayout from "./pages/donor/DonorLayout"
-import Requests from "./pages/user/CreateRequest"
+import Requests from "./pages/blood-requests/CreateRequest"
 
 import AdminLayout from "./pages/admin/AdminLayout"
 import AdminDashboard from "./pages/admin/AdminDashboard"
@@ -21,7 +21,7 @@ import SearchLayout from "./pages/search/SearchLayout"
 import ImageUpload from "./components/ImgUpload"
 import SupportPage from "./pages/support/Support"
 import { useEffect } from "react"
-import Profile from "./components/Profile"
+import Profile from "./pages/user/Profile"
 import { ProtectedRoute } from "./components/ProtectedRoute"
 import UserLayout from "./pages/user/UserLayout"
 import UserDashboard from "./pages/user/UserDashboard"
@@ -110,21 +110,21 @@ export default function App() {
 
       {/* authentication */}
       <Route path="/auth/login" element={<AuthPage />}></Route>
+
+      {/* donor */}
       <Route path="/donor" element={
-        <ProtectedRoute>
           <DonorLayout />
-        </ProtectedRoute>
       }>
-        <Route index element={<Navigate to="home" replace />} />
-        <Route path="home" element={<DonorDashboard />} />
-        <Route path="become-donor" element={<DonorRegistration />} />
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<ProtectedRoute role="donor"><DonorDashboard /></ProtectedRoute>} />
+        <Route path="be-donor" element={<ProtectedRoute role="user"><DonorRegistration /></ProtectedRoute>} />
       </Route>
 
       {/* admin route */}
       <Route path="/admin" element={
-          <ProtectedRoute adminOnly={true}>
-            <AdminLayout />
-          </ProtectedRoute>}>
+        <AdminLayout />
+      }>
+          
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="requests" element={<Requests />} />
@@ -135,13 +135,13 @@ export default function App() {
       >
         <Route index element={<Navigate to="request" replace />} />
         {/* private */}
-          <Route path="request" element={<ProtectedRoute><Requests /></ProtectedRoute>}/>
+          <Route path="request" element={<ProtectedRoute role="user"><Requests /></ProtectedRoute>}/>
         <Route path="public-requests" element={<PublicRequests/>} />
       </Route>
 
       {/* user route */}
       <Route path="/user" element={
-        <ProtectedRoute>
+        <ProtectedRoute role="user">
           <UserLayout />
         </ProtectedRoute>
       }>

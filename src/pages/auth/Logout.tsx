@@ -9,8 +9,8 @@ const Logout = () => {
 
   const handleLogout = () => {
     logout();
-    toast.success("সফলভাবে লগআউট হয়েছে");
     navigate("/auth/login");
+    toast.success("সফলভাবে লগআউট হয়েছে");
   };
 
   return (
@@ -19,7 +19,7 @@ const Logout = () => {
       className="
       cursor-pointer
     flex items-center gap-1.5
-    px-3 py-4 sm:py-1.5
+    px-3 py-4 sm:py-2
     text-sm sm:text-xs font-bold
     text-red-600
     bg-white

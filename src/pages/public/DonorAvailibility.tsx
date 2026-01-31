@@ -52,7 +52,7 @@ const DonorAvailibility = ({isModalOpen, setIsModalOpen, selectedDonor, handleVi
                   </div>
                   <div className="block w-full"> 
                       <button
-                        className="cursor-pointer w-full mt-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-all"
+                        className="cursor-pointer w-full mt-4 py-3 border border-slate-200 rounded-xl text-xs font-bold text-slate-600 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 transition-all"
                       >
                         বিবরণ দেখুন (View Details)
                       </button>

@@ -51,7 +51,6 @@ export default function DonorRegistration() {
     
     let profilePicUrl = null;
     if (data.profilePic[0]) {
-      toast.loading("প্রোফাইল ইমেজ আপলোড হচ্ছে...");
       profilePicUrl = await uploadImage(data.profilePic[0]);
       toast.dismiss();
       if (!profilePicUrl) {
@@ -59,12 +58,10 @@ export default function DonorRegistration() {
         setLoading(false);
         return;
       }
-      toast.success("প্রোফাইল ইমেজ আপলোড সফল!");
     }
 
     let nidFrontUrl = null;
     if (data.nidFront[0]) {
-      toast.loading("Nid ইমেজ আপলোড হচ্ছে...");
       nidFrontUrl = await uploadImage(data.nidFront[0]);
       toast.dismiss();
       if (!nidFrontUrl) {
@@ -72,7 +69,6 @@ export default function DonorRegistration() {
         setLoading(false);
         return;
       }
-      toast.success("NID আপলোড সফল!");
     }
 
     const finalData = {

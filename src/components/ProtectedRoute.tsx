@@ -5,19 +5,18 @@ import type { JSX } from "react";
 
 interface Props {
   children: JSX.Element;
-  adminOnly?: boolean; // অ্যাডমিন চেক করার জন্য নতুন প্রপ
+  role?: "user" | "admin" | "donor" | null
 }
 
-export const ProtectedRoute = ({ children, adminOnly = false }: Props) => {
+export const ProtectedRoute = ({ children, role = null, }: Props) => {
   const { token, user } = useAuthStore();
-  // ১. লগইন না থাকলে অথ পেজে পাঠান
+
   if (!token) {
-    return <Navigate to="/auth/login" replace />;
+    return <Navigate to="/auth/login" />;
   }
 
-  // ২. যদি শুধুমাত্র অ্যাডমিনদের জন্য হয় কিন্তু ইউজার অ্যাডমিন না হয়
-  if (adminOnly && user?.role === "user") {
-    return <Navigate to="/" replace />; // হোমে পাঠিয়ে দিন
+  if (role && user?.role !== role) {
+    return <Navigate to="*" />;
   }
 
   return children;

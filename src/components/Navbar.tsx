@@ -36,7 +36,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
   const { user, token } = useAuthStore();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
+    const handleScroll = () => setScrolled(window.scrollY > 15);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -92,7 +92,6 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
 
           {/* --- RIGHT: ACTIONS --- */}
           <div className="flex items-center gap-3">
-            {token && <div className="hidden md:block"><Logout /></div>}
             {searchBar && (
               <NavLink to="/donor/search" className="flex items-center justify-center w-10 h-10 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all">
                 <SearchIcon className="w-5 h-5" />

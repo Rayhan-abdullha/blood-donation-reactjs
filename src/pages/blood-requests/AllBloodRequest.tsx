@@ -19,9 +19,7 @@ export default function PublicRequestsFeed() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-20">
       <div className="h-16 md:h-20" />
-
       <div className="max-w-2xl mx-auto px-4 py-8">
-        
         {/* Header */}
         <div className="mb-10 text-center space-y-2">
           <h1 className="text-3xl font-black text-slate-900 tracking-tight">ব্লাড রিকোয়েস্ট ফিড</h1>
@@ -58,7 +56,7 @@ export default function PublicRequestsFeed() {
               {/* 2. Cover Image Section */}
               <div className="relative h-64 mx-4 overflow-hidden rounded-[1.5rem] bg-slate-200">
                 <img 
-                  src={`https://tse2.mm.bing.net/th/id/OIP.2bjrNWWIi3_ygdi1AEwGpQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3`} 
+                  src={`https://i.ibb.co.com/21s2sNdH/Gemini-Generated-Image-65ad4k65ad4k65ad.png`} 
                   alt="Hospital"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />

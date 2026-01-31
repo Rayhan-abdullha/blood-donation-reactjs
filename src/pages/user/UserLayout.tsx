@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const othersMenu = [
-  { link: "user/requests", name: "রক্তের আবেদন" }
+  { link: "blood/request", name: "রক্তের আবেদন" }
 ]
 export default function UserLayout() {
   return (
