@@ -262,7 +262,7 @@ export default function Profile() {
                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                                 className="absolute z-50 w-full bg-white border border-slate-100 rounded-3xl shadow-2xl p-3 grid grid-cols-4 gap-2 mt-2"
                               >
-                                {bloodGroups.map((group) => (
+                                {bloodGroups?.map((group) => (
                                   <button
                                     key={group}
                                     type="button"

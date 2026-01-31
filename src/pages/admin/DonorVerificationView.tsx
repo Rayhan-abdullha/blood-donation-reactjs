@@ -32,7 +32,7 @@ export default function DonorVerificationView() {
             {
                 isLoading ? (
                     <BloodRequestSkeleton/>
-                ) : data?.data.map((donor: PendingDonor) => (
+                ) : data?.data?.map((donor: PendingDonor) => (
                 <div key={donor?.id} className="bg-white rounded-[2.5rem] border border-slate-200 p-6 shadow-sm hover:shadow-xl transition-all group">
                     <div className="flex items-start justify-between mb-6">
                     <div className="flex gap-4">

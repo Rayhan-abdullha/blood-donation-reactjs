@@ -13,7 +13,7 @@ function RequestManagementView() {
       </div>
 
       <div className="grid gap-4">
-        {MOCK_REQUESTS.map((req) => (
+        {MOCK_REQUESTS?.map((req) => (
           <div key={req.id} className="bg-white p-6 rounded-[2rem] border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 hover:border-red-200 transition-all">
             <div className="flex items-center gap-6">
               <div className="w-14 h-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center font-black text-xl shadow-inner">

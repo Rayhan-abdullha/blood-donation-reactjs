@@ -68,7 +68,7 @@ export default function PublicRequestsFeed() {
             </div>
           ) : requests.length > 0 ? (
             // 2. Dynamic Data Feed
-            requests.map((req: BloodRequest) => (
+            requests?.map((req: BloodRequest) => (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}

@@ -43,7 +43,7 @@ function UserManagementView() {
                     <DonorCardSkeleton/>
                   </td>
                 </tr>
-              ) : data?.data.map((user: any) => (
+              ) : data?.data?.map((user: any) => (
               <tr key={user?.id} className="hover:bg-slate-50/50 transition-colors group">
                 <td className="px-8 py-5">
                   <div className="flex items-center gap-3">
