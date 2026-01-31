@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../api/axiosInstance";
-import toast from "react-hot-toast";
 
 export const useAcceptOrDeclineResponse = () => {
   const queryClient = useQueryClient();
@@ -13,7 +12,6 @@ export const useAcceptOrDeclineResponse = () => {
       )).data,
 
     onSuccess: () => {
-      toast.success("Action successful");
       queryClient.invalidateQueries({
         queryKey: ["blood-requests", "donors"],
       });

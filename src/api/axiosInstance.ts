@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 
 const api = axios.create({
-  baseURL: 'http://localhost:4000/api/v1', // আপনার Golang সার্ভারের URL
+  baseURL: 'https://blood-donation-go-api.onrender.com/api/v1', // আপনার Golang সার্ভারের URL
 });
 
 // রিকোয়েস্ট পাঠানোর আগে অটোমেটিক টোকেন যোগ করবে

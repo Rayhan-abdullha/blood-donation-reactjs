@@ -11,9 +11,7 @@ export default function AdminLayout() {
         title="রক্ত বীর"
         othersMenu={menus}
       />
-      <div className="p-6">
-        <Outlet />
-      </div>
+      <Outlet />
       <Footer/>
     </div>
   )
