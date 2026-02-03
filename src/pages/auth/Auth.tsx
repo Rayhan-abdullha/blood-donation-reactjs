@@ -153,7 +153,7 @@ const AuthPage: React.FC = () => {
 
                   <button type="submit" disabled={registerUser.isPending} className="w-full bg-red-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-red-200">
                       {
-                        registerUser.isPending ? <span className="flex gap-2 justify-center items-center"><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></span>: <span className="flex gap-2 items-center">
+                        registerUser.isPending ? <span className="flex gap-2 justify-center items-center"><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></span>: <span className="flex gap-2 items-center justify-center">
                           অ্যাকাউন্ট তৈরি করুন
                       </span>
                       }
