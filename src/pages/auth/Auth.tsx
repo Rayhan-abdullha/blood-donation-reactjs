@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import  { Toaster } from "react-hot-toast"; // টোস্টের জন্য
 import BackHome from "../../components/BackHome";
 import { useAuthActions } from "../../hooks/useAuth"; // আমাদের তৈরি করা হুক
+import LoadingSvg from "../../components/LoadingSvg";
 
 type AuthState = "login" | "register" | "forgot-password" | "verify-email" | "reset-password";
 
@@ -91,8 +92,10 @@ const AuthPage: React.FC = () => {
                     <input type="password" {...register("password", { required: "পাসওয়ার্ড দিন" })} className={inputClasses} placeholder="পাসওয়ার্ড" />
                     {errors.password && <p className="text-sm text-red-500 mt-1 ml-2">{errors.password.message as string}</p>}
                   </div>
-                  <button type="submit" disabled={loginUser.isPending} className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-black transition-all">
-                    {loginUser.isPending ? "লোডিং..." : "লগইন করুন"}
+                  <button type="submit" disabled={loginUser.isPending} className="cursor-pointer w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-black transition-all">
+                    {
+                      loginUser.isPending ? <span className="flex gap-2 items-center justify-center"><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></span> : "লগইন করুন"
+                    }
                   </button>
                 </>
               )}
@@ -149,7 +152,11 @@ const AuthPage: React.FC = () => {
                   </div>
 
                   <button type="submit" disabled={registerUser.isPending} className="w-full bg-red-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-red-200">
-                    {registerUser.isPending ? "প্রসেসিং..." : "অ্যাকাউন্ট তৈরি করুন"}
+                      {
+                        registerUser.isPending ? <span className="flex gap-2 justify-center items-center"><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></span>: <span className="flex gap-2 items-center">
+                          অ্যাকাউন্ট তৈরি করুন
+                      </span>
+                      }
                   </button>
                 </>
               )}
@@ -159,7 +166,11 @@ const AuthPage: React.FC = () => {
                   <p className="text-sm text-slate-500 font-medium uppercase tracking-widest">৬ ডিজিটের কোডটি দিন</p>
                   <input maxLength={6} {...register("code", { required: true })} className={`${inputClasses} text-center text-2xl tracking-[0.5em] font-black`} placeholder="000000" />
                   <button type="submit" disabled={verifyOtp.isPending} className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold">
-                    {verifyOtp.isPending ? "যাচাই হচ্ছে..." : "যাচাই করুন (Verify)"}
+                      {
+                        verifyOtp.isPending ? <><LoadingSvg/> <span className="text-md">যাচাই হচ্ছে...</span></>: <span className="flex gap-2 items-center">
+                          যাচাই করুন (Verify)
+                      </span>
+                      }
                   </button>
                 </div>
               )}
@@ -224,7 +235,7 @@ const AuthPage: React.FC = () => {
                 <div className="mt-3 pt-6 border-t border-slate-50 text-center">
                     <button onClick={() => setView(view === "login" ? "register" : "login")} className="text-sm font-medium text-slate-500">
                         {view === "login" ? "অ্যাকাউন্ট নেই?" : "অ্যাকাউন্ট আছে?"}
-                        <span className="text-red-600 font-black ml-2 underline underline-offset-8">
+                        <span className="cursor-pointer text-red-600 font-black ml-2 underline underline-offset-8">
                             {view === "login" ? "রেজিস্ট্রেশন করুন" : "লগইন করুন"}
                         </span>
                     </button>
