@@ -1,6 +1,8 @@
-import { Check, X, Trash2, MapPin, Phone, Mail, MoreVertical } from "lucide-react";
+import { Trash2, MapPin, Phone, Mail, MoreVertical, CheckCircle } from "lucide-react";
 import useGetAllDonorRequests from "../../hooks/useGetAllDonorRequests";
 import BloodRequestSkeleton from "../blood-requests/SkeletonBloodRequest";
+import useVerifyDonor from "../../hooks/useVerifyDonor";
+import LoadingSvg from "../../components/LoadingSvg";
 export type PendingDonor = {
   id: number;
   pic: string;
@@ -14,8 +16,15 @@ export type PendingDonor = {
 
 
 export default function DonorVerificationView() {
-    const { data, isLoading } = useGetAllDonorRequests()
-
+  const { data, isLoading } = useGetAllDonorRequests()
+  const {mutate, isPending} = useVerifyDonor()
+  const handleAction = (action: "approved" | "rejected", donorId: number) => {
+    const data = {
+      action,
+      donor_id: donorId
+    }
+    mutate(data)
+  }
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex justify-between items-end mb-8">
@@ -24,7 +33,7 @@ export default function DonorVerificationView() {
           <p className="text-slate-500 text-sm font-medium">Verify credentials before they appear in public search.</p>
         </div>
         <div className="bg-amber-50 text-amber-700 px-4 py-2 rounded-2xl border border-amber-100 text-xs font-bold">
-          {data?.data.length} Pending Approval
+          {data?.data?.length} Pending Approval
         </div>
       </div>
 
@@ -69,11 +78,21 @@ export default function DonorVerificationView() {
                     </div>
 
                     <div className="grid grid-cols-3 gap-3">
-                    <button className="flex items-center justify-center gap-2 bg-green-600 text-white py-3 rounded-2xl font-black text-xs hover:bg-green-700 hover:shadow-lg hover:shadow-green-200 transition-all active:scale-95">
-                        <Check size={16} strokeWidth={3} /> Approve
+                    <button onClick={() => handleAction("approved", donor.id)} className="flex items-center justify-center gap-2 bg-green-600 text-white py-3 rounded-2xl font-black text-xs hover:bg-green-700 hover:shadow-lg hover:shadow-green-200 transition-all active:scale-95">
+                          {
+                              isPending ? <><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
+                            <CheckCircle size={18} strokeWidth={3} className="shrink-0" />
+                            <span className="truncate">Approve</span>
+                          </span>
+                          }
                     </button>
-                    <button className="flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-600 py-3 rounded-2xl font-black text-xs hover:bg-slate-50 transition-all active:scale-95">
-                        <X size={16} strokeWidth={3} /> Decline
+                    <button onClick={() => handleAction("rejected", donor.id)} className="flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-600 py-3 rounded-2xl font-black text-xs hover:bg-slate-50 transition-all active:scale-95">
+                          {
+                            isPending ? <><LoadingSvg text="text-red-600"/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
+                                  <CheckCircle size={18} strokeWidth={3} className="shrink-0" />
+                                  <span className="truncate">Reject</span>
+                                </span>
+                                }
                     </button>
                     <button className="flex items-center justify-center gap-2 bg-red-50 text-red-600 py-3 rounded-2xl font-black text-xs hover:bg-red-600 hover:text-white transition-all active:scale-95">
                         <Trash2 size={16} /> Delete
@@ -84,7 +103,7 @@ export default function DonorVerificationView() {
         }
       </div>
       
-      {data?.data.length === 0 && (
+      {!data || !data?.data?.length && (
         <div className="py-20 text-center border-2 border-dashed border-slate-200 rounded-[3rem]">
           <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">No pending verifications</p>
         </div>

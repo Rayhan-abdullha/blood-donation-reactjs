@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuthActions } from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { apiKey } from "../../config/config";
 import LoadingSvg from "../../components/LoadingSvg";
 import { motion, AnimatePresence } from "framer-motion"; // Added for animation
 import { ChevronDown, Sparkles } from "lucide-react"; // Added for icons
+import donorRegister from "../../hooks/useRegisterDonor";
 
 type DonorRequestForm = {
   bloodGroup: string;
@@ -25,7 +25,7 @@ export default function DonorRegistration() {
   const [isSelectOpen, setIsSelectOpen] = useState(false); // Dropdown State
 
   const { register, handleSubmit, watch, setValue, trigger, formState: { errors } } = useForm<DonorRequestForm>();
-  const { donorRegister } = useAuthActions();
+  const { mutate, isPending } = donorRegister()
 
   const selectedBloodGroup = watch("bloodGroup");
 
@@ -79,7 +79,7 @@ export default function DonorRegistration() {
       nid_pic: nidFrontUrl
     };
 
-    donorRegister.mutate(finalData);
+    mutate(finalData);
     setLoading(false);
   };
 
@@ -247,12 +247,12 @@ export default function DonorRegistration() {
 
             <button 
               type="submit"
-              className={`${donorRegister.isPending || loading ? "cursor-not-allowed" : "cursor-pointer"} relative w-full bg-slate-900 text-white py-4.5 rounded-2xl font-black text-base shadow-xl shadow-slate-200 hover:bg-black active:scale-[0.98] transition-all disabled:bg-slate-300 disabled:cursor-not-allowed overflow-hidden group`}
+              className={`${isPending || loading ? "cursor-not-allowed" : "cursor-pointer"} relative w-full bg-slate-900 text-white py-4.5 rounded-2xl font-black text-base shadow-xl shadow-slate-200 hover:bg-black active:scale-[0.98] transition-all disabled:bg-slate-300 disabled:cursor-not-allowed overflow-hidden group`}
             >
               <div className="flex items-center justify-center gap-3 relative z-10">
-                {(donorRegister.isPending || loading) ? <LoadingSvg/> : <Sparkles size={18} className="text-red-500" />}
+                {( loading) ? <LoadingSvg/> : <Sparkles size={18} className="text-red-500" />}
                 <span>
-                  {donorRegister.isPending || loading ? "প্রসেসিং হচ্ছে..." : "নিবন্ধন অনুরোধ পাঠান"}
+                  {isPending || loading ? "প্রসেসিং হচ্ছে..." : "নিবন্ধন অনুরোধ পাঠান"}
                 </span>
               </div>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_2s_infinite]"></div>

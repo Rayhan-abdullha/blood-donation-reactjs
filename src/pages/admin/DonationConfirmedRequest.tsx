@@ -4,6 +4,7 @@ import useGetAllCompleteOrDeclineDonation from "../../hooks/useGetAllCompleteOrD
 import type { MarkDonationDetails } from "../../types";
 import toast from "react-hot-toast";
 import useAdminCompleteDonation from "../../hooks/useCompleteDonation";
+import LoadingSvg from "../../components/LoadingSvg";
 
 // --- SKELETON LOADER ---
 const ReviewSkeleton = () => (
@@ -24,7 +25,6 @@ const DonationConfirmedReviewRequest = () => {
   const { data, isLoading } = useGetAllCompleteOrDeclineDonation();
   const { mutate } = useAdminCompleteDonation();
   const responses = (data?.data as MarkDonationDetails[]) || [];
-  console.log(responses)
   if (isLoading) return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
       {[...Array(4)].map((_, i) => <ReviewSkeleton key={i} />)}
@@ -165,15 +165,25 @@ const DonationConfirmedReviewRequest = () => {
               <div className="flex gap-3">
                 <button 
                   onClick={() => handleIsCompleteDonation("donated", item.assigned_donor_id, item.request_id, item.donated_quantity)}
-                  className="flex-1 bg-slate-900 text-white py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-green-600 transition-all active:scale-95 flex items-center justify-center gap-2"
+                  className="flex-1 bg-slate-900 text-white py-3 rounded-2xl flex gap-2 items-center cursor-pointer font-black text-[10px] uppercase tracking-widest hover:bg-green-600 transition-all active:scale-95 flex items-center justify-center gap-2"
                 >
-                  <CheckCircle size={16} strokeWidth={3} /> Confirm
+                    {
+                        true ? <><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
+                      <CheckCircle size={18} strokeWidth={3} className="shrink-0" />
+                      <span className="truncate">রক্তদান সম্পন্ন (Complete)</span>
+                       </span>
+                    }
                 </button>
                 <button 
                   onClick={() => handleIsCompleteDonation("timeout", item.assigned_donor_id, item.request_id, item.donated_quantity)}
-                  className="px-6 bg-white border border-slate-200 text-slate-400 py-4 rounded-2xl font-black text-[10px] uppercase hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all active:scale-95"
+                  className="px-6 bg-white border border-slate-200 flex gap-2 items-center cursor-pointertext-slate-400 py-3 rounded-2xl font-black text-[10px] uppercase hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all active:scale-95"
                 >
-                  <XCircle size={16} />
+                    {
+                    true ? <><LoadingSvg text="tex-red-600"/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
+                  <CheckCircle size={18} strokeWidth={3} className="shrink-0" />
+                  <span className="truncate">Decline</span>
+                </span>
+                }
                 </button>
               </div>
             ) : item.donor_status === "donated" ? (

@@ -44,18 +44,6 @@ export const useAuthActions = () => {
   });
 
   // Donor Registration Mutation
-  const donorRegister = useMutation({
-    mutationFn: async (data: any) => (await api.post("/donors/registers", data)).data,
-    onSuccess: (_data) => {
-      toast.success("আপনার আবেদনটি সফলভাবে জমা হয়েছে। ভেরিফিকেশনের জন্য অপেক্ষা করুন।");
-      // প্রয়োজন হলে ইউজারের ডাটা রিফ্রেশ করতে পারেন
-      // queryClient.invalidateQueries({ queryKey: ["user"] });
-    },
-    onError: (error: any) => {
-      console.log(error.response);
-      const errorMsg = error?.response?.data?.message || "নিবন্ধন ব্যর্থ হয়েছে। আবার চেষ্টা করুন।";
-      toast.error(errorMsg);
-    },
-  });
-  return { registerUser, verifyOtp, loginUser, donorRegister };
+
+  return { registerUser, verifyOtp, loginUser };
 };

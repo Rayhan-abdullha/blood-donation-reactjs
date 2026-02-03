@@ -33,6 +33,7 @@ export default function Profile() {
   const [isWaiting, setIsWaiting] = useState(false);
   const [isBloodOpen, setIsBloodOpen] = useState(false);
   const { getUserProfile: { isLoading, data } } = useProfileActions();
+
   const { logout } = useAuthStore();
   
   const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm();
@@ -49,6 +50,7 @@ export default function Profile() {
         email: data.data.email,
         phone: data.data.phone,
         role: data.data.role,
+        pic : data.data.pic,
         blood_group: data.data.blood_group,
         address: data.data.address,
         nid: data.data.nid,
@@ -114,9 +116,23 @@ export default function Profile() {
                 
                 <div className="relative z-10 text-center">
                   <div className="relative inline-block mb-6">
-                    <div className="w-28 h-28 rounded-[2.5rem] bg-slate-100 flex items-center justify-center text-slate-300 border-4 border-white shadow-xl overflow-hidden">
-                       <User size={54} />
-                    </div>
+                <div className="w-28 h-28 rounded-[2.5rem] bg-slate-100 flex items-center justify-center text-slate-300 border-4 border-white shadow-xl overflow-hidden">
+  {/* Check if there is a picture in the form state (pic) or the raw data */}
+  {watch("pic") ? (
+    <img 
+      src={watch("pic")} 
+      alt={watch("name")} 
+      className="w-full h-full object-cover" 
+      // Fallback if image fails to load
+      onError={(e) => {
+        e.currentTarget.src = ""; 
+        e.currentTarget.classList.add("hidden");
+      }}
+    />
+  ) : (
+    <User size={40} fill="currentColor" />
+  )}
+</div>
                     {userRole === "donor" && (
                       <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-red-600 rounded-2xl border-4 border-white flex items-center justify-center text-white shadow-lg">
                         <Droplet size={18} fill="currentColor" />
