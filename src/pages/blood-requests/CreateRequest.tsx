@@ -60,19 +60,14 @@ export default function Requests() {
 
   const onSubmit = async (data: BloodRequestForm) => {
     mutate(data, {
-      onSuccess: () => {
-        const mockDonors = [
-          { name: "Rayhan Hossain", location: "Dhaka" },
-          { name: "Arif Ahmed", location: "Mirpur" },
-        ];
-
+      onSuccess: (data) => {
+        const mockDonors: any = data?.data || [];
         setFoundDonors(mockDonors);
         setShowModal(true);
-
         setTimeout(() => {
           setShowModal(false);
-          navigate("/blood/public-requests");
-        }, 10000);
+          navigate("/user/dashboard");
+        }, 5000);
       },
 
       onError: (err: any) => {

@@ -2,14 +2,12 @@ import { motion } from "framer-motion";
 import { 
   Droplets, MapPin, Hospital, Clock, Phone, 
   Facebook, MessageCircle,
-  Inbox // Added for Empty UI
+  Inbox
 } from "lucide-react";
 import useGetCurrentBloodRequests from "../../hooks/useGetCurrentBloodRequests";
 // import DonorCardSkeleton from "../search/DonorSkeleton"; // Reusing your skeleton
 import type { BloodRequest } from "../../types";
 import CountdownTimer from "../donor/Timer";
-
-// ... Type definition remains same
 
 export default function PublicRequestsFeed() {
   const { data, isLoading } = useGetCurrentBloodRequests();

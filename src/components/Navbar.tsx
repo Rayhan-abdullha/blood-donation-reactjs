@@ -34,7 +34,6 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user, token } = useAuthStore();
-
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 15);
     window.addEventListener("scroll", handleScroll);

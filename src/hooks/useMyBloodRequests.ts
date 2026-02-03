@@ -6,7 +6,6 @@ const useMyBloodRequests = () => {
     queryKey: ["blood-requests", "me"],
     queryFn: async () =>
       (await api.get("/bloods-requests/me")).data,
-    staleTime: 1000 * 60 * 5,
   });
 };
 

@@ -11,6 +11,7 @@ import DonorCardSkeleton from "../search/DonorSkeleton";
 import ChangePassword from "../../components/ChangePassword";
 import { useAuthStore } from "../../store/authStore";
 import { useProfileActions } from "../../hooks/useProfile";
+import LoadingSvg from "../../components/LoadingSvg";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -29,6 +30,7 @@ const Label = ({ children }: { children: React.ReactNode }) => (
 
 export default function Profile() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
   const [isBloodOpen, setIsBloodOpen] = useState(false);
   const { getUserProfile: { isLoading, data } } = useProfileActions();
   const { logout } = useAuthStore();
@@ -60,6 +62,12 @@ export default function Profile() {
     // updateProfile.mutate(updateData);
     console.log("Updating profile...", updateData);
   };
+  const handlelogout = async () => {
+    setIsWaiting(true)
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setIsWaiting(false)
+    logout()
+  }
 
   return (
     <div className="min-h-screen pb-20 pt-24 px-4 md:px-8 bg-[#F8FAFC]">
@@ -130,11 +138,15 @@ export default function Profile() {
                       <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-1 transition-transform" />
                     </button>
 
-                    <button onClick={() => logout()} className="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-red-500 hover:bg-red-50 font-black text-[11px] uppercase tracking-wider transition-all">
+                    <button onClick={handlelogout} className="cursor-pointer w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-red-500 hover:bg-red-50 font-black text-[11px] uppercase tracking-wider transition-all">
                       <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center shadow-sm">
                         <LogOut size={14} />
                       </div>
-                      লগ আউট
+                      <div className="mt-1">
+                        {
+                          isWaiting ? <LoadingSvg text="text-red-500"/> : "লগ আউট"
+                        }
+                      </div>
                     </button>
                   </div>
                 </div>

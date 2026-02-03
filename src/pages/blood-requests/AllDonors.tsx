@@ -15,7 +15,7 @@ export default function RequestResultsModal({ isOpen, onClose, requests }: Resul
     if (isOpen) {
       const timer = setTimeout(() => {
         onClose();
-      }, 10000);
+      }, 5000);
       return () => clearTimeout(timer);
     }
   }, [isOpen, onClose]);
@@ -86,11 +86,11 @@ export default function RequestResultsModal({ isOpen, onClose, requests }: Resul
 
                         <div>
                           <h4 className="font-black text-slate-800 text-base group-hover:text-red-600 transition-colors">
-                            {donor.name || "Donor Name"}
+                            {donor?.name || "Anonymous"}
                           </h4>
                           <div className="flex flex-col gap-1 mt-1">
                             <span className="text-[11px] text-slate-500 font-medium flex items-center gap-1">
-                              <MapPin size={12} className="text-slate-400" /> {donor.location || "Location"}
+                              <MapPin size={12} className="text-slate-400" /> {donor?.address || "Location"}
                             </span>
                             <span className="text-[10px] font-bold text-green-600 uppercase tracking-tighter flex items-center gap-1">
                               <ShieldCheck size={10} /> Verified Donor
@@ -121,7 +121,7 @@ export default function RequestResultsModal({ isOpen, onClose, requests }: Resul
             <div className="p-6 bg-slate-50/50 border-t border-slate-100">
               <div className="flex flex-col items-center gap-3">
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
-                  এটি ৫ সেকেন্ড পর বন্ধ হয়ে যাবে
+                  এটি 5 সেকেন্ড পর বন্ধ হয়ে যাবে
                 </p>
                 <div className="h-1.5 w-48 bg-slate-200 rounded-full overflow-hidden">
                   <motion.div 

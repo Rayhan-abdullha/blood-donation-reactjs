@@ -22,7 +22,7 @@ import StatCard from "./StateCard";
 import SidebarItem from "./SidebarItems";
 import useAnalysisCount from "../../hooks/useAnalysis";
 import StatCardSkeleton from "./SkeletonCard";
-
+import DonationConfirmedReviewRequest from "./DonationConfirmedRequest";
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("analytics");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -100,6 +100,12 @@ export default function AdminDashboard() {
             active={activeTab === 'requests'} 
             onClick={() => { setActiveTab('requests'); setIsMobileMenuOpen(false); }} 
           />
+            <SidebarItem 
+            icon={<PieChart size={18}/>} 
+            label="Donation Review" 
+            active={activeTab === 'donation review'} 
+            onClick={() => { setActiveTab('donation review'); setIsMobileMenuOpen(false); }} 
+          />
         </nav>
 
         {/* Server Health Widget */}
@@ -140,6 +146,7 @@ export default function AdminDashboard() {
           {activeTab === "users" && <UserManagementView />}
           {activeTab === "verify" && <DonorVerificationView />}
           {activeTab === "requests" && <RequestManagementView />}
+          {activeTab === "donation review" && <DonationConfirmedReviewRequest />}
         </div>
       </main>
     </div>

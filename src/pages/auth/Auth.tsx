@@ -4,8 +4,6 @@ import  { Toaster } from "react-hot-toast"; // টোস্টের জন্�
 import BackHome from "../../components/BackHome";
 import { useAuthActions } from "../../hooks/useAuth"; // আমাদের তৈরি করা হুক
 
-import { useNavigate } from "react-router-dom";
-
 type AuthState = "login" | "register" | "forgot-password" | "verify-email" | "reset-password";
 
 const inputClasses = `
@@ -18,12 +16,9 @@ const AuthPage: React.FC = () => {
   const [view, setView] = useState<AuthState>("login");
   const [timer, setTimer] = useState(30);
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const navigate = useNavigate()
-  
-  // আমাদের API হুকগুলো কল করা হচ্ছে
-  const { loginUser, registerUser, verifyOtp } = useAuthActions();
 
-  // Timer logic
+  
+  const { loginUser, registerUser, verifyOtp } = useAuthActions();
   useEffect(() => {
     let interval: any;
     if (view === "verify-email" && timer > 0) {
@@ -32,15 +27,9 @@ const AuthPage: React.FC = () => {
     return () => clearInterval(interval);
   }, [view, timer]);
 
-  // Form Submission Logic
   const handleAuth = async (data: any) => {
     if (view === "login") {
-      loginUser.mutate(data, {
-        onSuccess: () => {
-          // redirect public home
-          navigate("/home");
-        }
-      });
+      loginUser.mutate(data);
     } 
     else if (view === "register") {
       registerUser.mutate(data, {

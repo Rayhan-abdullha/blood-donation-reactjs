@@ -27,6 +27,7 @@ import UserLayout from "./pages/user/UserLayout"
 import UserDashboard from "./pages/user/UserDashboard"
 import BloodLayout from "./pages/blood-requests/BloodLayout"
 import PublicRequests from "./pages/blood-requests/AllBloodRequest"
+import { Toaster } from "react-hot-toast"
 export interface IOneSignalOneSignal {
   // ...other properties...
   isInitialized: boolean;
@@ -93,74 +94,77 @@ export default function App() {
     });
   }, [pathname]); // runs every time the path changes
   return (
-    <Routes>
-      <Route path="/" element={<PublicLayout />}>
-        <Route index element={<Navigate to="home" replace />} />
-        <Route path="home" element={<PublicHome />} />
-        <Route path="home/profile" element={ <ProtectedRoute><Profile/></ProtectedRoute>}/>
-      </Route>
+    <>
+    <Toaster position="top-center" reverseOrder={false} />
+      <Routes>
+        <Route path="/" element={<PublicLayout />}>
+          <Route index element={<Navigate to="home" replace />} />
+          <Route path="home" element={<PublicHome />} />
+          <Route path="home/profile" element={ <ProtectedRoute><Profile/></ProtectedRoute>}/>
+        </Route>
 
-      {/* donor search */}
-      <Route path="/donor/search" element={<SearchLayout />}>
-        <Route index path="" element={<DonorSearch />} />
-      </Route>
+        {/* donor search */}
+        <Route path="/donor/search" element={<SearchLayout />}>
+          <Route index path="" element={<DonorSearch />} />
+        </Route>
 
-      {/* profile */}
-      <Route />
+        {/* profile */}
+        <Route />
 
-      {/* authentication */}
-      <Route path="/auth/login" element={<AuthPage />}></Route>
+        {/* authentication */}
+        <Route path="/auth/login" element={<AuthPage />}></Route>
 
-      {/* donor */}
-      <Route path="/donor" element={
-          <DonorLayout />
-      }>
-        <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<ProtectedRoute role="donor"><DonorDashboard /></ProtectedRoute>} />
-        <Route path="be-donor" element={<ProtectedRoute role="user"><DonorRegistration /></ProtectedRoute>} />
-      </Route>
+        {/* donor */}
+        <Route path="/donor" element={
+            <DonorLayout />
+        }>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<ProtectedRoute role="donor"><DonorDashboard /></ProtectedRoute>} />
+          <Route path="be-donor" element={<ProtectedRoute role="user"><DonorRegistration /></ProtectedRoute>} />
+        </Route>
 
-      {/* admin route */}
-      <Route path="/admin" element={
-        <AdminLayout />
-      }>
-          
-        <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="requests" element={<Requests />} />
-      </Route>
+        {/* admin route */}
+        <Route path="/admin" element={
+          <AdminLayout />
+        }>
+            
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="requests" element={<Requests />} />
+        </Route>
 
-      {/* blood request */}
-      <Route path="/blood" element={<BloodLayout/>}
-      >
-        <Route index element={<Navigate to="request" replace />} />
-        {/* private */}
-          <Route path="request" element={<ProtectedRoute role="user"><Requests /></ProtectedRoute>}/>
-        <Route path="public-requests" element={<PublicRequests/>} />
-      </Route>
+        {/* blood request */}
+        <Route path="/blood" element={<BloodLayout/>}
+        >
+          <Route index element={<Navigate to="request" replace />} />
+          {/* private */}
+            <Route path="request" element={<ProtectedRoute role="user"><Requests /></ProtectedRoute>}/>
+          <Route path="public-requests" element={<PublicRequests/>} />
+        </Route>
 
-      {/* user route */}
-      <Route path="/user" element={
-        <ProtectedRoute role="user">
-          <UserLayout />
-        </ProtectedRoute>
-      }>
-        <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<UserDashboard />} />
-      </Route>
+        {/* user route */}
+        <Route path="/user" element={
+          <ProtectedRoute role="user">
+            <UserLayout />
+          </ProtectedRoute>
+        }>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<UserDashboard />} />
+        </Route>
 
-      {/* about */}
-      <Route path="/about" element={<AboutLayout />}>
-        <Route index element={<Navigate to="home" replace />} />
-        <Route path="home" element={<AboutPage/>} />
-      </Route>
-      {/* support */}
-      <Route path="/support" element={<SupportPage />} />
+        {/* about */}
+        <Route path="/about" element={<AboutLayout />}>
+          <Route index element={<Navigate to="home" replace />} />
+          <Route path="home" element={<AboutPage/>} />
+        </Route>
+        {/* support */}
+        <Route path="/support" element={<SupportPage />} />
 
-      {/* upload images */}
-      <Route path="/api/images" element={<ImageUpload/>} />
-      <Route path="*" element={<NotFound/>} />
-    </Routes>
+        {/* upload images */}
+        <Route path="/api/images" element={<ImageUpload/>} />
+        <Route path="*" element={<NotFound/>} />
+      </Routes>
+    </>
   )
 }
 

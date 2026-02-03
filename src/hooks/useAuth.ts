@@ -2,10 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useAuthStore } from "../store/authStore";
 import api from "../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 export const useAuthActions = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
-
+  const navigate = useNavigate()
   // ১. রেজিস্ট্রেশন
   const registerUser = useMutation({
     mutationFn: async (data: any) => (await api.post("/auth/register", data)).data,
@@ -17,9 +18,7 @@ export const useAuthActions = () => {
   const verifyOtp = useMutation({
     mutationFn: async (data: any) => (await api.post("/auth/verify", data)).data,
     onSuccess: () => {
-      // setAuth(data.user, data.token);
       toast.success("ভেরিফিকেশন সফল হয়েছে!");
-      // redirect to login
     },
     onError: () => toast.error("ভুল ওটিপি কোড!"),
   });
@@ -27,11 +26,21 @@ export const useAuthActions = () => {
   // ৩. লগইন
   const loginUser = useMutation({
     mutationFn: async (data: any) => (await api.post("/auth/login", data)).data,
-    onSuccess: (data) => {
-      toast.success("লগইন সফল হয়েছে!");
-      setAuth(data.data, data.access_token);
+    onSuccess: async (data) => {
+      setAuth(data?.data.data, data?.data.access_token);
+      toast.success("লগইন সফল হয়েছে!", {
+        duration: 1000,
+      });
+     await new Promise((resolve) => setTimeout(resolve, 500));
+      toast.dismiss(); // 🔥 remove all toasts
+      setTimeout(() => navigate("/"), 300);
     },
-    onError: (err: any) => toast.error(err.response?.data?.message || "লগইন তথ্য সঠিক নয়।"),
+    onError: (err: any) => {
+      toast.error(err?.response?.data?.message || "লগইন ব্যর্থ হয়েছে!", {
+        duration: 1000,
+      });
+      toast.dismiss();
+    }
   });
 
   // Donor Registration Mutation
