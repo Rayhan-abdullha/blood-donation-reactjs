@@ -23,7 +23,8 @@ const ReviewSkeleton = () => (
 
 const DonationConfirmedReviewRequest = () => {
   const { data, isLoading } = useGetAllCompleteOrDeclineDonation();
-  const { mutate } = useAdminCompleteDonation();
+  const { mutate, isPending, variables } = useAdminCompleteDonation();
+  const action = variables?.action
   const responses = (data?.data as MarkDonationDetails[]) || [];
   if (isLoading) return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
@@ -168,7 +169,7 @@ const DonationConfirmedReviewRequest = () => {
                   className="flex-1 bg-slate-900 text-white py-3 rounded-2xl flex gap-2 items-center cursor-pointer font-black text-[10px] uppercase tracking-widest hover:bg-green-600 transition-all active:scale-95 flex items-center justify-center gap-2"
                 >
                     {
-                        true ? <><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
+                        isPending && action === "donated" ? <><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
                       <CheckCircle size={18} strokeWidth={3} className="shrink-0" />
                       <span className="truncate">রক্তদান সম্পন্ন (Complete)</span>
                        </span>
@@ -179,7 +180,7 @@ const DonationConfirmedReviewRequest = () => {
                   className="px-6 bg-white border border-slate-200 flex gap-2 items-center cursor-pointertext-slate-400 py-3 rounded-2xl font-black text-[10px] uppercase hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all active:scale-95"
                 >
                     {
-                    true ? <><LoadingSvg text="tex-red-600"/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
+                    isPending && action === "timeout" ? <><LoadingSvg text="tex-red-600"/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
                   <CheckCircle size={18} strokeWidth={3} className="shrink-0" />
                   <span className="truncate">Decline</span>
                 </span>

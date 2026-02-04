@@ -1,25 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import  { Toaster } from "react-hot-toast"; // টোস্টের জন্য
 import BackHome from "../../components/BackHome";
-import { useAuthActions } from "../../hooks/useAuth"; // আমাদের তৈরি করা হুক
-import LoadingSvg from "../../components/LoadingSvg";
 
-type AuthState = "login" | "register" | "forgot-password" | "verify-email" | "reset-password";
+import useLoginAction from "../../hooks/useLogin";
+import useRegisterAction from "../../hooks/useRegister";
+import useVerifyAction from "../../hooks/useVerifyOtp";
+import useResetPassword from "../../hooks/useResetPassword";
 
-const inputClasses = `
-  w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl outline-none 
-  transition-all duration-300 placeholder:text-slate-400 text-slate-700
-  focus:bg-white focus:border-red-500 focus:ring-4 focus:ring-red-500/10
-`;
+import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
+import VerifyOtpForm from "./components/VerifyOtpForm";
+import ForgotPasswordForm from "./components/ForgotPasswordForm";
+import useForgotPassword from "../../hooks/useForgotPass";
+import ResetPasswordForm from "./components/ResetPassordForm";
+
+type AuthState =
+  | "login"
+  | "register"
+  | "verify-email"
+  | "forgot-password"
+  | "reset-password";
 
 const AuthPage: React.FC = () => {
   const [view, setView] = useState<AuthState>("login");
   const [timer, setTimer] = useState(30);
-  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  
-  const { loginUser, registerUser, verifyOtp } = useAuthActions();
+  const { register, handleSubmit, formState: { errors }, watch } = useForm();
+
+  const email = watch("email");
+
+  const { mutate: loginUser, isPending: isLoginLoading } = useLoginAction();
+  const { mutate: registerUser, isPending: isRegisterLoading } = useRegisterAction();
+  const { mutate: verifyOtp, isPending: isVerifyLoading } = useVerifyAction();
+  const { mutate: forgotPassword, isPending: isForgotLoading } = useForgotPassword();
+  const { mutate: resetPassword, isPending: isResetLoading } = useResetPassword();
+
   useEffect(() => {
     let interval: any;
     if (view === "verify-email" && timer > 0) {
@@ -28,218 +43,147 @@ const AuthPage: React.FC = () => {
     return () => clearInterval(interval);
   }, [view, timer]);
 
-  const handleAuth = async (data: any) => {
+  const handleAuth = (data: any) => {
     if (view === "login") {
-      loginUser.mutate(data);
-    } 
-    else if (view === "register") {
-      registerUser.mutate(data, {
-        onSuccess: () => setView("verify-email")
+      loginUser(data);
+    }
+
+    if (view === "register") {
+      registerUser(data, {
+        onSuccess: () => {
+          localStorage.setItem("otp_email", data.email);
+          setView("verify-email")}
       });
-    } 
-    else if (view === "verify-email") {
-      // ইমেইল এবং ওটিপি একসাথে পাঠানো
-      verifyOtp.mutate({ email: data.email, otp: data.code }, {
-        onSuccess: () => setView("login")
-      });
+    }
+
+    if (view === "verify-email") {
+      const email = localStorage.getItem("otp_email");
+      verifyOtp(
+        { email: email, otp: data.code },
+        {
+          onSuccess: () => {
+            setView("login")
+            localStorage.removeItem("otp_email");
+        },
+        }
+      );
+    }
+
+    if (view === "forgot-password") {
+      forgotPassword(
+        { email: data.email },
+        { onSuccess: () => setView("reset-password") }
+      );
+    }
+
+    if (view === "reset-password") {
+      resetPassword(
+        {
+          email,
+          otp: data.otp,
+          newPassword: data.newPassword,
+        },
+        { onSuccess: () => setView("login") }
+      );
     }
   };
 
+  // if localStorage has otp_email
+  useEffect(() => {
+    if (localStorage.getItem("otp_email")) {
+      setView("verify-email");
+    }
+  }, []);
+
   return (
     <div className="min-h-screen flex bg-white font-sans">
-      <Toaster /> {/* টোস্ট মেসেজ দেখানোর জন্য */}
-      <BackHome className="absolute top-6 left-6 z-50 "/>
+      <BackHome className="absolute top-6 left-6 z-50" />
 
-      {/* LEFT SIDE: Brand (আগের মতোই থাকবে) */}
-      <div className="hidden lg:flex w-1/2 bg-slate-900 relative items-center justify-center p-12 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-20">
-            <div className="absolute top-10 left-10 w-64 h-64 bg-red-600 rounded-full blur-[120px]"></div>
-            <div className="absolute bottom-10 right-10 w-96 h-96 bg-rose-600 rounded-full blur-[150px]"></div>
-        </div>
+      {/* LEFT BRAND */}
+      <div className="hidden lg:flex w-1/2 bg-slate-900 relative items-center justify-center p-12">
         <div className="relative z-10 max-w-lg text-center text-white">
-          <span className="text-4xl bg-white/10 p-5 rounded-3xl inline-block mb-8 shadow-2xl">🩸</span>
-          <h1 className="text-5xl font-black mb-6 leading-tight text-white">
+          <span className="text-4xl bg-white/10 p-5 rounded-3xl inline-block mb-8">
+            🩸
+          </span>
+          <h1 className="text-5xl font-black mb-6">
             রক্ত দিন, জীবন বাঁচান <br />
             <span className="text-red-500">Save Lives.</span>
           </h1>
-            <p className="text-slate-400 text-lg">আপনার এক ব্যাগ রক্ত হতে পারে অন্য কারো বেঁচে থাকার শেষ সম্বল। আজই যুক্ত হোন আমাদের সাথে।</p>
+          <p className="text-slate-400">
+            আপনার এক ব্যাগ রক্ত হতে পারে অন্য কারো বেঁচে থাকার শেষ সম্বল।
+          </p>
         </div>
       </div>
 
-      {/* RIGHT SIDE: Auth Container */}
+      {/* RIGHT AUTH */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-slate-50">
-        <div className="w-full max-w-md">  
-          <div className="mb-8 text-center lg:text-left">
-            <h2 className="text-3xl font-black text-slate-800 text-center">
-                {view === "login" && "স্বাগতম (Welcome Back)"}
-                {view === "register" && "নতুন অ্যাকাউন্ট (Join Us)"}
-                {view === "verify-email" && "কোড যাচাই করুন"}
-            </h2>
-          </div>
-          <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl shadow-slate-200 border border-white">
+        <div className="w-full max-w-md">
+          <h2 className="text-3xl font-black text-center mb-8">
+            {view === "login" && "স্বাগতম (Welcome Back)"}
+            {view === "register" && "নতুন অ্যাকাউন্ট (Join Us)"}
+            {view === "verify-email" && "কোড যাচাই করুন"}
+            {view === "forgot-password" && "পাসওয়ার্ড ভুলে গেছেন"}
+            {view === "reset-password" && "নতুন পাসওয়ার্ড দিন"}
+          </h2>
+
+          <div className="bg-white p-8 rounded-[2.5rem] shadow-2xl">
             <form onSubmit={handleSubmit(handleAuth)} className="space-y-5">
-              {/* --- LOGIN --- */}
               {view === "login" && (
-                <>
-                  <div>
-                    <input {...register("email", { required: "ইমেইল বা ফোন নম্বর দিন" })} className={inputClasses} placeholder="ইমেইল বা ফোন নম্বর" />
-                    {errors.email && <p className="text-sm text-red-500 mt-1 ml-2">{errors.email.message as string}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-end">
-                      <button onClick={() => setView("forgot-password")} type="button" className="text-sm font-bold text-red-600 hover:underline">পাসওয়ার্ড ভুলে গেছেন?</button>
-                    </div>
-                    <input type="password" {...register("password", { required: "পাসওয়ার্ড দিন" })} className={inputClasses} placeholder="পাসওয়ার্ড" />
-                    {errors.password && <p className="text-sm text-red-500 mt-1 ml-2">{errors.password.message as string}</p>}
-                  </div>
-                  <button type="submit" disabled={loginUser.isPending} className="cursor-pointer w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-black transition-all">
-                    {
-                      loginUser.isPending ? <span className="flex gap-2 items-center justify-center"><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></span> : "লগইন করুন"
-                    }
-                  </button>
-                </>
+                <LoginForm
+                  register={register}
+                  errors={errors}
+                  isLoginLoading={isLoginLoading}
+                  setView={setView}
+                />
               )}
-              {/* --- REGISTER --- */}
+
               {view === "register" && (
-                <>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <input 
-                        {...register("name", { required: "আপনার নাম দিন" })} 
-                        className={inputClasses} 
-                        placeholder="নাম" 
-                      />
-                      {errors.name && <p className="text-[12px] text-red-500 font-medium ml-2">{errors.name.message as string}</p>}
-                    </div>
-                    
-                    <div className="space-y-1">
-                      <input 
-                        {...register("phone", { required: "ফোন নম্বর দিন" })} 
-                        className={inputClasses} 
-                        placeholder="ফোন" 
-                      />
-                      {errors.phone && <p className="text-[12px] text-red-500 font-medium ml-2">{errors.phone.message as string}</p>}
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <input 
-                      type="email" 
-                      {...register("email", { 
-                        required: "ইমেইল অ্যাড্রেস দিন",
-                        pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: "সঠিক ইমেইল ফরম্যাট দিন"
-                        }
-                      })} 
-                      className={inputClasses} 
-                      placeholder="ইমেইল" 
-                    />
-                    {errors.email && <p className="text-[12px] text-red-500 font-medium ml-2">{errors.email.message as string}</p>}
-                  </div>
-
-                  <div className="space-y-1">
-                    <input 
-                      type="password" 
-                      {...register("password", { 
-                        required: "পাসওয়ার্ড দিন", 
-                        minLength: { value: 6, message: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে" } 
-                      })} 
-                      className={inputClasses} 
-                      placeholder="নতুন পাসওয়ার্ড" 
-                    />
-                    {errors.password && <p className="text-[12px] text-red-500 font-medium ml-2">{errors.password.message as string}</p>}
-                  </div>
-
-                  <button type="submit" disabled={registerUser.isPending} className="w-full bg-red-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-red-200">
-                      {
-                        registerUser.isPending ? <span className="flex gap-2 justify-center items-center"><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></span>: <span className="flex gap-2 items-center justify-center">
-                          অ্যাকাউন্ট তৈরি করুন
-                      </span>
-                      }
-                  </button>
-                </>
+                <RegisterForm
+                  register={register}
+                  errors={errors}
+                  isRegisterLoading={isRegisterLoading}
+                />
               )}
-              {/* --- VERIFY OTP --- */}
+
               {view === "verify-email" && (
-                <div className="text-center space-y-6">
-                  <p className="text-sm text-slate-500 font-medium uppercase tracking-widest">৬ ডিজিটের কোডটি দিন</p>
-                  <input maxLength={6} {...register("code", { required: true })} className={`${inputClasses} text-center text-2xl tracking-[0.5em] font-black`} placeholder="000000" />
-                  <button type="submit" disabled={verifyOtp.isPending} className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold">
-                      {
-                        verifyOtp.isPending ? <><LoadingSvg/> <span className="text-md">যাচাই হচ্ছে...</span></>: <span className="flex gap-2 items-center">
-                          যাচাই করুন (Verify)
-                      </span>
-                      }
-                  </button>
-                </div>
+                <VerifyOtpForm
+                  register={register}
+                  isVerifyLoading={isVerifyLoading}
+                />
               )}
-              {/* --- FORGOT PASSWORD --- */}
+
               {view === "forgot-password" && (
-                <div className="space-y-6">
-                  <div className="text-center">
-                    <p className="text-sm text-slate-500 font-medium leading-relaxed">
-                      আপনার রেজিস্টার্ড ইমেইলটি দিন। আমরা একটি ওটিপি (OTP) পাঠাবো।
-                    </p>
-                  </div>
-                  
-                  <div className="space-y-1">
-                    <input 
-                      type="email" 
-                      {...register("email", { required: "ইমেইল অ্যাড্রেসটি দিন" })} 
-                      className={inputClasses} 
-                      placeholder="আপনার ইমেইল" 
-                    />
-                    {errors.email && <p className="text-[12px] text-red-500 font-medium">{errors.email.message as string}</p>}
-                  </div>
+                <ForgotPasswordForm
+                  register={register}
+                  errors={errors}
+                  isLoading={isForgotLoading}
+                  setView={setView}
+                />
+              )}
 
-                  <button type="submit" className="w-full bg-red-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-red-100">
-                    ওটিপি পাঠান
-                  </button>
-
-                  <div className="text-center">
-                    <button 
-                      type="button" 
-                      onClick={() => setView("login")} 
-                      className="text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors"
-                    >
-                      ← লগইন পেজে ফিরে যান
-                    </button>
-                  </div>
-                </div>
-                            )}
-              {/* --- RESET PASSWORD --- */}
               {view === "reset-password" && (
-                <div className="space-y-5">
-                  <div className="space-y-1">
-                    <input 
-                      type="password" 
-                      {...register("newPassword", { 
-                        required: "নতুন পাসওয়ার্ড দিন", 
-                        minLength: { value: 6, message: "কমপক্ষে ৬ অক্ষরের হতে হবে" } 
-                      })} 
-                      className={inputClasses} 
-                      placeholder="নতুন পাসওয়ার্ড লিখুন" 
-                    />
-                    {errors.newPassword && <p className="text-[12px] text-red-500 font-medium">{errors.newPassword.message as string}</p>}
-                  </div>
-
-                  <button type="submit" className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold transition-all">
-                    পাসওয়ার্ড রিসেট করুন
-                  </button>
-                </div>
+                <ResetPasswordForm
+                  register={register}
+                  errors={errors}
+                  isLoading={isResetLoading}
+                />
               )}
             </form>
-            {/* SHARED FOOTER */}
+
             {(view === "login" || view === "register") && (
-                <div className="mt-3 pt-6 border-t border-slate-50 text-center">
-                    <button onClick={() => setView(view === "login" ? "register" : "login")} className="text-sm font-medium text-slate-500">
-                        {view === "login" ? "অ্যাকাউন্ট নেই?" : "অ্যাকাউন্ট আছে?"}
-                        <span className="cursor-pointer text-red-600 font-black ml-2 underline underline-offset-8">
-                            {view === "login" ? "রেজিস্ট্রেশন করুন" : "লগইন করুন"}
-                        </span>
-                    </button>
-                </div>
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() =>
+                    setView(view === "login" ? "register" : "login")
+                  }
+                  className="text-sm text-slate-500"
+                >
+                  {view === "login" ? "অ্যাকাউন্ট নেই?" : "অ্যাকাউন্ট আছে?"}
+                  <span className="ml-2 text-red-600 font-black underline">
+                    {view === "login" ? "রেজিস্ট্রেশন করুন" : "লগইন করুন"}
+                  </span>
+                </button>
+              </div>
             )}
           </div>
         </div>

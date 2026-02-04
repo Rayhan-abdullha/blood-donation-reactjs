@@ -35,8 +35,8 @@ export interface IOneSignalOneSignal {
 // ১. কম্পোনেন্টের বাইরে একটি ফ্ল্যাগ ভেরিয়েবল রাখুন
 // let isOneSignalInitialized = false;
 export default function App() {
-  // console.log('hello routes')
-  
+  const { pathname } = useLocation();
+
   // useEffect(() => {
   //   const initOneSignal = async () => {
   //     // ২. যদি আগে থেকেই ইনিশিয়ালাইজড থাকে বা কাজ শুরু হয়ে থাকে তবে ফিরে যান
@@ -84,8 +84,6 @@ export default function App() {
 
   // }, []);
 
-    const { pathname } = useLocation();
-
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -96,6 +94,7 @@ export default function App() {
   return (
     <>
     <Toaster position="top-center" reverseOrder={false} />
+        {/* <AuthInitializer/> */}
       <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<Navigate to="home" replace />} />
@@ -162,7 +161,9 @@ export default function App() {
 
         {/* upload images */}
         <Route path="/api/images" element={<ImageUpload/>} />
-        <Route path="*" element={<NotFound/>} />
+        {/* Notfound */}
+        <Route path="*" element={<NotFound />} />
+
       </Routes>
     </>
   )

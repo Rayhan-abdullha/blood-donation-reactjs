@@ -3,7 +3,7 @@ import { useAuthStore } from '../../store/authStore'
 
 const HeroSection = () => {
   const { user } = useAuthStore()
-  
+  const isDonor = user?.role === "donor"
   return (
     <section className="relative bg-slate-900 pt-20 pb-32 px-6 overflow-hidden">
           <div className="absolute top-0 right-0 w-1/3 h-full bg-red-600/10 skew-x-12 translate-x-20"></div>
@@ -26,7 +26,7 @@ const HeroSection = () => {
               </Link>
               }
               <Link to="/blood/request">
-            <button className={`cursor-pointer px-8 py-4 ${user?.role === "donor" ? "bg-red-500 hover:bg-red-600 text-white" : "bg-white/10 hover:bg-white/20 text-white border border-white/20"}  rounded-2xl font-bold text-lg backdrop-blur-md transition-all`}>
+            <button className={`cursor-pointer px-8 py-4 ${isDonor ? "bg-red-500 hover:bg-red-600 text-white" : "bg-white/10 hover:bg-white/20 text-white border border-white/20"}  rounded-2xl font-bold text-lg backdrop-blur-md transition-all`}>
                   রক্তের জন্য আবেদন (Request Blood)
                 </button>
               </Link>

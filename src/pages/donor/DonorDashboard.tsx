@@ -21,7 +21,9 @@ export default function DonorDashboard() {
   const { user } = useAuthStore();
   const { data, isLoading } = useDonorResponseRequests();
   const requests = data?.data || [];
-  const { mutate, isPending } = useAcceptOrDeclineResponse();
+  console.log(requests)
+  const { mutate, isPending, variables, } = useAcceptOrDeclineResponse();
+  const action = variables?.status
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const handleAction = (status: "accepted" | "declined", requestId: number, donorId: number) => {
 
@@ -67,6 +69,7 @@ export default function DonorDashboard() {
                 setExpandedId={toggleExpand} 
                 handleAction={handleAction} 
                 isPending={isPending} 
+                action={action}
               />
             ))
           ) : (
@@ -95,7 +98,7 @@ export default function DonorDashboard() {
   );
 }
 
-function RequestCard({ req, expandedId, setExpandedId, handleAction, isPending }: any) {
+function RequestCard({ req, expandedId, setExpandedId, handleAction, isPending, action }: any) {
   const isSent = req.status === "sent";
   const isAccepted = req.status === "accepted";
   const isDeclined = req.status === "declined";
@@ -212,17 +215,17 @@ function RequestCard({ req, expandedId, setExpandedId, handleAction, isPending }
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button 
                       onClick={() => handleAction("accepted", req.request_id, req.donor_id)} 
-                      disabled={isPending}
+                      disabled={isPending && action === "accepted"}
                       className="cursor-pointer flex-1 flex items-center justify-center gap-2 bg-slate-900 hover:bg-emerald-600 text-white py-4 rounded-3xl font-black text-[11px] uppercase tracking-[0.2em] transition-all active:scale-95 disabled:opacity-50 shadow-xl shadow-slate-200"
                     >
-                      {isPending ? (<><LoadingSvg/> <span>অপেক্ষা করুন...</span></>) : "Accept"}
+                      {isPending && action === "accepted" ? (<><LoadingSvg/> <span>অপেক্ষা করুন...</span></>) : "Accept"}
                     </button>
                     <button 
                       onClick={() => handleAction("declined", req.request_id, req.donor_id)} 
-                      disabled={isPending}
+                      disabled={isPending && action === "declined"}
                       className="cursor-pointer flex-1 flex items-center justify-center gap-2 bg-white border-2 border-slate-100 text-slate-400 hover:text-red-500 hover:border-red-100 py-4 rounded-3xl font-black text-[11px] uppercase tracking-[0.2em] transition-all"
                     >
-                      {isPending ? (<><LoadingSvg text="text-red-600"/><span>অপেক্ষা করুন...</span></>) : "Decline"}
+                      {isPending && action === "declined" ? (<><LoadingSvg text="text-red-600"/><span>অপেক্ষা করুন...</span></>) : "Decline"}
                     </button>
                   </div>
                 ) : (
