@@ -17,7 +17,7 @@ export type PendingDonor = {
 
 export default function DonorVerificationView() {
   const { data, isLoading } = useGetAllDonorRequests()
-  const {mutate, isPending} = useVerifyDonor()
+  const {mutate, isPending, variables} = useVerifyDonor()
   const handleAction = (action: "approved" | "rejected", donorId: number) => {
     const data = {
       action,
@@ -80,7 +80,7 @@ export default function DonorVerificationView() {
                     <div className="grid grid-cols-3 gap-3">
                     <button onClick={() => handleAction("approved", donor.id)} className="flex items-center justify-center gap-2 bg-green-600 text-white py-3 rounded-2xl font-black text-xs hover:bg-green-700 hover:shadow-lg hover:shadow-green-200 transition-all active:scale-95">
                           {
-                              isPending ? <><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
+                              isPending && variables?.action === "approved" ? <><LoadingSvg/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
                             <CheckCircle size={18} strokeWidth={3} className="shrink-0" />
                             <span className="truncate">Approve</span>
                           </span>
@@ -88,7 +88,7 @@ export default function DonorVerificationView() {
                     </button>
                     <button onClick={() => handleAction("rejected", donor.id)} className="flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-600 py-3 rounded-2xl font-black text-xs hover:bg-slate-50 transition-all active:scale-95">
                           {
-                            isPending ? <><LoadingSvg text="text-red-600"/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
+                            isPending && variables?.action === "rejected" ? <><LoadingSvg text="text-red-600"/> <span className="text-md">অপেক্ষা করুন...</span></>: <span className="flex gap-2 items-center">
                                   <CheckCircle size={18} strokeWidth={3} className="shrink-0" />
                                   <span className="truncate">Reject</span>
                                 </span>
