@@ -2,10 +2,15 @@ import { Eye, Filter, Search, Trash2 } from "lucide-react";
 import useGetAllUsers from "../../hooks/useGetAllUsers";
 import { formatDateShort } from "../../utils/getDate";
 import DonorCardSkeleton from "../search/DonorSkeleton";
+import useDeleteUserAction from "../../hooks/deleteUser";
+import LoadingSvg from "../../components/LoadingSvg";
 
 function UserManagementView() {
   const { data, isLoading } = useGetAllUsers()
-  console.log(data)
+  const { mutate: deleteUser, isPending, variables } = useDeleteUserAction();
+  const handleDelete = (userId: number) => {
+    deleteUser(userId);
+  };
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
       <div className="flex flex-col md:flex-row justify-between gap-4 items-center">
@@ -69,7 +74,8 @@ function UserManagementView() {
                 <td className="px-8 py-5 text-right">
                   <div className="flex justify-end gap-1">
                     <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"><Eye size={18}/></button>
-                    <button className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"><Trash2 size={18}/></button>
+                      <button onClick={() => handleDelete(user.id)} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">{
+                      (isPending && variables=== user.id) ? <LoadingSvg text="text-red-600"/> : <Trash2 size={18}/>}</button>
                   </div>
                 </td>
               </tr>

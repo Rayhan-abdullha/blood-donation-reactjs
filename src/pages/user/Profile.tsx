@@ -42,7 +42,7 @@ export default function Profile() {
   const selectedBlood = watch("blood_group");
   const isAvailable = watch("is_available");
   const donorStatus = watch("status") || "pending";
-  console.log(data?.last_donated);
+
   useEffect(() => {
     if (data?.data) {
       reset({

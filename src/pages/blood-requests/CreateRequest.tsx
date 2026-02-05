@@ -66,7 +66,7 @@ export default function Requests() {
         setShowModal(true);
         setTimeout(() => {
           setShowModal(false);
-          navigate("/user/dashboard");
+          navigate("/home/dashboard");
         }, 5000);
       },
 

@@ -1,6 +1,6 @@
 import LoadingSvg from "../../../components/LoadingSvg";
 
-const RegisterForm = ({ register, errors, isRegisterLoading }: any) => (
+const RegisterForm = ({ register, errors, isRegisterLoading, wait }: any) => (
   <>
     <div className="grid grid-cols-2 gap-4">
       <div>
@@ -30,8 +30,8 @@ const RegisterForm = ({ register, errors, isRegisterLoading }: any) => (
       {errors.password && <p className="text-[12px] text-red-500 ml-2 mt-1">{errors.password.message}</p>}
     </div>
 
-    <button type="submit" disabled={isRegisterLoading} className="cursor-pointer w-full bg-red-600 text-white py-4 rounded-2xl font-bold">
-      {isRegisterLoading ? <span className="flex gap-2 justify-center"><LoadingSvg /> অপেক্ষা করুন...</span> : "অ্যাকাউন্ট তৈরি করুন"}
+    <button type="submit" disabled={isRegisterLoading || wait} className="cursor-pointer w-full bg-red-600 text-white py-4 rounded-2xl font-bold">
+      {isRegisterLoading || wait ? <span className="flex gap-2 justify-center"><LoadingSvg /> অপেক্ষা করুন...</span> : "অ্যাকাউন্ট তৈরি করুন"}
     </button>
   </>
 );

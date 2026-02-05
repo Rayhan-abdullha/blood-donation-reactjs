@@ -15,6 +15,7 @@ import useForgotPassword from "../../hooks/useForgotPass";
 import ResetPasswordForm from "./components/ResetPassordForm";
 import { useAuthStore } from "../../store/authStore";
 import { requestLocationPermission, requestOneSignalPermission } from "../../utils/permissionManager";
+import toast from "react-hot-toast";
 
 type AuthState =
   | "login"
@@ -24,6 +25,7 @@ type AuthState =
   | "reset-password";
 
 const AuthPage: React.FC = () => {
+  const [wait, setWait] = useState(false);
   const [view, setView] = useState<AuthState>("login");
   const [timer, setTimer] = useState(30);
 
@@ -51,25 +53,40 @@ const AuthPage: React.FC = () => {
       }
 
       if (view === "register") {
-        const locationData = await requestLocationPermission();
-        const oneSignalPlayerId = await requestOneSignalPermission();
-        console.log(locationData);
-
-        const registerData = {
-          ...data,
-          latitude: locationData.latitude,
-          longitude: locationData.longitude,
-          onesignal_id: oneSignalPlayerId, // optional
-        };
-        console.log(registerData);
-
+        const registerData: any = { ...data };
+        setWait(true);
+        const toastId = toast.loading("Creating your account...");
+        try {
+          const locationData = await requestLocationPermission();
+          registerData.latitude = locationData?.latitude ?? null;
+          registerData.longitude = locationData?.longitude ?? null;
+          const oneSignalPlayerId = await requestOneSignalPermission();
+          registerData.onesignal_id = oneSignalPlayerId ?? null;
+        } catch (_err) {
+          if (!registerData?.latitude && !registerData?.longitude) {
+            toast.custom("location does not access!")
+          }
+          if (!registerData.onesignal_id) {
+            toast.custom("notification does n")
+          }
+        }
         registerUser(registerData, {
-          onSuccess: (data) => {
-            localStorage.setItem("otp_email", data?.data);
+          onSuccess: (res) => {
+            toast.dismiss(toastId);
+            toast.success("Account created successfully 🎉");
+            localStorage.setItem("otp_email", res?.data);
             setView("verify-email");
+            setWait(false);
+          },
+
+          onError: (error: any) => {
+            toast.dismiss(toastId);
+            toast.error(error?.response?.data?.data.error || "কিছু ভুল হয়েছে");
+            setWait(false);
           },
         });
       }
+
 
       if (view === "verify-email") {
         const email = localStorage.getItem("otp_email");
@@ -162,6 +179,7 @@ const AuthPage: React.FC = () => {
 
               {view === "register" && (
                 <RegisterForm
+                  wait={wait}
                   register={register}
                   errors={errors}
                   isRegisterLoading={isRegisterLoading}
