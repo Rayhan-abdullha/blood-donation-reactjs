@@ -30,7 +30,7 @@ const ForgotPasswordForm = ({
     <button
       type="submit"
       disabled={isLoading}
-      className="w-full bg-red-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-red-100"
+      className="cursor-pointer w-full bg-red-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-red-100"
     >
       {isLoading ? (
         <span className="flex justify-center gap-2">

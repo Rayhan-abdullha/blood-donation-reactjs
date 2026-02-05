@@ -12,6 +12,7 @@ export default function SearchLayout() {
       <Navbar
         title="রক্ত বীর"
         othersMenu={menus}
+        isMainMenu={false}
       />
       <div className="">
         <Outlet />

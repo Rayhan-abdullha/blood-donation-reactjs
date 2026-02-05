@@ -30,7 +30,7 @@ const ResetPasswordForm = ({
     <button
       type="submit"
       disabled={isLoading}
-      className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold"
+      className="cursor-pointer w-full bg-slate-900 text-white py-4 rounded-2xl font-bold"
     >
       {isLoading ? (
         <span className="flex justify-center gap-2">

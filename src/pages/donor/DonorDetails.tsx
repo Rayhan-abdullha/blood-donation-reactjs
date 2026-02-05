@@ -1,16 +1,21 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, MapPin, X, ShieldCheck, Mail, Calendar, Droplets, Clock, CheckCircle2, AlertCircle } from "lucide-react";
+import TimerAvailability from "./components/DonarAvailablity";
 
+const calculateDaysAgo = (dateString: string) => {
+  if (!dateString) return "0";
+  const lastDate = new Date(dateString);
+  const today = new Date();
+  
+  // Calculate difference in milliseconds
+  const diffInMs = today.getTime() - lastDate.getTime();
+  // Convert to days
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  
+  return diffInDays > 0 ? diffInDays : "0";
+};
 export default function DonorDetailsModal({ donor, isOpen, onClose }: any) {
   if (!donor) return null;
-
-  // Calculate days since last donation
-  // const lastDonatedDate = donor.last_donation_date ? new Date(donor.last_donation_date) : null;
-  // const diffDays = lastDonatedDate
-  //   ? Math.ceil(Math.abs(new Date().getTime() - lastDonatedDate.getTime()) / (1000 * 60 * 60 * 24))
-  //   : "N/A";
-  const diffDays = 120
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -21,7 +26,7 @@ export default function DonorDetailsModal({ donor, isOpen, onClose }: any) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs"
           />
 
           {/* Modal Content Animation */}
@@ -30,7 +35,7 @@ export default function DonorDetailsModal({ donor, isOpen, onClose }: any) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: "spring", duration: 0.5, bounce: 0.3 }}
-            className="relative bg-white w-full max-w-lg rounded-[3rem] shadow-2xl overflow-hidden border border-white/20"
+            className="relative bg-white w-full max-w-lg rounded-[3rem] shadow-2xl overflow-hidden border border-white/10"
           >
             {/* Header Banner */}
             <div className="relative h-36 bg-gradient-to-br from-red-600 to-rose-500">
@@ -61,8 +66,8 @@ export default function DonorDetailsModal({ donor, isOpen, onClose }: any) {
 
               <div className="pt-20 flex justify-between items-start">
                 <div>
-                  <h2 className="text-3xl font-black text-slate-800 tracking-tight">{donor.name}</h2>
-                  <p className="flex items-center gap-1.5 text-slate-500 font-semibold mt-1">
+                  <h2 className="capitalize text-3xl font-black text-slate-800 tracking-tight">{donor.name}</h2>
+                  <p className="capitalize flex items-center gap-1.5 text-slate-500 font-semibold mt-1">
                     <MapPin size={16} className="text-red-500" /> {donor.address}
                   </p>
                 </div>
@@ -71,6 +76,8 @@ export default function DonorDetailsModal({ donor, isOpen, onClose }: any) {
                   <p className="text-2xl font-black text-white">{donor.blood_group}</p>
                 </div>
               </div>
+                <TimerAvailability donatedAt={donor.last_donated}/>
+
 
               {/* Health & Status Badges */}
               <div className="flex gap-3 mt-6">
@@ -91,11 +98,22 @@ export default function DonorDetailsModal({ donor, isOpen, onClose }: any) {
                     <p className="text-lg font-black text-slate-800">{donor.donate_count || 0}</p>
                     <p className="text-[9px] font-bold text-slate-400 uppercase">Donations</p>
                  </div>
-                 <div className="bg-slate-50 rounded-2xl p-3 text-center">
-                    <Clock size={18} className="text-blue-500 mx-auto mb-1" />
-                    <p className="text-lg font-black text-slate-800">{diffDays}</p>
-                    <p className="text-[9px] font-bold text-slate-400 uppercase">Days Ago</p>
-                 </div>
+
+                {
+                  donor.last_donated && <div className="bg-slate-50 rounded-2xl p-3 text-center border border-slate-100 hover:bg-blue-50 transition-colors group/clock">
+                  <Clock 
+                    size={18} 
+                    className="text-blue-500 mx-auto mb-1 group-hover/clock:scale-110 transition-transform" 
+                  />
+                  <p className="text-lg font-black text-slate-800 leading-none">
+                    {calculateDaysAgo(donor.last_donated)}
+                  </p>
+                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter mt-1">
+                    Days Ago
+                  </p>
+                </div>
+                }
+                 
                  <div className="bg-slate-50 rounded-2xl p-3 text-center">
                     <Calendar size={18} className="text-purple-500 mx-auto mb-1" />
                     <p className="text-lg font-black text-slate-800">{donor.age || 24}</p>
@@ -114,10 +132,10 @@ export default function DonorDetailsModal({ donor, isOpen, onClose }: any) {
               {/* Call Action */}
               <a 
                 href={`tel:${donor.phone}`}
-                className="w-full flex items-center justify-center gap-3 py-5 bg-slate-900 hover:bg-black text-white rounded-[2rem] font-bold transition-all shadow-xl shadow-slate-200 active:scale-[0.98]"
+                className="w-full flex items-center justify-center gap-3 py-4 bg-slate-900 hover:bg-black text-white rounded-[2rem] font-bold transition-all shadow-xl shadow-slate-200 active:scale-[0.98]"
               >
                 <Phone size={20} />
-                Call Now ({donor.phone})
+                Call Now
               </a>
             </div>
           </motion.div>

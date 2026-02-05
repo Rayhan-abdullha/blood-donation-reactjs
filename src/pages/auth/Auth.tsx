@@ -13,6 +13,8 @@ import VerifyOtpForm from "./components/VerifyOtpForm";
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
 import useForgotPassword from "../../hooks/useForgotPass";
 import ResetPasswordForm from "./components/ResetPassordForm";
+import { useAuthStore } from "../../store/authStore";
+import { requestLocationPermission, requestOneSignalPermission } from "../../utils/permissionManager";
 
 type AuthState =
   | "login"
@@ -25,17 +27,89 @@ const AuthPage: React.FC = () => {
   const [view, setView] = useState<AuthState>("login");
   const [timer, setTimer] = useState(30);
 
-  const { register, handleSubmit, formState: { errors }, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
 
-  const email = watch("email");
+    const email = watch("email");
 
-  const { mutate: loginUser, isPending: isLoginLoading } = useLoginAction();
-  const { mutate: registerUser, isPending: isRegisterLoading } = useRegisterAction();
-  const { mutate: verifyOtp, isPending: isVerifyLoading } = useVerifyAction();
-  const { mutate: forgotPassword, isPending: isForgotLoading } = useForgotPassword();
-  const { mutate: resetPassword, isPending: isResetLoading } = useResetPassword();
+    const { mutate: loginUser, isPending: isLoginLoading } = useLoginAction();
+    const { mutate: registerUser, isPending: isRegisterLoading } =
+      useRegisterAction();
+    const { mutate: verifyOtp, isPending: isVerifyLoading } = useVerifyAction();
+    const { mutate: forgotPassword, isPending: isForgotLoading } =
+      useForgotPassword();
+    const { mutate: resetPassword, isPending: isResetLoading } =
+      useResetPassword();
+
+    const handleAuth = async (data: any) => {
+      if (view === "login") {
+        loginUser(data);
+      }
+
+      if (view === "register") {
+        const locationData = await requestLocationPermission();
+        const oneSignalPlayerId = await requestOneSignalPermission();
+        console.log(locationData);
+
+        const registerData = {
+          ...data,
+          latitude: locationData.latitude,
+          longitude: locationData.longitude,
+          onesignal_id: oneSignalPlayerId, // optional
+        };
+        console.log(registerData);
+
+        registerUser(registerData, {
+          onSuccess: (data) => {
+            localStorage.setItem("otp_email", data?.data);
+            setView("verify-email");
+          },
+        });
+      }
+
+      if (view === "verify-email") {
+        const email = localStorage.getItem("otp_email");
+        verifyOtp(
+          { email: email, otp: data.code },
+          {
+            onSuccess: () => {
+              setView("login");
+              localStorage.removeItem("otp_email");
+            },
+          }
+        );
+      }
+
+      if (view === "forgot-password") {
+        forgotPassword(
+          { email: data.email },
+          { onSuccess: () => setView("reset-password") }
+        );
+      }
+
+      if (view === "reset-password") {
+        resetPassword(
+          {
+            email,
+            otp: data.otp,
+            newPassword: data.newPassword,
+          },
+          { onSuccess: () => setView("login") }
+        );
+      }
+    };
 
   useEffect(() => {
+    if (localStorage.getItem("otp_email")) {
+      setView("verify-email");
+    }
+    if (useAuthStore.getState().token) {
+      location.href = "/";
+    }
     let interval: any;
     if (view === "verify-email" && timer > 0) {
       interval = setInterval(() => setTimer((t) => t - 1), 1000);
@@ -43,57 +117,6 @@ const AuthPage: React.FC = () => {
     return () => clearInterval(interval);
   }, [view, timer]);
 
-  const handleAuth = (data: any) => {
-    if (view === "login") {
-      loginUser(data);
-    }
-
-    if (view === "register") {
-      registerUser(data, {
-        onSuccess: () => {
-          localStorage.setItem("otp_email", data.email);
-          setView("verify-email")}
-      });
-    }
-
-    if (view === "verify-email") {
-      const email = localStorage.getItem("otp_email");
-      verifyOtp(
-        { email: email, otp: data.code },
-        {
-          onSuccess: () => {
-            setView("login")
-            localStorage.removeItem("otp_email");
-        },
-        }
-      );
-    }
-
-    if (view === "forgot-password") {
-      forgotPassword(
-        { email: data.email },
-        { onSuccess: () => setView("reset-password") }
-      );
-    }
-
-    if (view === "reset-password") {
-      resetPassword(
-        {
-          email,
-          otp: data.otp,
-          newPassword: data.newPassword,
-        },
-        { onSuccess: () => setView("login") }
-      );
-    }
-  };
-
-  // if localStorage has otp_email
-  useEffect(() => {
-    if (localStorage.getItem("otp_email")) {
-      setView("verify-email");
-    }
-  }, []);
 
   return (
     <div className="min-h-screen flex bg-white font-sans">

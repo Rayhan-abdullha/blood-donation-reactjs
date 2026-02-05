@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react";
-import Splash from "./Splash";
+import { useEffect, useState } from "react";
+import DonorShow from "./DonorShow";
 import FeaturesSection from "./FeaturesSection";
-import DonorAvailibility from "./DonorAvailibility";
-import ImpactState from "./ImpactState";
 import HeroSection from "./HeroSection";
+import ImpactState from "./ImpactState";
+import Splash from "./Splash";
+import useGetAllDonors from "../../hooks/useGetAlldonors";
 
 export default function PublicHome() {
   const [selectedDonor, setSelectedDonor] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showSplash, setShowSplash] = useState(true); // State to control splash screen
+  const [showSplash, setShowSplash] = useState(true);
 
-  // Timer logic for Splash Screen
+  // Fetch real data from your hook
+  const { data: donors, isLoading } = useGetAllDonors();
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 1000); // 2 seconds duration
+    const timer = setTimeout(() => setShowSplash(false), 1000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -25,18 +25,23 @@ export default function PublicHome() {
 
   return (
     <>
-      {/* 1. SPLASH SCREEN SECTION */}
       <Splash showSplash={showSplash} />
-      {/* 2. MAIN WEBSITE CONTENT */}
       <div className={`space-y-16 pb-20 transition-opacity duration-1000 ${showSplash ? 'opacity-0' : 'opacity-100'}`}>
-        <HeroSection/>
-        {/* IMPACT STATS */}
-       <ImpactState/>
-        {/* DONOR AVAILABILITY SECTION */}
-        <DonorAvailibility isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} selectedDonor={selectedDonor} handleViewDetails={handleViewDetails}/>
-        {/* FEATURES SECTION */}
+        <HeroSection />
+        <ImpactState />
+        
+        {/* Pass the dynamic donors list here */}
+        <DonorShow
+          donors={donors?.data} 
+          isLoading={isLoading}
+          isModalOpen={isModalOpen} 
+          setIsModalOpen={setIsModalOpen} 
+          selectedDonor={selectedDonor} 
+          handleViewDetails={handleViewDetails}
+        />
+
         <FeaturesSection />
       </div>
     </>
-  )
+  );
 }

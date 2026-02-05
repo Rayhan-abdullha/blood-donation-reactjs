@@ -4,15 +4,14 @@ import type { JSX } from "react";
 
 interface Props {
   children: JSX.Element;
-  role?: "user" | "admin" | "donor" | null
+  role: Array<"user" | "donor" | "admin">;
 }
 
-export const ProtectedRoute = ({ children, role = null, }: Props) => {
+export const ProtectedRoute = ({ children, role }: Props) => {
   const { user, token } = useAuthStore();
-
     if (!token || !user) return <Navigate to="/auth/login" replace />;
 
-    if (role && user.role !== role) return <Navigate to="/not-found" replace />;
+    if (!role.includes(user.role)) return <Navigate to="/" replace />;
 
     return children;
 };

@@ -10,6 +10,7 @@ export default function AdminLayout() {
       <Navbar
         title="রক্ত বীর"
         othersMenu={menus}
+        isMainMenu={false}
       />
       <Outlet />
       <Footer/>

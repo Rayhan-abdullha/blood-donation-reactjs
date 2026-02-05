@@ -7,7 +7,7 @@ import { useAuthStore } from "../store/authStore";
 
 function useLoginAction() {
     const setAuth = useAuthStore((state) => state.setAuth);
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
     return useMutation({
     mutationFn: async (data: any) => (await api.post("/auth/login", data)).data,

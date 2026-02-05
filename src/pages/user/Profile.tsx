@@ -10,8 +10,9 @@ import {
 import DonorCardSkeleton from "../search/DonorSkeleton";
 import ChangePassword from "../../components/ChangePassword";
 import { useAuthStore } from "../../store/authStore";
-import { useProfileActions } from "../../hooks/useProfile";
 import LoadingSvg from "../../components/LoadingSvg";
+import AvailabilityTimer from "../donor/components/DonarAvailablity";
+import getUserProfile from "../../hooks/useProfile";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -32,9 +33,7 @@ export default function Profile() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [isWaiting, setIsWaiting] = useState(false);
   const [isBloodOpen, setIsBloodOpen] = useState(false);
-  const { getUserProfile: { isLoading, data } } = useProfileActions();
-  console.log(data)
-
+  const { data, isLoading } = getUserProfile();
   const { logout } = useAuthStore();
   
   const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm();
@@ -43,7 +42,7 @@ export default function Profile() {
   const selectedBlood = watch("blood_group");
   const isAvailable = watch("is_available");
   const donorStatus = watch("status") || "pending";
-
+  console.log(data?.last_donated);
   useEffect(() => {
     if (data?.data) {
       reset({
@@ -73,7 +72,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen pb-20 pt-24 px-4 md:px-8 bg-[#F8FAFC]">
+    <div className="min-h-screen pb-20 pt-24 px-4 md:px-8">
       {/* Decorative Blur */}
       <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-red-500/5 blur-[120px] rounded-full -z-10" />
       
@@ -205,6 +204,7 @@ export default function Profile() {
                         </label>
                       </div>
                     </div>
+                   <AvailabilityTimer donatedAt={data?.data?.last_donated} />
                   </div>
                 )}
               </div>
@@ -317,6 +317,7 @@ export default function Profile() {
                           <MapPin className="absolute left-4 top-11 text-slate-300" size={18} />
                           <textarea {...register("address")} rows={3} className={`${inputClasses(false)} py-4 pl-12 h-auto resize-none`} placeholder="গ্রাম, ইউনিয়ন, উপজেলা, জেলা..." />
                         </div>
+                        
                       </div>
                     </motion.div>
                   )}
@@ -339,7 +340,7 @@ export default function Profile() {
           </div>
         )}
       </div>
-
+      
       {showPasswordModal && (
         <ChangePassword inputClasses={inputClasses} isOpen={showPasswordModal} onClose={() => setShowPasswordModal(false)} />
       )}

@@ -8,7 +8,7 @@ import { useAuthStore } from "../store/authStore";
 interface Props {
   title: string;
   othersMenu?: Array<{ link: string; name: string }>;
-  isMainMenu?: boolean;
+  isMainMenu: boolean;
   searchBar?: boolean;
 }
 
@@ -18,19 +18,12 @@ const SearchIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const dashboardMenu = [
-  { link: "donor", name: "ড্যাশবোর্ড" },
-  { link: "user", name: "ড্যাশবোর্ড" },
-  { link: "admin", name: "ড্যাশবোর্ড" },
-];
-
 const mainMenu = [
   { link: "home", name: "হোম" },
   { link: "blood/public-requests", name: "রক্তের পোস্ট" },
-  { link: "about", name: "আমাদের সম্পর্কে" },
 ];
 
-export default function Navbar({ title, othersMenu = [], isMainMenu = false, searchBar = false }: Props) {
+export default function Navbar({ title, othersMenu = [], isMainMenu, searchBar = false }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { user, token } = useAuthStore();
@@ -41,7 +34,6 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
   }, []);
 
   const allMenus = [...mainMenu, ...othersMenu];
-
   return (
     <nav className={`${!isMainMenu && !scrolled ? "bg-slate-100" : "bg-transparent"} py-2 fixed top-0 w-full z-50 transition-all duration-500`}>
       <div className="mx-auto px-4 sm:px-3 max-w-6xl">
@@ -83,9 +75,17 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
             {allMenus.map((item, id) => (
               <NavLinkMenu key={id} item={item} />
             ))}
-            {dashboardMenu.map((item, id) => (
-              user?.role === item.link && <NavLinkMenu key={id} item={item} />
-            ))}
+            {
+               location.pathname === '/home' && <NavLinkMenu item={{ link: "about/home", name: "আমাদের সম্পর্কে" }} />
+            }
+       
+            {(token && user?.role === "admin") && <NavLinkMenu item={{ link: "admin/dashboard", name: "ড্যাশবোর্ড" }} />}
+            {
+              token && (user?.role === "admin" || user?.role === "donor" || user?.role === "user") &&
+              <NavLinkMenu item={{ link: "home/dashboard", name: "আমার পোস্ট" }} />}
+            {
+              token && (user?.role === "donor" || user?.role === "admin") && <NavLinkMenu item={{ link: "donor/dashboard", name: "ডোনার ফিড" }} />
+            } 
             {!token && <NavLinkMenu singleMinue={true} item={{ name: "সাইন ইন", link: "auth/login" }} />}
           </div>
 
@@ -174,7 +174,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
             )}
 
             {/* Navigation Links Group */}
-            <div className="space-y-1">
+            <div className="space-y-2">
               {allMenus.map((item, id) => (
                 <NavLink 
                   key={id} to={`/${item.link.toLowerCase()}`} 
@@ -183,16 +183,22 @@ export default function Navbar({ title, othersMenu = [], isMainMenu = false, sea
                 >
                   {item.name}
                 </NavLink>
-              ))}
-              
-              {token && dashboardMenu.map((item, id) => (
-                user?.role === item.link && (
-                  <NavLink key={id} to={`/${item.link}`} onClick={() => setIsOpen(false)} className="flex items-center px-6 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 hover:bg-slate-200">
-                    {item.name}
-                  </NavLink>
-                )
-              ))}
-            </div>
+              ))
+              }
+                     
+              <div className="flex flex-col space-y-2">
+                {
+              location.pathname === '/home' && <NavLinkMenu item={{ link: "about/home", name: "আমাদের সম্পর্কে" }} />}
+                {(token && user?.role === "admin") && <NavLinkMenu item={{ link: "admin/dashboard", name: "ড্যাশবোর্ড" }} />}
+                {
+                  token && (user?.role === "admin" || user?.role === "donor" || user?.role === "user") &&
+                  <NavLinkMenu item={{ link: "home/dashboard", name: "আমার পোস্ট" }}/>}
+                {
+                  token && (user?.role === "donor" || user?.role === "admin") && <NavLinkMenu item={{ link: "donor/dashboard", name: "ডোনার ফিড" }} />
+                } 
+                </div>
+                {!token && <NavLinkMenu singleMinue={true} item={{ name: "সাইন ইন", link: "auth/login" }} />}
+                </div>
 
             {/* Action Buttons Section */}
             <div className="mt-4 pt-4 border-t border-slate-100 space-y-3">

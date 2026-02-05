@@ -11,8 +11,8 @@ const api = axios.create({
 
 // ===== Request interceptor =====
 api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
 
+  const token = useAuthStore.getState().token;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -21,9 +21,7 @@ api.interceptors.request.use((config) => {
 });
 
 // ===== Response interceptor =====
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
+api.interceptors.response.use((response) => response, (error) => {
     if (error.response?.status === 401) {
       // ❌ token invalid / expired
       useAuthStore.getState().logout();

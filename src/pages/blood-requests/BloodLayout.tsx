@@ -9,6 +9,7 @@ export default function BloodLayout() {
       <Navbar
         title="রক্ত বীর"
         searchBar={true}
+        isMainMenu={false}
       />
       <div className="mt-15">
         <Outlet />

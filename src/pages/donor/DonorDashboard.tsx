@@ -21,7 +21,6 @@ export default function DonorDashboard() {
   const { user } = useAuthStore();
   const { data, isLoading } = useDonorResponseRequests();
   const requests = data?.data || [];
-  console.log(requests)
   const { mutate, isPending, variables, } = useAcceptOrDeclineResponse();
   const action = variables?.status
   const [expandedId, setExpandedId] = useState<number | null>(null);
@@ -38,8 +37,6 @@ export default function DonorDashboard() {
   const toggleExpand = (id: number) => setExpandedId(expandedId === id ? null : id);
   return (
     <div className="max-w-5xl mx-auto mt-20 px-4 pb-12 font-sans">
-      
-      {/* Hero Welcome */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2.5rem] p-10 mb-10 text-white shadow-2xl shadow-slate-200">
         <div className="relative z-10">
           <h1 className="text-3xl md:text-4xl font-[1000] mb-3 tracking-tight">স্বাগতম, {user?.name}! 👋</h1>
@@ -49,7 +46,6 @@ export default function DonorDashboard() {
         </div>
         <div className="absolute top-[-30%] right-[-5%] w-80 h-80 bg-red-600/10 rounded-full blur-[100px]"></div>
       </div>
-
       <div className="grid lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 space-y-6">
           <h3 className="text-xl font-black text-slate-800 flex items-center gap-3 px-2">
@@ -88,7 +84,7 @@ export default function DonorDashboard() {
             <div className="space-y-4">
                <div className="p-4 bg-slate-50 rounded-2xl">
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Donated</p>
-                  <p className="text-2xl font-black text-slate-800">05 <span className="text-xs">Times</span></p>
+                  <p className="text-2xl font-black text-slate-800">0 <span className="text-xs"> Times</span></p>
                </div>
             </div>
           </div>

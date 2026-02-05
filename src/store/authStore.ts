@@ -13,7 +13,7 @@ interface User {
 interface AuthState {
   user: User | null;
   token: string | null;
-  setAuth: (user: User, token: string) => void;
+  setAuth: (user: User | null, token: string | null) => void;
   setUpdateAuth: (user: User) => void;
   logout: () => void;
   refreshUser: () => Promise<void>;
@@ -27,33 +27,29 @@ export const useAuthStore = create<AuthState>()(
 
       // login or initial auth set
       setAuth: (user, token) => {
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
         set({ user, token });
       },
 
-      // only update user info (role upgrade, profile change)
       setUpdateAuth: (user: User) => {
-        localStorage.setItem("user", JSON.stringify(user));
         set({ user });
       },
 
-refreshUser: async () => {
-  try {
-    const res = await api.get("/auth/users/profile");
-    const user = res?.data?.data;
+      refreshUser: async () => {
+        try {
+          const res = await api.get("/auth/users/profile");
+          const user = res?.data?.data;
 
-    if (!user) {
-      get().logout(); // user deleted → logout
-    } else {
-      // update user even if role is pending
-      get().setUpdateAuth(user);
-    }
-  } catch (err: any) {
-    // only logout if 401 / token invalid
-    if (err.response?.status === 401) get().logout();
-  }
-},
+          if (!user) {
+            get().logout(); // user deleted → logout
+          } else {
+            // update user even if role is pending
+            get().setUpdateAuth(user);
+          }
+        } catch (err: any) {
+          // only logout if 401 / token invalid
+          if (err.response?.status === 401) get().logout();
+        }
+      },
 
       // logout
       logout: async () => {
@@ -61,8 +57,6 @@ refreshUser: async () => {
         await new Promise((resolve) => setTimeout(resolve, 700));
         set({ user: null, token: null });
         localStorage.removeItem("auth-storage");
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
         window.location.replace("/auth/login");
       },
     }),

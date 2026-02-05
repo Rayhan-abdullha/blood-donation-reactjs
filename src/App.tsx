@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, useLocation } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import PublicHome from "./pages/public/Home"
 import DonorLayout from "./pages/donor/DonorLayout"
 import Requests from "./pages/blood-requests/CreateRequest"
@@ -18,7 +18,6 @@ import DonorSearch from "./pages/search/Search"
 // import { useEffect } from "react"
 import SearchLayout from "./pages/search/SearchLayout"
 
-import ImageUpload from "./components/ImgUpload"
 import SupportPage from "./pages/support/Support"
 import { useEffect } from "react"
 import Profile from "./pages/user/Profile"
@@ -28,78 +27,62 @@ import UserDashboard from "./pages/user/UserDashboard"
 import BloodLayout from "./pages/blood-requests/BloodLayout"
 import PublicRequests from "./pages/blood-requests/AllBloodRequest"
 import { Toaster } from "react-hot-toast"
-export interface IOneSignalOneSignal {
-  // ...other properties...
-  isInitialized: boolean;
-}
-// ১. কম্পোনেন্টের বাইরে একটি ফ্ল্যাগ ভেরিয়েবল রাখুন
-// let isOneSignalInitialized = false;
+import { useAuthStore } from "./store/authStore"
+
 export default function App() {
-  const { pathname } = useLocation();
+ const pathname = location.pathname
+  useEffect(() => {
+    const checkDonor = async () => {
+      const flag = localStorage.getItem("donor_registered");
 
-  // useEffect(() => {
-  //   const initOneSignal = async () => {
-  //     // ২. যদি আগে থেকেই ইনিশিয়ালাইজড থাকে বা কাজ শুরু হয়ে থাকে তবে ফিরে যান
-  //     if (isOneSignalInitialized) return;
-  //     isOneSignalInitialized = true;
+      // যদি flag নাই তাহলে কিছুই করবে না
+      if (!flag) return;
 
-  //     try {
-  //       await OneSignal.init({
-  //         appId: "00187e74-3cf4-4ca4-ac6e-7a8fadabb41e",
-  //         allowLocalhostAsSecureOrigin: true,
-  //       });
+      // 🔒 Lock system (prevent multiple refreshUser calls)
+      const lock = localStorage.getItem("donor_registered_lock");
+      if (lock === "true") return;
 
-  //       console.log("OneSignal Initialized");
+      // lock set
+      localStorage.setItem("donor_registered_lock", "true");
 
-  //       OneSignal.Notifications.addEventListener("click", (event) => {
-  //       const actionId = event.result.actionId; // কোন বাটনে ক্লিক করেছে তা এখানে পাওয়া যাবে
-  //       const additionalData: any = event.notification.additionalData; // ব্যাকএন্ড থেকে পাঠানো 'data'
-  //       if (actionId === "accept_id") {
-  //         console.log("ইউজার রক্ত দিতে রাজি হয়েছে!");
-  //         // এখানে আপনি আপনার ব্যাকএন্ডে একটি এপিআই কল করতে পারেন (যেমন: /api/accept-request)
-  //       } else if (actionId === "view_location") {
-  //         console.log("ম্যাপ ওপেন করা হচ্ছে...");
-  //         // ইউজারকে সরাসরি ম্যাপ পেজে পাঠিয়ে দিন
-  //         window.location.href = "/map?request_id=" + additionalData.request_id;
-  //       } else {
-  //         console.log("ইউজার সাধারণ নোটিফিকেশনে ক্লিক করেছে");
-  //       }
-  //     });
-              
-  //       // ৩. প্রম্পট দেখান
-  //       await OneSignal.Slidedown.promptPush();
+      try {
+        await useAuthStore.getState().refreshUser();
 
-  //     } catch (err) {
-  //       console.error("OneSignal error:", err);
-  //     }
-  //   };
-  //   initOneSignal();
-  //   // ইউজারের PlayerID বা External ID পাওয়ার পদ্ধতি
-  //   OneSignal.User.PushSubscription.addEventListener("change", (event) => {
-  //     if (event.current.id) {
-  //       console.log("OneSignal Player ID:", event.current.id);
-  //       // এই ID-টি আপনার Golang ব্যাকএন্ডে পাঠিয়ে দিন ডাটাবেজে সেভ করার জন্য
-  //     }
-  //   });
+        const user = useAuthStore.getState().user;
 
-  // }, []);
+        if (user?.role === "donor") {
+          localStorage.removeItem("donor_registered");
+          localStorage.removeItem("donor_registered_lock");
+
+          useAuthStore.getState().setAuth(null, null);
+          window.location.replace("/auth/login");
+        } else {
+          // user donor না হলে lock remove করে দিবে
+          localStorage.removeItem("donor_registered_lock");
+        }
+      } catch (err) {
+        // refresh fail হলে lock remove করে দিবে
+        localStorage.removeItem("donor_registered_lock");
+      }
+    };
+
+    checkDonor();
+  }, []);
 
   useEffect(() => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'smooth', // smooth scrolling
+      behavior: 'smooth',
     });
-  }, [pathname]); // runs every time the path changes
+  }, [pathname]);
   return (
     <>
-    <Toaster position="top-center" reverseOrder={false} />
-        {/* <AuthInitializer/> */}
+    <Toaster position="top-center"/>
       <Routes>
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<Navigate to="home" replace />} />
           <Route path="home" element={<PublicHome />} />
-          <Route path="home/profile" element={ <ProtectedRoute><Profile/></ProtectedRoute>}/>
         </Route>
 
         {/* donor search */}
@@ -118,8 +101,8 @@ export default function App() {
             <DonorLayout />
         }>
           <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<ProtectedRoute role="donor"><DonorDashboard /></ProtectedRoute>} />
-          <Route path="be-donor" element={<ProtectedRoute role="user"><DonorRegistration /></ProtectedRoute>} />
+          <Route path="dashboard" element={<ProtectedRoute role={["admin", "donor"]}><DonorDashboard /></ProtectedRoute>} />
+          <Route path="be-donor" element={<ProtectedRoute role={["user", "admin"]}><DonorRegistration /></ProtectedRoute>} />
         </Route>
 
         {/* admin route */}
@@ -137,18 +120,21 @@ export default function App() {
         >
           <Route index element={<Navigate to="request" replace />} />
           {/* private */}
-            <Route path="request" element={<ProtectedRoute role="user"><Requests /></ProtectedRoute>}/>
+            <Route path="request" element={<ProtectedRoute role={["user", "admin", "donor"]}><Requests /></ProtectedRoute>} />
           <Route path="public-requests" element={<PublicRequests/>} />
         </Route>
 
+        {/* profile */}
+
+
         {/* user route */}
-        <Route path="/user" element={
-          <ProtectedRoute role="user">
+        <Route path="/home" element={
+          <ProtectedRoute role={["user", "admin", "donor"]}>
             <UserLayout />
           </ProtectedRoute>
         }>
-          <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<UserDashboard />} />
+          <Route path="profile" element={ <ProtectedRoute role={["user", "admin", "donor"]}><Profile/></ProtectedRoute>}/>
         </Route>
 
         {/* about */}
@@ -158,9 +144,6 @@ export default function App() {
         </Route>
         {/* support */}
         <Route path="/support" element={<SupportPage />} />
-
-        {/* upload images */}
-        <Route path="/api/images" element={<ImageUpload/>} />
         {/* Notfound */}
         <Route path="*" element={<NotFound />} />
 

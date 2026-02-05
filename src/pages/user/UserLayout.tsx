@@ -10,6 +10,7 @@ export default function UserLayout() {
         <Navbar
         title="রক্ত বীর"
         othersMenu={othersMenu}
+        isMainMenu={false}
         />
       <div className="">
         <Outlet />

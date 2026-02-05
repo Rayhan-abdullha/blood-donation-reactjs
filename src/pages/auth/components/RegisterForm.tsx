@@ -30,7 +30,7 @@ const RegisterForm = ({ register, errors, isRegisterLoading }: any) => (
       {errors.password && <p className="text-[12px] text-red-500 ml-2 mt-1">{errors.password.message}</p>}
     </div>
 
-    <button type="submit" disabled={isRegisterLoading} className="w-full bg-red-600 text-white py-4 rounded-2xl font-bold">
+    <button type="submit" disabled={isRegisterLoading} className="cursor-pointer w-full bg-red-600 text-white py-4 rounded-2xl font-bold">
       {isRegisterLoading ? <span className="flex gap-2 justify-center"><LoadingSvg /> অপেক্ষা করুন...</span> : "অ্যাকাউন্ট তৈরি করুন"}
     </button>
   </>
