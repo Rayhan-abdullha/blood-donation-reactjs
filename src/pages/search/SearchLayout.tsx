@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 const menus = [
     { link: "donor/search", name: "রক্ত খুঁজুন" },
-    { link: "user/requests", name: "রক্তের আবেদন" }
+    { link: "blood/request", name: "রক্তের আবেদন" }
 ]
 
 export default function SearchLayout() {

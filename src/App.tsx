@@ -28,7 +28,6 @@ import BloodLayout from "./pages/blood-requests/BloodLayout"
 import PublicRequests from "./pages/blood-requests/AllBloodRequest"
 import { Toaster } from "react-hot-toast"
 import { useAuthStore } from "./store/authStore"
-
 export default function App() {
  const pathname = location.pathname
   useEffect(() => {

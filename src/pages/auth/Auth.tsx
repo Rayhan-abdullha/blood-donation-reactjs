@@ -14,7 +14,7 @@ import ForgotPasswordForm from "./components/ForgotPasswordForm";
 import useForgotPassword from "../../hooks/useForgotPass";
 import ResetPasswordForm from "./components/ResetPassordForm";
 import { useAuthStore } from "../../store/authStore";
-import { requestLocationPermission, requestOneSignalPermission } from "../../utils/permissionManager";
+import { getOneSignalId, initOneSignal, requestLocationPermission } from "../../utils/permissionManager";
 import toast from "react-hot-toast";
 
 type AuthState =
@@ -53,21 +53,21 @@ const AuthPage: React.FC = () => {
       }
 
       if (view === "register") {
-        const registerData: any = { ...data };
-        setWait(true);
         const toastId = toast.loading("Creating your account...");
+          await initOneSignal();
+          const playerID = await getOneSignalId();
+          const registerData: any = { ...data, onesignal_id: playerID ?? null };
+          setWait(true);
         try {
           const locationData = await requestLocationPermission();
           registerData.latitude = locationData?.latitude ?? null;
           registerData.longitude = locationData?.longitude ?? null;
-          const oneSignalPlayerId = await requestOneSignalPermission();
-          registerData.onesignal_id = oneSignalPlayerId ?? null;
         } catch (_err) {
           if (!registerData?.latitude && !registerData?.longitude) {
             toast.custom("location does not access!")
           }
           if (!registerData.onesignal_id) {
-            toast.custom("notification does n")
+            toast.custom("notification does not access!")
           }
         }
         registerUser(registerData, {
