@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 import CoffeeModal from "../../components/CoffeeModal"
+import StickyMenu from "../../components/StickyMenu"
 
 export default function PublicLayout() {
   
@@ -15,7 +16,8 @@ export default function PublicLayout() {
       <div className="">
         <Outlet />
       </div>
-      <CoffeeModal/>
+      <CoffeeModal />
+       <StickyMenu/>
       <Footer/>
     </div>
   )

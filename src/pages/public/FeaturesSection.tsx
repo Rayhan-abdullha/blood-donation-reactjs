@@ -1,27 +1,33 @@
+import { Droplet, MapPin, ShieldCheck } from "lucide-react";
+
 function FeaturesSection() {
-    return (
-         <section className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-800">আমাদের বৈশিষ্ট্যসমূহ</h2>
-            <div className="h-1 w-20 bg-red-500 mx-auto mt-4 rounded-full"></div>
+  const features = [
+    { title: "দ্রুত দাতা খুঁজুন", desc: "জরুরি ভিত্তিতে আপনার এলাকা থেকে দাতা খুঁজে নিন সহজে।", icon: <Droplet size={24}/>, color: "red" },
+    { title: "লোকেশন ভিত্তিক", desc: "নিকটস্থ রক্তদাতাদের কাছে সাথে সাথে নোটিফিকেশন পৌঁছে যায়।", icon: <MapPin size={24}/>, color: "blue" },
+    { title: "নিরাপদ ও বিশ্বস্ত", desc: "সকল দাতা ভেরিফাইড এবং আপনার তথ্য আমাদের কাছে নিরাপদ।", icon: <ShieldCheck size={24}/>, color: "green" },
+  ];
+
+  return (
+    <section className="max-w-6xl mx-auto px-6 py-20">
+      <div className="text-center mb-20">
+        <h2 className="text-2xl md:text-4xl font-[1000] text-slate-900 tracking-tighter mb-4">সবচেয়ে আধুনিক পদ্ধতিতে <br/><span className="text-red-600 underline decoration-slate-200 underline-offset-8">রক্তের সন্ধান</span></h2>
+        <p className="text-slate-400 font-medium text-sm">আমাদের ফিচারের মাধ্যমে জীবন বাঁচানো এখন আরও দ্রুত ও নিরাপদ</p>
+      </div>
+      
+      <div className="grid md:grid-cols-3 gap-12">
+        {features.map((f, i) => (
+          <div key={i} className="relative group">
+            <div className="absolute -inset-4 bg-slate-50 rounded-[3rem] scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 -z-10" />
+            <div className={`w-16 h-16 rounded-[1.8rem] bg-${f.color}-50 text-${f.color}-600 flex items-center justify-center mb-8 shadow-sm group-hover:bg-slate-900 group-hover:text-white transition-all duration-500 group-hover:-rotate-12`}>
+              {f.icon}
+            </div>
+            <h3 className="text-xl font-black text-slate-900 mb-4 tracking-tight">{f.title}</h3>
+            <p className="text-slate-500 text-sm leading-loose font-medium">{f.desc}</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { title: "দ্রুত দাতা খুঁজুন", desc: "জরুরি ভিত্তিতে আপনার এলাকা থেকে দাতা খুঁজে নিন সহজে।", emoji: "🩸", color: "bg-red-50" },
-              { title: "লোকেশন ভিত্তিক", desc: "নিকটস্থ রক্তদাতাদের কাছে সাথে সাথে নোটিফিকেশন পৌঁছে যায়।", emoji: "📍", color: "bg-blue-50" },
-              { title: "নিরাপদ ও বিশ্বস্ত", desc: "সকল দাতা ভেরিফাইড এবং আপনার তথ্য আমাদের কাছে নিরাপদ।", emoji: "🔐", color: "bg-green-50" },
-            ].map((feature, i) => (
-              <div key={i} className="p-8 rounded-3xl border border-slate-100 hover:border-red-100 hover:shadow-lg transition-all group">
-                <div className={`w-14 h-14 ${feature.color} rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform`}>
-                  {feature.emoji}
-                </div>
-                <h3 className="text-xl font-bold text-slate-800 mb-3">{feature.title}</h3>
-                <p className="text-slate-500 leading-relaxed">{feature.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-  )
+        ))}
+      </div>
+    </section>
+  );
 }
 
-export default FeaturesSection
+export default FeaturesSection;

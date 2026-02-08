@@ -38,7 +38,7 @@ export default function SmartCoffeeModal() {
         
         <div className="relative z-10 flex items-center gap-5">
           {/* এনিমেটেড আইকন */}
-          <div className="relative">
+          <div className="relative cursor-pointer">
             <div className="absolute inset-0 bg-yellow-400 rounded-2xl blur-md opacity-20 animate-pulse"></div>
             <div className="relative w-14 h-14 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
               ☕
@@ -60,20 +60,20 @@ export default function SmartCoffeeModal() {
           <Link 
             to="/support"
             onClick={() => setIsOpen(false)}
-            className="flex-[2] bg-yellow-400 hover:bg-white text-black py-3 px-4 rounded-xl font-black text-[10px] uppercase tracking-tighter text-center transition-all duration-300 active:scale-95 shadow-lg shadow-yellow-400/10"
+            className="cursor-pointer flex-[2] bg-yellow-400 hover:bg-white text-black py-3 px-4 rounded-xl font-black text-[10px] uppercase tracking-tighter text-center transition-all duration-300 active:scale-95 shadow-lg shadow-yellow-400/10"
           >
             Buy me a coffee ☕
           </Link>
           <button 
             onClick={() => setIsOpen(false)}
-            className="flex-1 bg-white/5 hover:bg-white/10 text-white/50 py-3 px-4 rounded-xl font-bold text-[10px] uppercase transition-all"
+            className="cursor-pointer flex-1 bg-white/5 hover:bg-white/10 text-white/50 py-3 px-4 rounded-xl font-bold text-[10px] uppercase transition-all"
           >
             Later
           </button>
         </div>
 
         {/* অটো-ক্লোজ প্রোগ্রেস বার (৩ সেকেন্ডের জন্য) */}
-        <div className="absolute bottom-0 left-0 h-[3px] bg-yellow-400/50 animate-[progress_3s_linear]"></div>
+        <div className="absolute bottom-0 left-0 h-[3px] bg-yellow-400/50 animate-[progress_10s_linear]"></div>
       </div>
     </div>
   );

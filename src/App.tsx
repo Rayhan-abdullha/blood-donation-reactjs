@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate, useLocation, Outlet } from "react-router-dom"
 import PublicHome from "./pages/public/Home"
 import DonorLayout from "./pages/donor/DonorLayout"
 import Requests from "./pages/blood-requests/CreateRequest"
@@ -14,10 +14,7 @@ import AboutLayout from "./pages/about/AboutLayout"
 import AboutPage from "./pages/about/About"
 import NotFound from "./components/Notfound"
 import DonorSearch from "./pages/search/Search"
-// import OneSignal from 'react-onesignal';
-// import { useEffect } from "react"
 import SearchLayout from "./pages/search/SearchLayout"
-
 import SupportPage from "./pages/support/Support"
 import { useEffect } from "react"
 import Profile from "./pages/user/Profile"
@@ -28,53 +25,44 @@ import BloodLayout from "./pages/blood-requests/BloodLayout"
 import PublicRequests from "./pages/blood-requests/AllBloodRequest"
 import { Toaster } from "react-hot-toast"
 import { useAuthStore } from "./store/authStore"
+import Navbar from "./components/Navbar"
 export default function App() {
- const pathname = location.pathname
-  useEffect(() => {
-    const checkDonor = async () => {
-      const flag = localStorage.getItem("donor_registered");
+  const { pathname } = useLocation()
+      useEffect(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }, [pathname]);
+    useEffect(() => {
+      const checkDonor = async () => {
+        const flag = localStorage.getItem("donor_registered");
+        if (!flag) return;
 
-      // যদি flag নাই তাহলে কিছুই করবে না
-      if (!flag) return;
+        try {
+          await useAuthStore.getState().refreshUser();
+          const user = useAuthStore.getState().user;
+          
+          // check if user is donor
+          if (user?.role === "donor") {
+            localStorage.removeItem("donor_registered");
+            localStorage.removeItem("donor_registered_lock");
+          
+            useAuthStore.getState().setAuth(null, null);
+            window.location.replace("/auth/login");
+            return
+          }
 
-      // 🔒 Lock system (prevent multiple refreshUser calls)
-      const lock = localStorage.getItem("donor_registered_lock");
-      if (lock === "true") return;
-
-      // lock set
-      localStorage.setItem("donor_registered_lock", "true");
-
-      try {
-        await useAuthStore.getState().refreshUser();
-
-        const user = useAuthStore.getState().user;
-
-        if (user?.role === "donor") {
-          localStorage.removeItem("donor_registered");
-          localStorage.removeItem("donor_registered_lock");
-
-          useAuthStore.getState().setAuth(null, null);
-          window.location.replace("/auth/login");
-        } else {
-          // user donor না হলে lock remove করে দিবে
-          localStorage.removeItem("donor_registered_lock");
+        } catch (err) {
+          // refresh fail হলে flags remove
+          return
         }
-      } catch (err) {
-        // refresh fail হলে lock remove করে দিবে
-        localStorage.removeItem("donor_registered_lock");
-      }
-    };
+      };
 
-    checkDonor();
-  }, []);
+      checkDonor();
+    }, []);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
-  }, [pathname]);
   return (
     <>
     <Toaster position="top-center"/>
@@ -115,17 +103,25 @@ export default function App() {
         </Route>
 
         {/* blood request */}
-        <Route path="/blood" element={<BloodLayout/>}
-        >
-          <Route index element={<Navigate to="request" replace />} />
-          {/* private */}
-            <Route path="request" element={<ProtectedRoute role={["user", "admin", "donor"]}><Requests /></ProtectedRoute>} />
+        <Route path="/blood" element={<BloodLayout/>}>
+          <Route index element={<Navigate to="public-requests" replace />} />
           <Route path="public-requests" element={<PublicRequests/>} />
         </Route>
 
-        {/* profile */}
-
-
+        <Route path="/blood" element={
+          <>
+            <div className="hidden md:flex">
+              <Navbar
+              title="রক্ত বীর"
+              searchBar={true}
+              isMainMenu={false}
+          />
+            </div>
+          <Outlet/>
+          </>
+        }>
+            <Route path="request" element={<ProtectedRoute role={["user", "admin", "donor"]}><Requests /></ProtectedRoute>} />
+        </Route>
         {/* user route */}
         <Route path="/home" element={
           <ProtectedRoute role={["user", "admin", "donor"]}>

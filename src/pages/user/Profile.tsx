@@ -65,6 +65,9 @@ export default function Profile() {
     console.log("Updating profile...", updateData);
   };
   const handlelogout = async () => {
+    if (localStorage.getItem("donor_registered") !== null) {
+      localStorage.removeItem("donor_registered");
+    }
     setIsWaiting(true)
     await new Promise(resolve => setTimeout(resolve, 1000));
     setIsWaiting(false)

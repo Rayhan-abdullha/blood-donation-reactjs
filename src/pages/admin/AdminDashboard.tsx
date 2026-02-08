@@ -40,7 +40,7 @@ export default function AdminDashboard() {
       {/* 1. MOBILE MENU BUTTON */}
       <button 
         onClick={toggleMobileMenu}
-        className="lg:hidden fixed bottom-6 right-6 z-50 p-4 bg-red-600 text-white rounded-full shadow-2xl active:scale-95 transition-transform"
+        className="cursor-pointer lg:hidden fixed bottom-22 right-6 z-50 p-4 bg-red-600 text-white rounded-full shadow-2xl active:scale-95 transition-transform"
       >
         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
@@ -55,14 +55,7 @@ export default function AdminDashboard() {
 
       {/* --- SIDEBAR --- */}
       <aside className={`
-        /* Position & Size */
-        fixed lg:sticky top-0 left-0 h-screen z-50
-        w-72 bg-slate-900 text-white p-6 flex flex-col
-        
-        /* Animation */
-        transition-all duration-300 ease-in-out
-        
-        /* Mobile Toggle Logic */
+        fixed lg:sticky top-0 mt-[20px] left-0 h-screen z-50 w-72 bg-slate-900 text-white p-6 flex flex-col transition-all duration-300 ease-in-out
         ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
       `}>
         {/* Logo Section */}

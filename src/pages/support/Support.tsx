@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import PaymentMethod from "../Payment";
+import PaymentMethod from "./Payment";
 import Modal from "../../components/Modal";
 export type SubmitionTypes = "success" | "error" | null
 

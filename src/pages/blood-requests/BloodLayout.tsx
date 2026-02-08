@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
+import StickyMenu from "../../components/StickyMenu"
 
 export default function BloodLayout() {
   
@@ -11,9 +12,11 @@ export default function BloodLayout() {
         searchBar={true}
         isMainMenu={false}
       />
-      <div className="mt-15">
+      <div className="mt-8">
         <Outlet />
       </div>
+      
+        <StickyMenu/>
       <Footer/>
     </div>
   )

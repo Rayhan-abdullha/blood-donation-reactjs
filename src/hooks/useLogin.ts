@@ -17,7 +17,8 @@ function useLoginAction() {
           email: data?.data.data.email,
           id: data?.data.data.id,
           role: data?.data.data.role,
-          is_veryfied: data?.data.data.is_veryfied
+          is_veryfied: data?.data.data.is_veryfied,
+          pic: data?.data.data.pic ?? null
       }
       setAuth(setLocalStore, data?.data.access_token);
       toast.success("লগইন সফল হয়েছে!", {

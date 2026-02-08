@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
+import StickyMenu from "../../components/StickyMenu"
 
 export default function DonorLayout() {
   return (
@@ -12,6 +13,7 @@ export default function DonorLayout() {
       <div className="mt-5">
         <Outlet />
       </div>
+        <StickyMenu/>
       <Footer/>
     </div>
   )

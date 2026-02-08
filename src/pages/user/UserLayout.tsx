@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
+import StickyMenu from "../../components/StickyMenu"
 const othersMenu = [
   { link: "blood/request", name: "রক্তের আবেদন" }
 ]
@@ -15,6 +16,7 @@ export default function UserLayout() {
       <div className="">
         <Outlet />
       </div>
+        <StickyMenu/>
       <Footer/>
     </div>
   )

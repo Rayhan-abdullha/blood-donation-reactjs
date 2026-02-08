@@ -21,24 +21,6 @@ export default function PublicHome() {
     setSelectedDonor(donorData);
     setIsModalOpen(true);
   };
-//   const permission = OneSignal.Notifications.permission;
-
-//   if (!permission) {
-//     // ১. যদি ব্রাউজার থেকে ব্লক থাকে
-//     alert("আপনি নোটিফিকেশন ব্লক করেছেন। ব্রাউজার সেটিংস (Lock Icon) থেকে এটি Allow করুন।");
-//     await OneSignal.Notifications.requestPermission();
-//     await OneSignal.User.PushSubscription.optIn();
-
-//   } else {
-//     // ২. যদি পারমিশন ডিফল্ট থাকে বা অপ্ট-আউট করা থাকে
-//     await OneSignal.Notifications.requestPermission();
-//     await OneSignal.User.PushSubscription.optIn();
-    
-//     // নতুন আইডি ডাটাবেসে আপডেট করে দিন
-//     const newId = OneSignal.User.PushSubscription.id;
-//     console.log(newId);
-//   }
-// };
   return (
     <>
       <Splash showSplash={showSplash} />

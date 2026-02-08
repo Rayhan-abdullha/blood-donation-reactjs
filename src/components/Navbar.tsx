@@ -4,6 +4,7 @@ import BuyMeCoffee from "./BuyMeCoffee";
 import NavLinkMenu from "./NavLink";
 import Logout from "../pages/auth/Logout";
 import { useAuthStore } from "../store/authStore";
+import NotificationCenter from "./Notification";
 
 interface Props {
   title: string;
@@ -71,7 +72,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu, searchBar =
           </Link>
 
           {/* --- CENTER: DESKTOP MENU --- */}
-          <div className="hidden md:flex items-center space-x-3">
+          <div className="hidden lg:flex items-center space-x-3">
             {allMenus.map((item, id) => (
               <NavLinkMenu key={id} item={item} />
             ))}
@@ -91,10 +92,14 @@ export default function Navbar({ title, othersMenu = [], isMainMenu, searchBar =
 
           {/* --- RIGHT: ACTIONS --- */}
           <div className="flex items-center gap-3">
+            {
+              (token && user) && <NotificationCenter/>
+            }
             {searchBar && (
               <NavLink to="/donor/search" className="flex items-center justify-center w-10 h-10 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all">
                 <SearchIcon className="w-5 h-5" />
               </NavLink>
+              
             )}
 
             {token && (
@@ -105,7 +110,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu, searchBar =
                 </div>
                   <div className="relative group flex items-center justify-center">
                 <div className="absolute inset-0 bg-red-200 rounded-2xl scale-0 group-hover:scale-125 transition-transform duration-500 opacity-40 blur-sm"></div>
-                    <img src="https://i.pravatar.cc/150" className="w-9 h-9 rounded-xl border-2 border-white object-cover" alt="user" />
+                    <img src={user?.pic ?? "https://i.ibb.co.com/HDqF4pqM/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illust.jpg"} className="w-9 h-9 rounded-xl border-2 border-white object-cover" alt="user" />
                   </div>
               </Link>
             )}
@@ -114,7 +119,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu, searchBar =
             
             <button 
               onClick={() => setIsOpen(!isOpen)} 
-              className={`relative md:hidden w-11 h-11 flex flex-col items-center justify-center rounded-2xl transition-all duration-500 active:scale-90 shadow-lg group overflow-hidden ${
+              className={`relative lg:hidden w-11 h-11 flex flex-col items-center justify-center rounded-2xl transition-all duration-500 active:scale-90 shadow-lg group overflow-hidden ${
                 isOpen 
                 ? "bg-slate-900 shadow-slate-200" 
                 : "bg-gradient-to-br from-red-600 to-rose-500 shadow-red-200"
@@ -149,7 +154,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu, searchBar =
       </div>
 
       {/* --- MOBILE MENU (DESIGN FIXED) --- */}
-      <div className={`fixed inset-x-4 top-24 transition-all duration-500 md:hidden z-50 ${isOpen ? "translate-y-0 opacity-100 scale-100" : "-translate-y-10 opacity-0 scale-95 pointer-events-none"}`}>
+      <div className={`fixed inset-x-4 top-24 transition-all duration-500 lg:hidden z-50 ${isOpen ? "translate-y-0 opacity-100 scale-100" : "-translate-y-10 opacity-0 scale-95 pointer-events-none"}`}>
         <div className="bg-white/95 backdrop-blur-2xl rounded-[2.5rem] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-white/60">
           
           <div className="flex flex-col gap-1">
@@ -159,7 +164,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu, searchBar =
               <div className="flex items-center justify-between p-4 bg-slate-50/80 rounded-3xl mb-3 border border-slate-100">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <img src="https://i.pravatar.cc/150" className="w-12 h-12 rounded-2xl border-2 border-white shadow-sm" alt="user" />
+                    <img src={user?.pic ?? "https://i.ibb.co/comHDqF4M/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illust.jpg"} className="w-12 h-12 rounded-2xl border-2 border-red-200 shadow-sm" alt="user" />
                     <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
                   </div>
                   <div className="text-left">
@@ -187,17 +192,18 @@ export default function Navbar({ title, othersMenu = [], isMainMenu, searchBar =
               }
                      
               <div className="flex flex-col space-y-2">
-                {
-              location.pathname === '/home' && <NavLinkMenu item={{ link: "about/home", name: "আমাদের সম্পর্কে" }} />}
-                {(token && user?.role === "admin") && <NavLinkMenu item={{ link: "admin/dashboard", name: "ড্যাশবোর্ড" }} />}
-                {
-                  token && (user?.role === "admin" || user?.role === "donor" || user?.role === "user") &&
-                  <NavLinkMenu item={{ link: "home/dashboard", name: "আমার পোস্ট" }}/>}
-                {
-                  token && (user?.role === "donor" || user?.role === "admin") && <NavLinkMenu item={{ link: "donor/dashboard", name: "ডোনার ফিড" }} />
-                } 
-                </div>
-                {!token && <NavLinkMenu singleMinue={true} item={{ name: "সাইন ইন", link: "auth/login" }} />}
+                  {
+                    location.pathname === '/home' && <NavLinkMenu item={{ link: "about/home", name: "আমাদের সম্পর্কে" }} />}
+                      {(token && user?.role === "admin") && <NavLinkMenu item={{ link: "admin/dashboard", name: "ড্যাশবোর্ড" }} />}
+                  {
+                    token && (user?.role === "admin" || user?.role === "donor" || user?.role === "user") &&
+                    <NavLinkMenu item={{ link: "home/dashboard", name: "আমার পোস্ট" }}/>}
+                  {
+                    token && (user?.role === "donor" || user?.role === "admin") && <NavLinkMenu item={{ link: "donor/dashboard", name: "ডোনার ফিড" }} />
+                  } 
+                  </div>
+                  {!token && <NavLinkMenu singleMinue={true} item={{ name: "সাইন ইন", link: "auth/login" }} />}
+                  
                 </div>
 
             {/* Action Buttons Section */}
