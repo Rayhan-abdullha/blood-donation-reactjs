@@ -93,7 +93,7 @@ export default function PublicRequestsFeed() {
                 {/* Cover Image/Card Body */}
                 <div className="relative h-64 mx-4 overflow-hidden rounded-[1.8rem] bg-slate-900">
                   <img 
-                    src="https://i.ibb.co.com/21s2sNdH/Gemini-Generated-Image-65ad4k65ad4k65ad.png" 
+                    src="https://i.ibb.co.com/G4SCxnd8/Gemini-Generated-Image-65ad4k65ad4k65ad.png" 
                     alt="Hospital View"
                     className="w-full h-full object-cover opacity-80 group-hover:scale-110 group-hover:opacity-100 transition-all duration-1000"
                   />
