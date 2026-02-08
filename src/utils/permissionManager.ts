@@ -25,6 +25,7 @@ export const initOneSignal = async () => {
       enable: true,
     } as any,
   });
+  console.log("one signal init done")
 };
 
 // ২. রেজিস্ট্রেশনের সময় Player ID পাওয়ার ফাংশন
@@ -35,6 +36,7 @@ export const getOneSignalId = async () => {
     
     // সাবস্ক্রিপশন আইডি (Player ID) সংগ্রহ
     const id = OneSignal.User.PushSubscription.id;
+    console.log("one signal id ", id);
     return id; // এটি আপনার ব্যাকএন্ডে রেজিস্ট্রেশন API-র সাথে পাঠিয়ে দেবেন
   } catch (error) {
     console.error("OneSignal Error:", error);

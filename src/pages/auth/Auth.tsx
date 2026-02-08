@@ -54,14 +54,20 @@ const AuthPage: React.FC = () => {
 
       if (view === "register") {
         const toastId = toast.loading("Creating your account...");
-          await initOneSignal();
+        const registerData = {...data}
+        try {
+            await initOneSignal();
           const playerID = await getOneSignalId();
-          const registerData: any = { ...data, onesignal_id: playerID ?? null };
+          registerData.onesignal_id = playerID ?? null;
           setWait(true);
+        } catch (error) {
+             registerData.onesignal_id = null;
+          }
         try {
           const locationData = await requestLocationPermission();
           registerData.latitude = locationData?.latitude ?? null;
           registerData.longitude = locationData?.longitude ?? null;
+          console.log(registerData);
         } catch (_err) {
           if (!registerData?.latitude && !registerData?.longitude) {
             toast.custom("location does not access!")

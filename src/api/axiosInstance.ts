@@ -1,11 +1,11 @@
 
-const production = "https://blood-donation-go-api.onrender.com/api/v1";
-// const development = "http://localhost:4000/api/v1";
+// const production = "https://blood-donation-go-api.onrender.com/api/v1";
+const development = "http://localhost:4000/api/v1";
 import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 
 const api = axios.create({
-  baseURL: production,
+  baseURL: development
   
 });
 
