@@ -49,7 +49,7 @@ export default function Requests() {
       onSuccess: (data) => {
         setFoundDonors(data?.data || []);
         setShowModal(true);
-        setTimeout(() => { setShowModal(false); navigate("/home/dashboard"); }, 15000);
+        setTimeout(() => { setShowModal(false); navigate("/blood/public-requests"); }, 15000);
       },
       onError: (err: any) => {
         toast.error(err?.response?.data?.message || "রক্তের আবেদন ব্যর্থ হয়েছে");
