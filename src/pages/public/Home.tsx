@@ -14,6 +14,7 @@ export default function PublicHome() {
   // Fetch real data from your hook
   const { data: donors, isLoading } = useGetAllDonors();
   useEffect(() => {
+      document.title = "রক্ত বীর | (RoktoBir)";
     const timer = setTimeout(() => setShowSplash(false), 1000);
     return () => clearTimeout(timer);
   }, []);

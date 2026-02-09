@@ -1,3 +1,5 @@
+import { Users, CheckCircle2, Activity, MapPin, ArrowUpRight } from "lucide-react";
+import { motion } from "framer-motion";
 import useAnalysisCount from "../../hooks/useAnalysis";
 
 function ImpactState() {
@@ -7,54 +9,77 @@ function ImpactState() {
     { 
         label: "নিবন্ধিত দাতা", 
         value: data?.data?.total_verified_donors || 0, 
-        icon: "👥" 
+        icon: <Users size={20} />,
+        color: "from-blue-600 to-cyan-500",
+        shadow: "shadow-blue-100"
     },
     { 
         label: "সফল দান", 
         value: data?.data?.total_succcessfull_donation || 0, 
-        icon: "✅" 
+        icon: <CheckCircle2 size={20} />,
+        color: "from-emerald-600 to-teal-500",
+        shadow: "shadow-emerald-100"
     },
     { 
-        label: "বর্তমান অনুরোধ", 
+        label: "লাইভ রিকোয়েস্ট", 
         value: data?.data?.total_live_requests || 0, 
-        icon: "🕒" 
+        icon: <Activity size={20} />,
+        color: "from-red-600 to-rose-500",
+        shadow: "shadow-red-100"
     },
     { 
-        label: "মোট ব্যবহারকারী", 
+        label: "মোট ইউজার", 
         value: data?.data?.total_users || 0, 
-        icon: "📍" 
+        icon: <MapPin size={20} />,
+        color: "from-amber-600 to-orange-500",
+        shadow: "shadow-amber-100"
     },
   ];
 
   return (
-    <div className="max-w-5xl mx-auto px-6 -mt-40 sm:-mt-24 relative z-20">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-32 sm:-mt-24 relative z-20">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {isLoading
-          ? // Skeleton Loader
-            Array(4).fill(0).map((_, i) => (
-              <div
-                key={i}
-                className="bg-white p-6 rounded-[2rem] shadow-xl border border-slate-100 text-center animate-pulse"
-              >
-                <div className="w-10 h-10 bg-slate-100 rounded-full mx-auto mb-3"></div>
-                <div className="h-6 w-12 bg-slate-100 rounded-lg mx-auto mb-2"></div>
-                <div className="h-3 w-20 bg-slate-50 rounded-lg mx-auto"></div>
-              </div>
+          ? Array(4).fill(0).map((_, i) => (
+              <div key={i} className="h-32 sm:h-48 bg-white/80 backdrop-blur-md rounded-[2rem] animate-pulse border border-white" />
             ))
-          : // Actual Data Card
-            statsConfig?.map((stat, i) => (
-              <div
+          : statsConfig?.map((stat, i) => (
+              <motion.div
                 key={i}
-                className="bg-white p-6 rounded-[2rem] shadow-xl border border-slate-100 text-center hover:translate-y-[-5px] transition-transform duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="relative group cursor-default"
               >
-                <div className="text-2xl mb-2 filter drop-shadow-sm">{stat.icon}</div>
-                <p className="text-3xl font-black text-slate-800 tracking-tight">
-                  {stat.value.toLocaleString('bn-BD')} {/* বাংলা সংখ্যা ব্যবহারের জন্য */}
-                </p>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">
-                  {stat.label}
-                </p>
-              </div>
+                {/* Premium Glow Effect on Hover */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-5 rounded-[2rem] transition-opacity duration-500`} />
+                
+                <div className="bg-white/90 backdrop-blur-xl p-5 sm:p-8 rounded-[2rem] border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all duration-500 flex flex-col items-center text-center">
+                  
+                  {/* Floating Icon Container */}
+                  <div className={`mb-4 p-3 rounded-2xl bg-gradient-to-br ${stat.color} text-white shadow-lg ${stat.shadow} transform group-hover:rotate-6 transition-transform duration-300`}>
+                    {stat.icon}
+                  </div>
+
+                  <div className="relative">
+                    {/* Gradient Text for Numbers */}
+                    <h3 className={`text-2xl sm:text-4xl font-[1000] tracking-tighter bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`}>
+                      {stat.value.toLocaleString('bn-BD')}
+                    </h3>
+                    
+                    {/* Label with increased letter spacing */}
+                    <p className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mt-2">
+                      {stat.label}
+                    </p>
+                  </div>
+
+                  {/* Decorative corner element */}
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ArrowUpRight size={14} className="text-slate-300" />
+                  </div>
+                </div>
+              </motion.div>
             ))}
       </div>
     </div>

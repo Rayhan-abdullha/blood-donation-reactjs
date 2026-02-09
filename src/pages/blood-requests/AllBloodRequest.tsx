@@ -7,6 +7,7 @@ import EmptyState from "./EmptyFeed";
 import RequestCard from "./RequestCard";
 import SkeletonFeed from "./SkeletonFeed";
 import { Activity } from "lucide-react";
+import { useEffect } from "react";
 
 export default function PublicRequestsFeed() {
   const { data, isLoading } = useGetCurrentBloodRequests();
@@ -22,6 +23,9 @@ export default function PublicRequestsFeed() {
     return `${Math.floor(diffInHrs / 24)} দিন আগে`;
   };
 
+    useEffect(() => {
+    document.title = "রক্ত বীর | সব রক্তের আবেদন";
+  }, []);
   return (
     <div className="min-h-screen bg-[#FDFDFD] pb-24">
       {/* Premium Gradient Background */}

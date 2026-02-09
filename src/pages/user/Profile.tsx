@@ -44,6 +44,7 @@ export default function Profile() {
   const donorStatus = watch("status") || "pending";
 
   useEffect(() => {
+    document.title = "রক্ত বীর | প্রোফাইল";
     if (data?.data) {
       reset({
         name: data.data.name,

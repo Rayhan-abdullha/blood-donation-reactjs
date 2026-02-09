@@ -4,8 +4,9 @@ import { Play, X, Droplets, Heart } from "lucide-react";
 
 export default function VideoSection() {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <section className="py-20 px-6 bg-white overflow-hidden">
+    <section className="py-20 px-6 bg-white mb-0 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col items-center mb-12 text-center">

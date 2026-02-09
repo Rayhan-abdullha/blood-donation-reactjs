@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import axios from "axios";
@@ -98,6 +98,9 @@ export default function DonorRegistration() {
 
   const isRegistered = user?.role == "user" && localStorage.getItem("donor_registered") != null
   const isUser = user?.role === "user"
+  useEffect(() => {
+    document.title = "রক্ত বীর | ডোনার অ্যাকাউন্ট তৈরি";
+  }, []);
   
   return (
     <>        

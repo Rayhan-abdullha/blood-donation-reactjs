@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {  Clock,  Activity,
   Users
 } from "lucide-react";
@@ -26,7 +26,9 @@ export default function DonorDashboard() {
       onError: (data: any) => toast.error(data.response?.data?.error || "কিছু ভুল হয়েছে"),
     });
   };
-
+  useEffect(() => {
+    document.title = "রক্ত বীর | আমার রক্তদান";
+  }, []);
   const toggleExpand = (id: number) => setExpandedId(expandedId === id ? null : id);
   return (
     <div className="max-w-5xl mx-auto mt-20 px-4 pb-12 font-sans">

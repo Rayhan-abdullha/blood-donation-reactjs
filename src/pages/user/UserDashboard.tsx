@@ -4,11 +4,15 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import RequestWithResponses from "../blood-requests/RequestComplete";
 import { HeartPulse, Plus } from "lucide-react";
+import { useEffect } from "react";
 
 
 export default function UserDashboard() {
   const { data, isLoading } = useMyBloodRequests();
   const { user } = useAuthStore();
+  useEffect(() => {
+    document.title = "রক্ত বীর | আমার রিকুয়েস্ট"
+  }, []);
   return (
     <div className="max-w-5xl mx-auto mt-24 px-4 pb-16 font-sans">
       {/* Welcome Hero */}

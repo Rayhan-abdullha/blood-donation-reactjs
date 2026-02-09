@@ -127,6 +127,9 @@ const AuthPage: React.FC = () => {
     };
 
   useEffect(() => {
+    useEffect(() => {
+      document.title = "রক্ত বীর | লগইন";
+    }, []);
     if (localStorage.getItem("otp_email")) {
       setView("verify-email");
     }

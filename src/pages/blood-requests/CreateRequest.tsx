@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -56,6 +56,9 @@ export default function Requests() {
       },
     });
   };
+     useEffect(() => {
+      document.title = "রক্ত বীর | রক্তের আবেদন";
+    }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 md:bg-[#F8FAFC] pb-20 md:pb-0 md:mt-10">
