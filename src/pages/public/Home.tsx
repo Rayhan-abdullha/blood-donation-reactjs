@@ -5,6 +5,7 @@ import HeroSection from "./HeroSection";
 import ImpactState from "./ImpactState";
 import Splash from "./Splash";
 import useGetAllDonors from "../../hooks/useGetAlldonors";
+import VideoSection from "./Video";
 export default function PublicHome() {
   const [selectedDonor, setSelectedDonor] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,6 +28,7 @@ export default function PublicHome() {
       <div className={`space-y-16 transition-opacity duration-1000 ${showSplash ? 'opacity-0' : 'opacity-100'}`}>
         <HeroSection />
         <ImpactState />   
+        <VideoSection/>
         <DonorShow
           donors={donors?.data} 
           isLoading={isLoading}
