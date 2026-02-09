@@ -127,9 +127,8 @@ const AuthPage: React.FC = () => {
     };
 
   useEffect(() => {
-    useEffect(() => {
-      document.title = "রক্ত বীর | লগইন";
-    }, []);
+    document.title = "রক্ত বীর | লগইন";
+
     if (localStorage.getItem("otp_email")) {
       setView("verify-email");
     }
@@ -168,8 +167,6 @@ const AuthPage: React.FC = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-slate-50">
         <div className="w-full max-w-md">
           <h2 className="text-3xl font-black text-center mb-8">
-            {view === "login" && "স্বাগতম (Welcome Back)"}
-            {view === "register" && "নতুন অ্যাকাউন্ট (Join Us)"}
             {view === "verify-email" && "কোড যাচাই করুন"}
             {view === "forgot-password" && "পাসওয়ার্ড ভুলে গেছেন"}
             {view === "reset-password" && "নতুন পাসওয়ার্ড দিন"}

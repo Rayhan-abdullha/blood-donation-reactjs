@@ -76,7 +76,7 @@ const HeroSection = () => {
         >
           <Sparkles className="text-red-500" size={14} />
           <span className="text-white/70 text-[10px] font-black uppercase tracking-[0.4em]">
-            Elite Network
+            RayHan's Network
           </span>
         </motion.div>
 
