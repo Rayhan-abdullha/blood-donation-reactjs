@@ -27,7 +27,7 @@ function ImpactState() {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto px-6 -mt-24 relative z-20">
+    <div className="max-w-5xl mx-auto px-6 -mt-40 sm:-mt-24 relative z-20">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {isLoading
           ? // Skeleton Loader

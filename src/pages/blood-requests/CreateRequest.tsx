@@ -58,7 +58,7 @@ export default function Requests() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 md:bg-[#F8FAFC] pb-32 md:pb-0 md:mt-">
+    <div className="min-h-screen bg-slate-50 md:bg-[#F8FAFC] pb-20 md:pb-0 md:mt-10">
       
       {/* MOBILE APP HEADER */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-100 z-50 flex items-center px-4 justify-between">

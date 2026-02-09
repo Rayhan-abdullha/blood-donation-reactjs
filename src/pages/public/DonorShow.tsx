@@ -21,7 +21,7 @@ const DonorShow = ({
   handleViewDetails 
 }: PropTypes) => {
   return (
-    <section className="bg-[#FDFDFD] py-12 md:py-24 px-6 overflow-hidden">
+    <section className="bg-[#FDFDFD] pt-12 md:pt-24 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         {/* Premium Header (Maintained) */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 gap-4">

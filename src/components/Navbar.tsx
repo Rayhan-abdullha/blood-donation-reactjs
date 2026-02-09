@@ -83,7 +83,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu, searchBar =
             {(token && user?.role === "admin") && <NavLinkMenu item={{ link: "admin/dashboard", name: "ড্যাশবোর্ড" }} />}
             {
               token && (user?.role === "admin" || user?.role === "donor" || user?.role === "user") &&
-              <NavLinkMenu item={{ link: "home/dashboard", name: "আমার পোস্ট" }} />}
+              <NavLinkMenu item={{ link: "bloods/user-dashboard", name: "আমার পোস্ট" }} />}
             {
               token && (user?.role === "donor" || user?.role === "admin") && <NavLinkMenu item={{ link: "donor/dashboard", name: "ডোনার ফিড" }} />
             } 
@@ -197,7 +197,7 @@ export default function Navbar({ title, othersMenu = [], isMainMenu, searchBar =
                       {(token && user?.role === "admin") && <NavLinkMenu item={{ link: "admin/dashboard", name: "ড্যাশবোর্ড" }} />}
                   {
                     token && (user?.role === "admin" || user?.role === "donor" || user?.role === "user") &&
-                    <NavLinkMenu item={{ link: "home/dashboard", name: "আমার পোস্ট" }}/>}
+                    <NavLinkMenu item={{ link: "bloods/user-dashboard", name: "আমার পোস্ট" }}/>}
                   {
                     token && (user?.role === "donor" || user?.role === "admin") && <NavLinkMenu item={{ link: "donor/dashboard", name: "ডোনার ফিড" }} />
                   } 

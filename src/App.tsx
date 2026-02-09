@@ -26,6 +26,7 @@ import PublicRequests from "./pages/blood-requests/AllBloodRequest"
 import { Toaster } from "react-hot-toast"
 import { useAuthStore } from "./store/authStore"
 import Navbar from "./components/Navbar"
+import StickyMenu from "./components/StickyMenu"
 export default function App() {
   const { pathname } = useLocation()
       useEffect(() => {
@@ -110,7 +111,7 @@ export default function App() {
 
         <Route path="/blood" element={
           <>
-            <div className="hidden md:flex">
+            <div className="hidden sm:flex">
               <Navbar
               title="রক্ত বীর"
               searchBar={true}
@@ -128,8 +129,20 @@ export default function App() {
             <UserLayout />
           </ProtectedRoute>
         }>
-          <Route path="dashboard" element={<UserDashboard />} />
           <Route path="profile" element={ <ProtectedRoute role={["user", "admin", "donor"]}><Profile/></ProtectedRoute>}/>
+        </Route>
+
+        <Route path="/bloods/user-dashboard" element={
+          <>
+          <Navbar title="রক্ত বীর" isMainMenu={false}/>
+          <ProtectedRoute role={["user", "admin", "donor"]}>
+            <UserDashboard />
+            </ProtectedRoute>
+            <Outlet />
+            <StickyMenu/>
+          </>
+        }>
+          <Route path="dashboard" element={<ProtectedRoute role={["user", "admin", "donor"]}><UserDashboard /></ProtectedRoute>} />
         </Route>
 
         {/* about */}

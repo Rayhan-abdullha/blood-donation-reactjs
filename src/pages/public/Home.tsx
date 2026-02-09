@@ -24,7 +24,7 @@ export default function PublicHome() {
   return (
     <>
       <Splash showSplash={showSplash} />
-      <div className={`space-y-16 pb-20 transition-opacity duration-1000 ${showSplash ? 'opacity-0' : 'opacity-100'}`}>
+      <div className={`space-y-16 transition-opacity duration-1000 ${showSplash ? 'opacity-0' : 'opacity-100'}`}>
         <HeroSection />
         <ImpactState />   
         <DonorShow

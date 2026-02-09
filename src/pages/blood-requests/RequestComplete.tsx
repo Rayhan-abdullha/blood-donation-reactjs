@@ -54,13 +54,13 @@ export default function RequestWithResponses({ request }: { request: any }) {
  
   return (
     <div className={`bg-white rounded-[2.5rem] border transition-all duration-500 overflow-hidden
-        ${isActive ? 'border-red-100 shadow-lg shadow-red-50' : 'border-slate-200 shadow-sm opacity-90'}`}>
+        ${isActive && !expired ? 'border-red-100 shadow-lg shadow-red-50' : 'border-slate-200 shadow-sm opacity-90'}`}>
       
       {/* 1. PRIMARY REQUEST HEADER */}
       <div className="p-6 md:p-8 relative">
         
         {/* Status Animated Badge */}
-        {isActive && (
+        {(isActive && !expired) && (
            <div className="absolute top-6 right-8 flex items-center gap-2">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -99,7 +99,7 @@ export default function RequestWithResponses({ request }: { request: any }) {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             className={`relative w-24 h-24 rounded-[2rem] flex flex-col items-center justify-center border-2 transition-all duration-500 shadow-sm
-              ${isActive 
+              ${isActive && !expired
                 ? 'bg-red-50 border-red-200 text-red-600 animate-pulse-slow' 
                 : isCompleted 
                   ? 'bg-green-50 border-green-200 text-green-600' 
@@ -133,7 +133,7 @@ export default function RequestWithResponses({ request }: { request: any }) {
             </span>
 
             {/* 4. Real-time Status Ping (Only if Active) */}
-            {isActive && (
+            {(isActive && !expired) && (
               <span className="absolute -top-1 -right-1 flex h-4 w-4">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 border-2 border-white"></span>
@@ -151,11 +151,11 @@ export default function RequestWithResponses({ request }: { request: any }) {
                       {request.urgency === "urgent" ? "জরুরি" : "সাধারণ" }
                     </span>
                     <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border flex items-center gap-1.5
-                      ${isActive ? 'bg-blue-50 border-blue-100 text-blue-600' : 'bg-green-50 border-green-100 text-green-600'}`}>
-                        {isActive ? <Search size={10} strokeWidth={3}/> : <CheckCircle2 size={10} strokeWidth={3}/>}
-                        {isActive  ? "দাতা খোঁজা হচ্ছে" : 
+                      ${isActive && !expired ? 'bg-blue-50 border-blue-100 text-blue-600' : 'bg-green-50 border-green-100 text-green-600'}`}>
+                        {isActive && !expired ? <Search size={10} strokeWidth={3}/> : <CheckCircle2 size={10} strokeWidth={3}/>}
+                        {isActive && !expired ? "দাতা খোঁজা হচ্ছে" : 
                          request.status === "" ? "গ্রহন করা হয়েছে" : 
-                         request.status === "fulfilled" ? "রক্তদান সম্পন্ন" : "আবেদন পেন্ডিং"}
+                      request.status === "fulfilled" ? "রক্তদান সম্পন্ন" : expired ? "Timeout" : "আবেদন পেন্ডিং"}
                     </span>
                 </div>
               {
@@ -384,3 +384,5 @@ export default function RequestWithResponses({ request }: { request: any }) {
     </div>
   );
 }
+
+
