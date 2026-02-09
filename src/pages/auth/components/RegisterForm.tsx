@@ -65,7 +65,7 @@ const RegisterForm = ({ register, errors, isRegisterLoading, wait }: any) => {
             type="submit"
             disabled={isRegisterLoading && wait}
             className={`
-              relative w-full py-5 rounded-[1.5rem] font-black text-[12px] uppercase tracking-[0.2em]
+              cursor-pointer relative w-full py-5 rounded-[1.5rem] font-black text-[12px] uppercase tracking-[0.2em]
               transition-all duration-500 overflow-hidden shadow-2xl
               ${isRegisterLoading && wait 
                 ? 'bg-slate-100 text-slate-400' 

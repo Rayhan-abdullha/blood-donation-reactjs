@@ -52,7 +52,7 @@ const LoginForm = ({ register, errors, isLoginLoading, setView }: any) => {
             <button 
               onClick={() => setView("forgot-password")} 
               type="button" 
-              className="text-[10px] font-black text-red-600 uppercase tracking-widest hover:text-red-700 transition-colors flex items-center gap-1"
+              className="cursor-pointer text-[10px] font-black text-red-600 uppercase tracking-widest hover:text-red-700 transition-colors flex items-center gap-1"
             >
               <HelpCircle size={12} /> পাসওয়ার্ড ভুলে গেছেন?
             </button>
@@ -86,7 +86,7 @@ const LoginForm = ({ register, errors, isLoginLoading, setView }: any) => {
             whileTap={{ scale: 0.98 }}
             type="submit" 
             disabled={isLoginLoading} 
-            className={`group relative w-full py-5 rounded-[1.5rem] font-black text-[12px] uppercase tracking-[0.2em] transition-all duration-500 overflow-hidden shadow-2xl flex items-center justify-center gap-3 ${isLoginLoading ? 'bg-slate-100 text-slate-400 shadow-none' : 'bg-slate-900 text-white shadow-slate-200 hover:bg-red-600 hover:shadow-red-100'}`}
+            className={`cursor-pointer group relative w-full py-5 rounded-[1.5rem] font-black text-[12px] uppercase tracking-[0.2em] transition-all duration-500 overflow-hidden shadow-2xl flex items-center justify-center gap-3 ${isLoginLoading ? 'bg-slate-100 text-slate-400 shadow-none' : 'bg-slate-900 text-white shadow-slate-200 hover:bg-red-600 hover:shadow-red-100'}`}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
             
